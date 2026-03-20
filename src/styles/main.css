@@ -1,0 +1,22 @@
+:root {
+/* Fonts */
+--font-heading: 'Poppins', sans-serif;
+--font-body: 'Montserrat', sans-serif;
+/* Color */
+--primary-bg-color: #121212;
+--secondary-color: #7c8279;
+--accent-color: #E58A3A;
+/* Text Color */
+--white-text: #f8f8f8;
+--dark-text: #222222;
+/* Margin/Padding */
+--gap-small: 0.5rem;
+--gap-med: 1rem;
+--gap-large: 2rem;
+/* border-radius */
+--border-radius-small: 4px;
+--border-radius-med: 8px;
+--border-radius-large: 12px;
+/* shadow */
+--shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
