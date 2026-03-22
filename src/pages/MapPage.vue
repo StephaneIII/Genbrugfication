@@ -2,9 +2,16 @@
   <v-main class="map-page">
     <AppHeader />
 
-    <section class="map-content" v-if="station">
+    <section v-if="station" class="map-content">
       <div class="map-wrapper">
-        <div id="map"></div>
+        <StationMap
+          :lat="station.lat"
+          :lng="station.lng"
+          :station-name="station.name"
+          :station-address="station.address"
+          :zoom="13"
+          map-id="map-page-map"
+        />
       </div>
 
       <section class="station-panel">
@@ -23,8 +30,9 @@
             <h3>{{ station.name }}</h3>
             <p>{{ station.address }}</p>
           </div>
+
           <div class="route-button-wrapper">
-            <BaseButton>
+            <BaseButton @click="handleFindRoute">
               Find rute
             </BaseButton>
           </div>
@@ -41,35 +49,22 @@
 </template>
 
 <script>
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
-import markerIcon from 'leaflet/dist/images/marker-icon.png'
-import markerShadow from 'leaflet/dist/images/marker-shadow.png'
-
 import AppHeader from '../Components/AppHeader.vue'
 import AppFooter from '../Components/AppFooter.vue'
+import BaseButton from '../Components/BaseButton.vue'
+import StationMap from '../Components/StationMap.vue'
 import { postcodeStations } from '../data/mockData.js'
-import BaseButton from '@/Components/BaseButton.vue'
-
-delete L.Icon.Default.prototype._getIconUrl
-
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: markerIcon2x,
-  iconUrl: markerIcon,
-  shadowUrl: markerShadow
-})
 
 export default {
   name: 'MapPage',
   components: {
     AppHeader,
     AppFooter,
-    BaseButton
+    BaseButton,
+    StationMap
   },
   data() {
     return {
-      map: null,
       station: null,
       areaName: ''
     }
@@ -88,34 +83,12 @@ export default {
       }
 
       this.areaName = areaNames[postcode] || postcode
-
-      this.$nextTick(() => {
-        this.initMap()
-      })
     }
   },
   methods: {
-    initMap() {
-      if (!this.station) return
-
-      this.map = L.map('map', {
-        zoomControl: true
-      }).setView([this.station.lat, this.station.lng], 13)
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-      }).addTo(this.map)
-
-      L.marker([this.station.lat, this.station.lng])
-        .addTo(this.map)
-        .bindPopup(`<strong>${this.station.name}</strong><br>${this.station.address}`)
-        .openPopup()
-    }
-  },
-  beforeUnmount() {
-    if (this.map) {
-      this.map.remove()
-      this.map = null
+    handleFindRoute() {
+      const postcode = this.$route.params.postcode
+      this.$router.push(`/route/${postcode}/${this.station.id}`)
     }
   }
 }
@@ -138,11 +111,6 @@ export default {
 .map-wrapper {
   width: 100%;
   height: 460px;
-}
-
-#map {
-  width: 100%;
-  height: 100%;
 }
 
 .station-panel {
