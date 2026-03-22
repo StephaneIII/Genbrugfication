@@ -13,9 +13,16 @@
         class="postcode-input"
       />
 
-      <v-btn class="find-route-btn" @click="handleFindRoute">
+      <!-- <v-btn class="show-map-btn" @click="handleShowMap">
         Vis kort
-      </v-btn>
+      </v-btn> -->
+
+      <BaseButton @click="handleShowMap">
+        Vis kort
+      </BaseButton>
+
+
+      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     </section>
 
     <AppFooter />
@@ -23,25 +30,36 @@
 </template>
 
 <script>
-import AppHeader from '../components/AppHeader.vue'
-import AppFooter from '../components/AppFooter.vue'
+import AppHeader from '../Components/AppHeader.vue'
+import AppFooter from '../Components/AppFooter.vue'
+import BaseButton from '../Components/BaseButton.vue'
+import { postcodeStations } from '../data/mockData.js'
 
 export default {
   name: 'PostcodePage',
   components: {
     AppHeader,
-    AppFooter
+    AppFooter,
+    BaseButton
   },
   data() {
     return {
-      postcode: ''
+        postcode: '',
+        errorMessage: ''
     }
-  },
-  methods: {
-    handleFindRoute() {
-      console.log('Postnummer:', this.postcode)
+    },
+    methods: {
+        handleShowMap() {
+            const trimmedPostcode = this.postcode.trim()
+
+            if (postcodeStations[trimmedPostcode]) {
+                this.errorMessage = ''
+                this.$router.push(`/map/${trimmedPostcode}`)
+            } else {
+                this.errorMessage = 'Postnummeret findes ikke i demoen - prøv 4000, 2500 eller 2000'
+            }
+        }
     }
-  }
 }
 </script>
 
@@ -90,7 +108,7 @@ export default {
   margin-bottom: var(--gap-large);
 }
 
-.find-route-btn {
+/* .show-map-btn {
   background-color: var(--accent-color) !important;
   color: var(--dark-text) !important;
   font-family: var(--font-body);
@@ -98,14 +116,9 @@ export default {
   text-transform: none;
   border-radius: 999px !important;
   padding-inline: 1.5rem;
-}
+} */
 
-.page-footer {
-  background-color: #4a4a4a;
-  color: var(--white-text);
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  text-align: center;
-  padding: 0.75rem;
+.error-message {
+    margin-top: var(--gap-med);
 }
 </style>
