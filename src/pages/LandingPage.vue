@@ -1,7 +1,19 @@
-<script setup lang="js"></script>
+<script>
+import RecycleIconMetal from './components/Images/Recycle_Icon_Metal.jpg'
+
+export default {
+    data() {
+        return {
+            metalIcon: RecycleIconMetal
+        }
+    }
+}
+
+</script>
 
 <template>
-    <v-app>
-
-    </v-app>
+    <div>
+        <img :src="metalIcon" alt="recycle metal" class="icon" />
+        <p>test test test</p>
+    </div>
 </template>
