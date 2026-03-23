@@ -1,7 +1,33 @@
-<script setup lang="ts"></script>
+<script>
+import SearchPage from '../pages/SearchPage.vue'
+
+export default {
+  name: 'App',
+  components: {
+    SearchPage,
+  },
+  data() {
+    return {
+      Page: 'SearchPage',
+    }
+  },
+  methods: {
+    handleNavToDetail(trashID) {
+      this.Page = `Page${trashID}`
+    },
+  },
+}
+</script>
 
 <template>
-  <v-app>
+  <div v-if="Page === 'SearchPage'">
+    <SearchPage @nav-to-detail="handleNavToDetail" />
+  </div>
+  <div v-else-if="Page.startsWith('Page')">
+    <h1>Detail Page for Item ID: {{ Page.replace('Page', '') }}</h1>
+    <button @click="Page = 'SearchPage'">Back to Search</button>
+  </div>
+  <v-app v-else>
     <v-main>
       <v-container>
         <v-row justify="center">
