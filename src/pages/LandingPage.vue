@@ -1,19 +1,42 @@
 <script>
-import RecycleIconMetal from './components/Images/Recycle_Icon_Metal.jpg'
+import RecycleIconMetal from './components/Images/RecycleIconMetal.jpg'
+import RecycleIconPlastic from './components/Images/RecycleIconPlastic.jpg'
 
 export default {
     data() {
         return {
-            metalIcon: RecycleIconMetal
+            metalIcon: RecycleIconMetal,
+            plastIcon: RecycleIconPlastic
         }
     }
 }
 
 </script>
 
+<head>
+</head>
+
 <template>
     <div>
-        <img :src="metalIcon" alt="recycle metal" class="icon" />
-        <p>test test test</p>
+        <P>Små valg. Stor forskel.</P>
+        <input type="search" id="placeholder" name="q" aria-label="Søg efter info om skrald">
+    </div>
+    <div class="container">
+        <div>
+            <a href="placeholde">
+                <img :src="metalIcon" alt="Profile" class="icon" />
+            </a>
+            <a href="placeholde">
+                <img :src="plastIcon" alt="Sorter affald" class="icon" />
+            </a>
+        </div>
+        <div>
+            <a href="placeholde">
+                <img :src="metalIcon" alt="Book car" class="icon" />
+            </a>
+            <a href="Map.vue">
+                <img :src="plastIcon" alt="Kort" class="icon" />
+            </a>
+        </div>
     </div>
 </template>
