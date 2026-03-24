@@ -3,10 +3,16 @@ import PostcodePage from '../pages/PostcodePage.vue'
 import Map from '../pages/MapPage.vue'
 import RoutePage from '../pages/RoutePage.vue'
 import SearchPage from '@/pages/SearchPage.vue'
+import LandingPage from '@/pages/LandingPage.vue'
 
 const routes = [
-  {
+    {
     path: '/',
+    name: 'LandingPage',
+    component: LandingPage,
+  },
+  {
+    path: '/PostcodePage',
     name: 'PostcodePage',
     component: PostcodePage,
   },

@@ -1,6 +1,6 @@
 <script>
-import RecycleIconMetal from './components/Images/RecycleIconMetal.jpg'
-import RecycleIconPlastic from './components/Images/RecycleIconPlastic.jpg'
+import RecycleIconMetal from '../components/Images/RecycleIconMetal.jpg'
+import RecycleIconPlastic from '../components/Images/RecycleIconPlastic.jpg'
 
 export default {
     data() {
