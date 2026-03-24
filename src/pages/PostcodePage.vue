@@ -13,10 +13,6 @@
         class="postcode-input"
       />
 
-      <!-- <v-btn class="show-map-btn" @click="handleShowMap">
-        Vis kort
-      </v-btn> -->
-
       <BaseButton @click="handleShowMap">
         Vis kort
       </BaseButton>
