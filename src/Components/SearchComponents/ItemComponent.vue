@@ -24,9 +24,12 @@ export default {
     handleItemClick() {
       this.$emit('item-clicked', this.item)
     },
+    goToCheckout() {
+      this.$router.push('/cart')
+    }
   },
   watch: {},
-  emits: ['item-clicked', 'AddToCart'],
+  emits: ['item-clicked', 'nav-to-checkout'],
 }
 </script>
 
@@ -36,7 +39,7 @@ export default {
       <img v-if="item.Url" :src="item.Url" :alt="item.Name" class="item-image" />
       <div v-else class="item-placeholder"></div>
 
-      <button class="recycling-icon" @click.stop="$emit('AddToCart', item)">
+      <button class="recycling-icon" @click.stop="goToCheckout">
         <svg
           width="16"
           height="16"

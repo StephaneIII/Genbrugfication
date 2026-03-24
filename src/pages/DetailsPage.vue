@@ -20,11 +20,11 @@ export default {
     },
 
     goToMap() {
-      alert('kort')
+      this.$router.push(`/PostcodePage`)
     },
 
     goToCheckout() {
-      alert('checkout')
+      this.$router.push(`/Cart`)
     },
   },
 }
