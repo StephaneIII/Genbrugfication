@@ -1,11 +1,12 @@
 <script>
+import appleJuice from '@/Components/Images/applejuice.png'
 export default {
   data() {
     return {
       trashCount: 0,
       trash: {
         name: 'Æblejuice',
-        image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba',
+        image: appleJuice,
         home: 'Æblejuice flasker skal smides i plastik',
         station: 'Æblejuice flasker skal smides i plastik',
       },
@@ -32,7 +33,7 @@ export default {
   <div class="page">
     <div class="image-card">
       <img :src="trash.image" class="trash-img" />
-      <button class="floating-btn" @click="goToCheckout">trash</button>
+      <button class="floating-btn" @click="goToCheckout"><img src="@/Components/Images/TrashCanIcon.png" alt="Checkout" /></button>
       <p class="trashcount">{{ trashCount }}</p>
     </div>
 
