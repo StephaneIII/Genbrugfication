@@ -5,10 +5,12 @@ import RoutePage from '../pages/RoutePage.vue'
 import SearchPage from '@/pages/SearchPage.vue'
 import DetailPage from '@/pages/DetailPage.vue'
 import DetailsPage from '@/pages/DetailsPage.vue'
+import LandingPage from '@/pages/LandingPage.vue'
+
 
 const routes = [
     {
-    path: '/',
+    path: '/LandingPage',
     name: 'LandingPage',
     component: LandingPage,
   },
@@ -23,7 +25,7 @@ const routes = [
     component: Map,
   },
   {
-    path: '/SearchPage',
+    path: '/',
     name: 'SearchPage',
     component: SearchPage,
   },
