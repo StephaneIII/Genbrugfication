@@ -6,7 +6,8 @@ import SearchPage from '@/pages/SearchPage.vue'
 import DetailPage from '@/pages/DetailPage.vue'
 import DetailsPage from '@/pages/DetailsPage.vue'
 import LandingPage from '@/pages/LandingPage.vue'
-
+import { components } from 'vuetify/dist/vuetify.js'
+import Cart from '@/pages/Cart.vue'
 
 const routes = [
   {
@@ -33,6 +34,11 @@ const routes = [
     path: '/Detailspage',
     name: 'Detailspage',
     component: DetailsPage,
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: Cart,
   },
   {
     path: '/route/:postcode/:stationId',
