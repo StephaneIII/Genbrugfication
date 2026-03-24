@@ -1,11 +1,15 @@
 <script>
 import { purple } from 'vuetify/util/colors'
 import ItemComponent from '../Components/SearchComponents/ItemComponent.vue'
+import AppFooter from '@/Components/AppFooter.vue';
+import AppHeader from '@/Components/AppHeader.vue';
 
 export default {
   name: 'SearchPage',
   components: {
     ItemComponent,
+    AppFooter,
+    AppHeader
   },
   data() {
     return {
@@ -132,6 +136,7 @@ export default {
 </script>
 
 <template>
+  <AppHeader />
   <div class="search-page">
     <div class="search-header">
       <h1 style="color: white">
@@ -163,6 +168,7 @@ export default {
       </div>
     </div>
   </div>
+  <AppFooter />
 </template>
 
 <style scoped>
