@@ -170,7 +170,7 @@ export default {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  background-color: darkgreen;
+  background-color: var(--secondary-color);
   min-height: 100vh;
 }
 
@@ -236,7 +236,7 @@ export default {
 
 .search-button {
   padding: 12px 24px;
-  background-color: #4caf50;
+  background-color: var(--accent-color);
   color: white;
   border: none;
   border-radius: 8px;
