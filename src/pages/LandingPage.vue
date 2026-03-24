@@ -34,7 +34,7 @@ export default {
             <a href="placeholde">
                 <img :src="metalIcon" alt="Book car" class="icon" />
             </a>
-            <a href="Map.vue">
+            <a href="MapPage.vue">
                 <img :src="plastIcon" alt="Kort" class="icon" />
             </a>
         </div>
