@@ -3,7 +3,8 @@ import PostcodePage from '../pages/PostcodePage.vue'
 import Map from '../pages/MapPage.vue'
 import RoutePage from '../pages/RoutePage.vue'
 import SearchPage from '@/pages/SearchPage.vue'
-import LandingPage from '@/pages/LandingPage.vue'
+import DetailPage from '@/pages/DetailPage.vue'
+import DetailsPage from '@/pages/DetailsPage.vue'
 
 const routes = [
     {
@@ -27,15 +28,20 @@ const routes = [
     component: SearchPage,
   },
   {
-    path: '/detail/:trashID',
-    name: 'DetailPage',
-    component: () => import('../pages/DetailPage.vue'),
-    props: true,
+    path: '/Detailspage',
+    name: 'Detailspage',
+    component: DetailsPage,
   },
   {
     path: '/route/:postcode/:stationId',
     name: 'RoutePage',
     component: () => import('../pages/RoutePage.vue'),
+  },
+  {
+    path: '/Detailspage',
+    name: 'DetailPage',
+    component: () => import('../pages/Detailspage.vue'),
+    props: true,
   },
 ]
 
