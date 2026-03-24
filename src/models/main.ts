@@ -1,6 +1,11 @@
 import { createApp } from 'vue'
-import App from '../App.vue'
+import App from '../vue/App.vue'
 import router from '../router'
+
+//style
+import '../styles/reset.css'
+import '../styles/main.css'
+import 'leaflet/dist/leaflet.css'
 
 // Vuetify
 import 'vuetify/styles'
