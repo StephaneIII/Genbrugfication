@@ -26,16 +26,12 @@
 </template>
 
 <script>
-import AppHeader from '../Components/AppHeader.vue'
-import AppFooter from '../Components/AppFooter.vue'
 import BaseButton from '../Components/BaseButton.vue'
 import { postcodeStations } from '../data/mockData.js'
 
 export default {
   name: 'PostcodePage',
   components: {
-    AppHeader,
-    AppFooter,
     BaseButton
   },
   data() {

@@ -1,6 +1,5 @@
 <template>
   <v-main class="route-page">
-    <AppHeader />
 
     <section v-if="station" class="route-content">
       <div class="map-wrapper">
@@ -55,13 +54,10 @@
       <p class="error-message">Ingen station fundet.</p>
     </section>
 
-    <AppFooter />
   </v-main>
 </template>
 
 <script>
-import AppHeader from '../Components/AppHeader.vue'
-import AppFooter from '../Components/AppFooter.vue'
 import BaseButton from '../Components/BaseButton.vue'
 import StationMap from '../Components/StationMap.vue'
 import { postcodeStations } from '../data/mockData.js'
@@ -69,8 +65,6 @@ import { postcodeStations } from '../data/mockData.js'
 export default {
   name: 'RoutePage',
   components: {
-    AppHeader,
-    AppFooter,
     BaseButton,
     StationMap
   },
