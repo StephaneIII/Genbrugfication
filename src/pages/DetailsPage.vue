@@ -6,6 +6,7 @@ export default {
       trashCount: 0,
       trash: {
         name: 'Æblejuice',
+        id: 1,
         image: appleJuice,
         home: 'Æblejuice flasker skal smides i plastik',
         station: 'Æblejuice flasker skal smides i plastik',
@@ -33,7 +34,7 @@ export default {
   <div class="page">
     <div class="image-card">
       <img :src="trash.image" class="trash-img" />
-      <button class="floating-btn" @click="goToCheckout"><img src="@/Components/Images/TrashCanIcon.png" alt="Checkout" /></button>
+      <button class="floating-btn" @click="goToCheckout"><img src="@/Components/Images/TrashCanIcon.png" alt="Checkout" style="width: 40px; height: 40px;" /></button>
       <p class="trashcount">{{ trashCount }}</p>
     </div>
 
@@ -68,12 +69,19 @@ export default {
   margin-top: 10px;
   position: relative;
   width: 100%;
-  height: 450px;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 15px;
 }
 
 .trash-img {
-  width: 100%;
-  height: 420px;
+  width: 30%;
+  height: auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  padding: 10px;
 }
 
 .floating-btn {
@@ -92,10 +100,12 @@ h1 {
 
 .info-box {
   background: var(--secondary-color);
-  color: black;
+  color: white;
   padding: 10px;
   margin-top: 10px;
+  height: 250px;
   font-family: var(--font-body);
+  border-radius: 15px;
 }
 
 .buttons {
@@ -114,8 +124,67 @@ button {
 
 .trashcount {
   position: absolute;
-  top: 5px;
+  top: 20px;
   right: 10px;
   font-family: var(--font-body);
+}
+
+@media (max-height: 700px) {
+  .image-card {
+background: var(--secondary-color);
+  padding: 10px;
+  margin-top: 10px;
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 15px;
+  }
+}
+
+
+@media (min-height: 840px) {
+  .image-card {
+  background: var(--secondary-color);
+  padding: 10px;
+  margin-top: 10px;
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.info-box {
+  background: var(--secondary-color);
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  height: 320px;
+  font-family: var(--font-body);
+  border-radius: 15px;
+}
+}
+@media (min-height: 900px) {
+  .image-card {
+  background: var(--secondary-color);
+  padding: 10px;
+  margin-top: 10px;
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.info-box {
+  background: var(--secondary-color);
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  height: 300px;
+  font-family: var(--font-body);
+  border-radius: 15px;
+}
 }
 </style>
