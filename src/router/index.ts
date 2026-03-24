@@ -9,7 +9,7 @@ import LandingPage from '@/pages/LandingPage.vue'
 
 
 const routes = [
-    {
+  {
     path: '/LandingPage',
     name: 'LandingPage',
     component: LandingPage,
@@ -40,7 +40,7 @@ const routes = [
     component: () => import('../pages/RoutePage.vue'),
   },
   {
-    path: '/Detailspage',
+    path: '/Detailspage/:id',
     name: 'DetailPage',
     component: () => import('../pages/Detailspage.vue'),
     props: true,

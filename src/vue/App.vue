@@ -4,7 +4,7 @@ export default {
   methods: {
     handleNavToDetail(trashID) {
       // Navigate to a detail route - you'll need to create this route
-      this.$router.push(`/detail/${trashID}`)
+      this.$router.push(`/DetailsPage/${trashID}`)
     },
   },
 }
