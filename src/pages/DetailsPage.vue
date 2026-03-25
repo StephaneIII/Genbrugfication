@@ -1,6 +1,10 @@
 <script>
 import appleJuice from '@/Components/Images/applejuice.png'
+import BaseButton from '@/Components/BaseButton.vue';
 export default {
+  components: {
+    BaseButton,
+  },
   data() {
     return {
       trashCount: 0,
@@ -41,16 +45,24 @@ export default {
     <h1>{{ trash.name }}</h1>
 
     <div class="info-box">
-      <h3>Hjemme</h3>
-      <p>{{ trash.home }}</p>
+      <div class="info-wrapper">
+        <h3>Hjemme</h3>
+        <p>{{ trash.home }}</p>
+      </div>
 
-      <h3>Genbrugsstation</h3>
-      <p>{{ trash.station }}</p>
+      <div class="info-wrapper">
+        <h3>Genbrugsstation</h3>
+        <p>{{ trash.station }}</p>
+      </div>
     </div>
 
     <div class="buttons">
-      <button @click="addtrash">Tilføj affald</button>
-      <button @click="goToMap">Kort</button>
+      <BaseButton @click="addtrash">
+        Tilføj Affald
+      </BaseButton>
+      <BaseButton @click="goToMap">
+        Vis kort
+      </BaseButton>
     </div>
   </div>
 </template>
@@ -96,9 +108,14 @@ export default {
 h1 {
   text-align: center;
   font-family: var(--font-heading);
+  margin-top: 10px;
+  /* margin-top: 1rem; */
 }
 
 .info-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   background: var(--secondary-color);
   color: white;
   padding: 10px;
@@ -106,6 +123,10 @@ h1 {
   height: 250px;
   font-family: var(--font-body);
   border-radius: 15px;
+}
+
+.info-wrapper > h3{
+  margin-bottom: 0.4rem;
 }
 
 .buttons {
