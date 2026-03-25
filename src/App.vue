@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import Cart from './pages/Cart.vue'
+import LandingPage from './pages/LandingPage.vue';
+import Cart from './pages/Cart.vue';
 import DetailsPage from './pages/DetailsPage.vue';
 import '@/styles/main.css'
 </script>
