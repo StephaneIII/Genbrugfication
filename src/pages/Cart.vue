@@ -169,7 +169,7 @@ h1 {
   background-color: var(--accent-color);
   min-height: 92px;
   font-size: 20px;
-  color: var(--white-text);
+  color: var(--dark-text);
   margin-top: 14px;
 }
 
