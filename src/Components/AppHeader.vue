@@ -1,13 +1,13 @@
 <template>
   <div class="header-wrapper">
     <header class="app-header">
-      <button class="header-button" aria-label="Gå tilbage">
+      <button class="header-button" aria-label="Gå tilbage" @click="goBack">
         <span class="arrow-icon">←</span>
       </button>
 
-      <div class="logo-wrapper" aria-label="Genbrugfication logo">
+      <RouterLink to="/" class="logo-wrapper" aria-label="Gå til landing page">
         <v-icon class="logo-icon">mdi-recycle</v-icon>
-      </div>
+      </RouterLink>
 
       <button
         class="header-button"
@@ -19,25 +19,30 @@
     </header>
 
     <nav v-if="isMenuOpen" class="burger-menu">
-      <a href="#" class="menu-link">Profile</a>
-      <a href="#" class="menu-link">Affald liste</a>
-      <a href="#" class="menu-link">Book car</a>
-      <a href="#" class="menu-link">Something</a>
+      <a href="/" class="menu-link">Hjem</a>
+      <a href="/PostcodePage" class="menu-link">Rutevejledning</a>
+      <a href="/Cart" class="menu-link">Checkout</a>
     </nav>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script>
+export default {
+  data() {
+    return {
+      isMenuOpen: false,
+    }
+  },
 
-const isMenuOpen = ref(false)
-</script>
-
-<script setup>
+  methods: {
+    goBack() {
+      this.$router.back()
+    },
+  },
+}
 </script>
 
 <style scoped>
-
 .header-wrapper {
   position: relative;
   width: 100%;
