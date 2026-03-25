@@ -1,38 +1,45 @@
 <template>
-  <div>
-    <h1>Cart</h1>
-    <v-row>
-      <v-col v-for="item in items" :key="item.name" cols="12">
-        <v-card class="pa-4 d-flex align-start item-card" theme="light">
-          <img :src="item.image" :alt="item.category" class="category-icon" />
+  <div class="cart-page">
+    <div class="cart-content">
+      <h1>Cart</h1>
 
-          <div class="card-content">
-            <v-card-title>{{ item.name }}</v-card-title>
+      <v-row>
+        <v-col v-for="item in items" :key="item.name" cols="12">
+          <v-card class="pa-4 d-flex align-start item-card" theme="light">
+            <img :src="item.image" :alt="item.category" class="category-icon" />
 
-            <v-card-subtitle>Sorteres som</v-card-subtitle>
+            <div class="card-content">
+              <v-card-title>{{ item.name }}</v-card-title>
 
-            <div class="category-box">{{ item.category }}</div>
+              <v-card-subtitle>Sorteres som</v-card-subtitle>
 
-            <div class="d-flex align-center mt-1">
-              <v-btn variant="text" @click="decrease(item)">—</v-btn>
-              <span class="mx-2">{{ item.amount }}</span>
-              <v-btn variant="text" @click="increase(item)">+</v-btn>
+              <div class="category-box">{{ item.category }}</div>
+
+              <div class="d-flex align-center mt-1">
+                <v-btn variant="text" @click="decrease(item)">—</v-btn>
+                <span class="mx-2">{{ item.amount }}</span>
+                <v-btn variant="text" @click="increase(item)">+</v-btn>
+              </div>
             </div>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
 
-    <v-card class="pa-4 item-card action-card add-item-card mt-4">
-      <span class="add-icon">+</span>
-      Tilføj nyt affald
-    </v-card>
+    <div class="cart-footer-area">
+      <v-card class="pa-4 item-card action-card add-item-card">
+        <span class="add-icon">+</span>
+        Tilføj nyt affald
+      </v-card>
 
-    <p class="points-text mt-4">
-      Optjen <span class="points-number">{{ totalPoints }}</span> point ved denne sortering!
-    </p>
+      <p class="points-text">
+        Optjen <span class="points-number">{{ totalPoints }}</span> point ved denne sortering!
+      </p>
 
-    <v-card class="pa-4 action-card register-card mt-4"> Registrer sortering </v-card>
+      <v-card class="pa-4 action-card register-card">
+        Registrer affald
+      </v-card>
+    </div>
   </div>
 </template>
 
@@ -77,12 +84,23 @@ export default {
 </script>
 
 <style scoped>
-div {
+.cart-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 16px 24px;
   font-family: var(--font-body);
+  background: var(--primary-bg-color);
+}
+
+.cart-content {
+  flex: 1;
 }
 
 h1 {
   font-family: var(--font-heading);
+  margin: 10px 0 10px 10px;
+  color: var(--white-text);
 }
 
 .item-card {
@@ -118,28 +136,41 @@ h1 {
   justify-content: space-between;
 }
 
+.cart-footer-area {
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+}
+
 .action-card {
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 24px;
   font-weight: bold;
   color: var(--dark-text);
+  border-radius: 14px;
 }
 
 .add-item-card {
-  margin-top: 100px;
+  background: #d6ecd2;
+  min-height: 68px;
+  font-size: 18px;
 }
 
 .add-icon {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: bold;
-  margin-right: 8px;
+  margin-right: 10px;
+  line-height: 1;
 }
 
 .register-card {
   background-color: var(--accent-color);
+  min-height: 92px;
+  font-size: 20px;
+  color: var(--white-text);
+  margin-top: 14px;
 }
 
 .category-box {
@@ -156,6 +187,7 @@ h1 {
   text-align: center;
   font-size: 18px;
   color: var(--white-text);
+  margin: 18px 0 0;
 }
 
 .points-number {
