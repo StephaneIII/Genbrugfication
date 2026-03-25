@@ -1,11 +1,13 @@
 <script>
 import { purple } from 'vuetify/util/colors'
 import ItemComponent from '../Components/SearchComponents/ItemComponent.vue'
+import BaseButton from '@/Components/BaseButton.vue';
 
 export default {
   name: 'SearchPage',
   components: {
     ItemComponent,
+    BaseButton,
   },
   data() {
     return {
@@ -148,7 +150,9 @@ export default {
           placeholder="Søg efter affaldstype..."
           class="search-input"
         />
-        <button type="submit" class="search-button">Søg</button>
+        <BaseButton @click="addtrash">
+        Søg
+        </BaseButton>
       </form>
 
       <div class="items-grid">
