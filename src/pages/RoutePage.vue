@@ -110,7 +110,7 @@ export default {
 <style scoped>
 .route-page {
   min-height: 100vh;
-  background-color: #2f6b5f;
+  background-color: var(--secondary-color);
   display: flex;
   flex-direction: column;
 }
@@ -132,7 +132,7 @@ export default {
   position: relative;
   z-index: 2;
   margin-top: -28px;
-  background-color: #2f6b5f;
+  background-color: var(--secondary-color);
   border-top-left-radius: 28px;
   border-top-right-radius: 28px;
   padding: 16px 20px 32px;
