@@ -1,5 +1,9 @@
-modules.exports = (sequelize, DataTypes) => {
-  const Trash = sequelize.define('Trash', {
+import { DataTypes } from 'sequelize'
+import sequelize from '../database/sequelize.js'
+
+const Trash = sequelize.define(
+  'Trash',
+  {
     TrashID: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -25,6 +29,10 @@ modules.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       defaultValue: 10,
     },
-  })
-  return Trash
-}
+  },
+  {
+    timestamps: false,
+  },
+)
+
+export default Trash
