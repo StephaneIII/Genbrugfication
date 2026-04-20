@@ -1,0 +1,21 @@
+{
+  "name": "genbrugfication-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.7.6",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3"
+  }
+}
