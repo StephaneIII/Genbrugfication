@@ -9,11 +9,7 @@
         <v-icon class="logo-icon">mdi-recycle</v-icon>
       </RouterLink>
 
-      <button
-        class="header-button"
-        aria-label="Åbn menu"
-        @click="isMenuOpen = !isMenuOpen"
-      >
+      <button class="header-button" aria-label="Åbn menu" @click="isMenuOpen = !isMenuOpen">
         <span class="menu-icon">☰</span>
       </button>
     </header>
@@ -22,21 +18,100 @@
       <a href="/" class="menu-link">Hjem</a>
       <a href="/PostcodePage" class="menu-link">Rutevejledning</a>
       <a href="/Cart" class="menu-link">Checkout</a>
+
+      <!-- Show logout button when user is logged in -->
+      <button v-if="isUserLoggedIn" @click="handleLogout" class="menu-link logout-button">
+        Log ud
+      </button>
+
+      <!-- Show login/signup buttons when user is not logged in -->
+      <template v-else>
+        <button @click="goToLogin" class="menu-link auth-button">Log ind</button>
+        <button @click="goToSignup" class="menu-link auth-button">Tilmeld dig</button>
+      </template>
     </nav>
   </div>
 </template>
 
 <script>
+import UserController from '@/Controller/User.controller.js'
+
 export default {
   data() {
     return {
       isMenuOpen: false,
+      userLoggedIn: false, // Reactive state for authentication
     }
   },
 
+  computed: {
+    isUserLoggedIn() {
+      return this.userLoggedIn
+    },
+  },
+
+  mounted() {
+    // Check login state when component mounts
+    this.updateLoginState()
+
+    // Listen for custom auth state change events
+    window.addEventListener('authStateChange', this.handleAuthStateChange)
+
+    // Also listen for storage events to detect login/logout from other tabs
+    window.addEventListener('storage', this.handleStorageChange)
+  },
+
+  beforeUnmount() {
+    // Clean up event listeners
+    window.removeEventListener('authStateChange', this.handleAuthStateChange)
+    window.removeEventListener('storage', this.handleStorageChange)
+  },
+
   methods: {
+    updateLoginState() {
+      this.userLoggedIn = UserController.isLoggedIn()
+    },
+
+    handleAuthStateChange(event) {
+      // Update login state when auth state changes
+      this.userLoggedIn = event.detail.loggedIn
+      if (event.key === 'userId' || event.key === 'username') {
+        this.updateLoginState()
+      }
+    },
+
     goBack() {
       this.$router.back()
+    },
+
+    handleLogout() {
+      // Clear user session from localStorage
+      UserController.clearUserSession()
+
+      // Update the reactive login state
+      this.updateLoginState()
+
+      // Close the menu
+      this.isMenuOpen = false
+
+      // Redirect to login page
+      this.$router.push('/login')
+    },
+
+    goToLogin() {
+      // Close the menu
+      this.isMenuOpen = false
+
+      // Navigate to login page
+      this.$router.push('/login')
+    },
+
+    goToSignup() {
+      // Close the menu
+      this.isMenuOpen = false
+
+      // Navigate to signup page
+      this.$router.push('/signup')
     },
   },
 }
@@ -117,6 +192,32 @@ export default {
   font-weight: 700;
   line-height: 1.15;
   font-family: var(--font-heading);
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.logout-button:hover {
+  opacity: 0.8;
+}
+
+.auth-button {
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.auth-button:hover {
+  opacity: 0.8;
 }
 
 @keyframes slideDown {

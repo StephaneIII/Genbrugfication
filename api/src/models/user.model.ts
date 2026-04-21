@@ -15,14 +15,14 @@ interface UserAttributes {
 type UserCreationAttributes = Optional<UserAttributes, 'UID' | 'FriendCode'>
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
-  public UID!: number
-  public Username!: string
-  public Firstname!: string
-  public Lastname!: string
-  public Password!: string
-  public Email!: string
-  public Tlf!: string
-  public FriendCode!: number | null
+  declare UID: number
+  declare Username: string
+  declare Firstname: string
+  declare Lastname: string
+  declare Password: string
+  declare Email: string
+  declare Tlf: string
+  declare FriendCode: number | null
 }
 
 User.init(

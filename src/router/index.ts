@@ -8,6 +8,8 @@ import DetailsPage from '@/pages/DetailsPage.vue'
 import LandingPage from '@/pages/LandingPage.vue'
 import { components } from 'vuetify/dist/vuetify.js'
 import Cart from '@/pages/Cart.vue'
+import SignUp from '@/pages/SignUp.vue'
+import Login from '@/pages/Login.vue'
 
 const routes = [
   {
@@ -41,6 +43,16 @@ const routes = [
     component: Cart,
   },
   {
+    path: '/login',
+    name: 'LoginPage',
+    component: Login,
+  },
+  {
+    path: '/Signup',
+    name: 'SignupPage',
+    component: SignUp,
+  },
+  {
     path: '/route/:postcode/:stationId',
     name: 'RoutePage',
     component: () => import('../pages/RoutePage.vue'),
@@ -48,7 +60,7 @@ const routes = [
   {
     path: '/Detailspage/:id',
     name: 'DetailPage',
-    component: () => import('../pages/Detailspage.vue'),
+    component: DetailsPage,
     props: true,
   },
 ]
