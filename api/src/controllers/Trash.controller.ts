@@ -25,7 +25,7 @@ export const getTrashById = async (req: Request, res: Response): Promise<void> =
         const trash = await Trash.findByPk(id)
 
         if (!trash) {
-            res.status(404).json({ error: 'Item not found' })
+            res.status(404).json({ error: 'Trash not found' })
             return
         }
         res.status(200).json(trash)
@@ -41,7 +41,7 @@ export const updateTrash = async (req: Request, res: Response): Promise<void> =>
         const trash = await Trash.findByPk(id)
 
         if (!trash) {
-            res.status(404).json({ error: 'Item not found' })
+            res.status(404).json({ error: 'Trash not found' })
             return
         }
         await trash.update(req.body)
@@ -58,7 +58,7 @@ export const deleteTrash = async (req: Request, res: Response): Promise<void> =>
         const trash = await Trash.findByPk(id)
 
         if (!trash) {
-            res.status(404).json({ error: 'Item not found' })
+            res.status(404).json({ error: 'Trash not found' })
             return
         }
         await trash.destroy()
@@ -76,7 +76,7 @@ export const deleteAllTrash = async (req: Request, res: Response): Promise<void>
             truncate: true
         })
         res.status(200).json({
-            message: 'All checkout items deleted',
+            message: 'All trash deleted',
             deletedCount
         })
         
