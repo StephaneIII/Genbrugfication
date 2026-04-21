@@ -49,7 +49,6 @@ class UserController {
         error: response.ok ? null : data.error || 'Registration failed',
       }
     } catch (error) {
-      console.error('User creation error:', error)
       return {
         success: false,
         data: null,
@@ -87,7 +86,6 @@ class UserController {
         error: response.ok ? null : data.error || 'Invalid email or password',
       }
     } catch (error) {
-      console.error('Login error:', error)
       return {
         success: false,
         data: null,
@@ -111,7 +109,6 @@ class UserController {
         error: response.ok ? null : data.error || 'Failed to fetch users',
       }
     } catch (error) {
-      console.error('Fetch users error:', error)
       return {
         success: false,
         data: null,
@@ -127,7 +124,6 @@ class UserController {
   storeUserSession(userData) {
     localStorage.setItem('userId', userData.UID)
     localStorage.setItem('username', userData.Username)
-    console.log('User session stored in localStorage')
 
     // Dispatch a custom event to notify components of auth state change
     window.dispatchEvent(
@@ -157,7 +153,6 @@ class UserController {
   clearUserSession() {
     localStorage.removeItem('userId')
     localStorage.removeItem('username')
-    console.log('User session cleared from localStorage')
 
     // Dispatch a custom event to notify components of auth state change
     window.dispatchEvent(
