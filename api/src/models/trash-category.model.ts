@@ -1,10 +1,10 @@
 import { DataTypes } from 'sequelize'
 import sequelize from '../database/sequelize.js'
 
-const TrashCan = sequelize.define(
-  'TrashCan',
+const TrashCategory = sequelize.define(
+  'TrashCategory',
   {
-    TrashcanID: {
+    TrashCategoryID: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -27,4 +27,4 @@ const TrashCan = sequelize.define(
   },
 )
 
-export default TrashCan
+export default TrashCategory
