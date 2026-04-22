@@ -163,25 +163,25 @@ export default {
 </script>
 
 <template>
-  <div class="signup-page">
+  <main class="signup-page">
     <div class="signup-container">
       <div class="signup-card">
-        <div class="header">
+        <header class="header">
           <h1 class="signup-title">Create Your Account</h1>
           <p class="signup-subtitle">Join us and start your journey</p>
-        </div>
+        </header>
 
         <!-- Error Display -->
-        <div v-if="errorMessage" class="error-alert">
+        <section v-if="errorMessage" class="error-alert" role="alert" aria-live="polite">
           <i class="error-icon">⚠</i>
           {{ errorMessage }}
-        </div>
+        </section>
 
         <!-- Success Display -->
-        <div v-if="successMessage" class="success-alert">
+        <section v-if="successMessage" class="success-alert" role="status" aria-live="polite">
           <i class="success-icon">✓</i>
           {{ successMessage }}
-        </div>
+        </section>
 
         <!-- Signup Form -->
         <form @submit.prevent="handleSignup" class="signup-form">
@@ -306,15 +306,15 @@ export default {
         </form>
 
         <!-- Login Link -->
-        <div class="login-link">
+        <footer class="login-link">
           <p>
             Already have an account?
             <router-link to="/login" class="link">Sign in here</router-link>
           </p>
-        </div>
+        </footer>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <style scoped>
