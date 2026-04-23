@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
 import Checkout from '../models/checkout.model.js'
+import CheckoutItem from '../models/checkout-item.model.js'
+import Trash from '../models/trash.model.js'
 
 export const createCheckout = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -9,8 +11,16 @@ export const createCheckout = async (req: Request, res: Response): Promise<void>
         res.status(400).json({ error: (error as Error).message })
     }
 }
+export const getAllCheckout = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const checkout = await Checkout.findAll()
+        res.status(200).json(checkout)
+    } catch (error) {
+        res.status(500).json({ error: (error as Error).message })
+    }
+}
 
-export const getCheckoutItemById = async (req: Request, res: Response): Promise<void> => {
+export const getCheckoutById = async (req: Request, res: Response): Promise<void> => {
     try {
         const id = Number(req.params.id)
         const checkout = await Checkout.findByPk(id)
@@ -43,7 +53,7 @@ export const updateCheckout = async (req: Request, res: Response): Promise<void>
     }
 }
 
-export const deleteCheckoutItem = async (req: Request, res: Response): Promise<void> => {
+export const deleteCheckout = async (req: Request, res: Response): Promise<void> => {
     try {
         const id = Number(req.params.id)
         const checkout = await Checkout.findByPk(id)
@@ -60,3 +70,24 @@ export const deleteCheckoutItem = async (req: Request, res: Response): Promise<v
     }
 }
 
+export const scoreCheckout = async (req: Request, res: Response): Promise<void> =>  {
+    try {
+        const id = Number(req.params.id)
+
+        const checkoutItemArray = await CheckoutItem.findAll({where: {CheckoutID: id}})
+
+        let totalScore = 0
+
+        for (const item of checkoutItemArray as any[]) {
+            const trash = await Trash.findByPk(item.TrashID)
+
+            if (trash) {
+                totalScore += (trash as any).Score * item.Amount
+            }
+        }
+
+        res.status(200).json({ totalScore })
+    } catch (error) {
+        res.status(500).json({ error: (error as Error).message })
+    }
+}
