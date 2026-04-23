@@ -4,7 +4,7 @@ import RecyclingStation from '../models/recycling-station.model.js'
 // Create
 export const createRecyclingStation = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { Address, Name, Url, Recipient, XCoord, YCoord, PostNo, OpeningHours } = req.body
+    const { Address, Name, Url, Recipient, XCoord, YCoord, PostNo, OpeningHours, ImageUrl } = req.body
 
     const recyclingStation = await RecyclingStation.create({
       Address,
@@ -15,6 +15,7 @@ export const createRecyclingStation = async (req: Request, res: Response): Promi
       YCoord,
       PostNo,
       OpeningHours,
+      ImageUrl,
     })
 
     res.status(201).json(recyclingStation)
@@ -73,7 +74,7 @@ export const updateRecyclingStation = async (req: Request, res: Response): Promi
       return
     }
 
-    const { Address, Name, Url, Recipient, XCoord, YCoord, PostNo, OpeningHours } = req.body
+    const { Address, Name, Url, Recipient, XCoord, YCoord, PostNo, OpeningHours, ImageUrl } = req.body
 
     await recyclingStation.update({
       Address,
@@ -84,6 +85,7 @@ export const updateRecyclingStation = async (req: Request, res: Response): Promi
       YCoord,
       PostNo,
       OpeningHours,
+      ImageUrl,
     })
 
     res.status(200).json(recyclingStation)

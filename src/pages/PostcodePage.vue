@@ -9,7 +9,7 @@
       <input
         v-model="postcode"
         type="text"
-        placeholder="Prøv: 4000, 2500, 2000"
+        placeholder="Prøv: 4000, 4040, 4130"
         class="postcode-input"
       />
 
@@ -27,7 +27,6 @@
 
 <script>
 import BaseButton from '../Components/BaseButton.vue'
-import { postcodeStations } from '../data/mockData.js'
 
 export default {
   name: 'PostcodePage',
@@ -41,16 +40,17 @@ export default {
     }
     },
     methods: {
-        handleShowMap() {
-            const trimmedPostcode = this.postcode.trim()
+      handleShowMap() {
+        const trimmedPostcode = this.postcode.trim()
 
-            if (postcodeStations[trimmedPostcode]) {
-                this.errorMessage = ''
-                this.$router.push(`/map/${trimmedPostcode}`)
-            } else {
-                this.errorMessage = 'Postnummeret findes ikke i demoen - prøv 4000, 2500 eller 2000'
-            }
+        if (!trimmedPostcode) {
+          this.errorMessage = 'Indtast et postnummer'
+          return
         }
+
+        this.errorMessage = ''
+        this.$router.push(`/map/${trimmedPostcode}`)
+      }
     }
 }
 </script>

@@ -1,7 +1,10 @@
 <template>
   <v-main class="route-page">
+    <section v-if="loading" class="route-content">
+      <p class="error-message">Henter station...</p>
+    </section>
 
-    <section v-if="station" class="route-content">
+    <section v-else-if="station" class="route-content">
       <div class="map-wrapper">
         <StationMap
           :lat="station.lat"
@@ -51,16 +54,14 @@
     </section>
 
     <section v-else class="route-content">
-      <p class="error-message">Ingen station fundet.</p>
+      <p class="error-message">{{ errorMessage }}</p>
     </section>
-
   </v-main>
 </template>
 
 <script>
 import BaseButton from '../Components/BaseButton.vue'
 import StationMap from '../Components/StationMap.vue'
-import { postcodeStations } from '../data/mockData.js'
 
 export default {
   name: 'RoutePage',
@@ -71,17 +72,45 @@ export default {
   data() {
     return {
       station: null,
-      startPoint: ''
+      startPoint: '',
+      loading: false,
+      errorMessage: ''
     }
   },
-  mounted() {
-    const postcode = this.$route.params.postcode
+  async mounted() {
     const stationId = Number(this.$route.params.stationId)
-    const stations = postcodeStations[postcode]
+    this.loading = true
 
-    if (stations && stations.length > 0) {
-      this.station =
-        stations.find((station) => station.id === stationId) || stations[0]
+    try {
+      const res = await fetch('http://localhost:3001/api/recyclingstations')
+
+      if (!res.ok) {
+        throw new Error('Kunne ikke hente genbrugsstation')
+      }
+
+      const stations = await res.json()
+
+      const apiStation = stations.find(
+        station => station.RecyclingStationID === stationId
+      )
+
+      if (!apiStation) {
+        this.errorMessage = 'Ingen station fundet.'
+        return
+      }
+
+      this.station = {
+        id: apiStation.RecyclingStationID,
+        name: apiStation.Name,
+        address: apiStation.Address,
+        lat: apiStation.YCoord,
+        lng: apiStation.XCoord,
+        imageUrl: apiStation.ImageUrl
+      }
+    } catch (error) {
+      this.errorMessage = error.message
+    } finally {
+      this.loading = false
     }
   },
   methods: {

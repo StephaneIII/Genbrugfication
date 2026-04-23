@@ -1,7 +1,10 @@
 <template>
   <v-main class="map-page">
+    <section v-if="loading" class="map-content">
+      <p class="error-message">Henter station...</p>
+    </section>
 
-    <section v-if="station" class="map-content">
+    <section v-else-if="station" class="map-content">
       <div class="map-wrapper">
         <StationMap
           :lat="station.lat"
@@ -19,8 +22,8 @@
         <article class="station-card">
           <div class="station-image-wrapper">
             <img
-              src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1200&q=80"
-              alt="Genbrugsstation"
+              :src="station.imageUrl"
+              :alt="station.name"
               class="station-image"
             />
           </div>
@@ -40,7 +43,7 @@
     </section>
 
     <section v-else class="map-content">
-      <p class="error-message">Ingen station fundet for dette postnummer.</p>
+      <p class="error-message">{{ errorMessage }}</p>
     </section>
   </v-main>
 </template>
@@ -48,7 +51,6 @@
 <script>
 import BaseButton from '../Components/BaseButton.vue'
 import StationMap from '../Components/StationMap.vue'
-import { postcodeStations } from '../data/mockData.js'
 
 export default {
   name: 'MapPage',
@@ -59,23 +61,55 @@ export default {
   data() {
     return {
       station: null,
-      areaName: ''
+      areaName: '',
+      errorMessage: '',
+      loading: false
     }
   },
-  mounted() {
+  async mounted() {
     const postcode = this.$route.params.postcode
-    const stations = postcodeStations[postcode]
+    this.areaName = postcode
+    this.loading = true
 
-    if (stations && stations.length > 0) {
-      this.station = stations[0]
+    try {
+      const res = await fetch('http://localhost:3001/api/recyclingstations')
 
-      const areaNames = {
-        '4000': 'Roskilde',
-        '2500': 'Valby',
-        '2000': 'Frederiksberg'
+      if (!res.ok) {
+        throw new Error('Kunne ikke hente genbrugsstationer')
       }
 
-      this.areaName = areaNames[postcode] || postcode
+      const stations = await res.json()
+
+      const matchedStations = stations.filter(
+        station => String(station.PostNo) === String(postcode)
+      )
+
+      if (matchedStations.length > 0) {
+        const apiStation = matchedStations[0]
+
+        this.station = {
+          id: apiStation.RecyclingStationID,
+          name: apiStation.Name,
+          address: apiStation.Address,
+          lat: apiStation.YCoord,
+          lng: apiStation.XCoord,
+          imageUrl: apiStation.ImageUrl
+        }
+
+        const areaNames = {
+          '4000': 'Roskilde',
+          '4040': 'Jyllinge',
+          '4130': 'Viby Sjælland'
+        }
+
+        this.areaName = areaNames[postcode] || postcode
+      } else {
+        this.errorMessage = 'Ingen station fundet for dette postnummer.'
+      }
+    } catch (error) {
+      this.errorMessage = error.message
+    } finally {
+      this.loading = false
     }
   },
   methods: {

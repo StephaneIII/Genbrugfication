@@ -41,6 +41,10 @@ const RecyclingStation = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: true,
     },
+    ImageUrl: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+}
   },
   {
     timestamps: false,
