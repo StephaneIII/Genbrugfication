@@ -25,7 +25,7 @@ const RecyclingStation = sequelize.define(
       type: DataTypes.STRING(120),
       allowNull: true,
     },
-    Xcoord: {
+    XCoord: {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
