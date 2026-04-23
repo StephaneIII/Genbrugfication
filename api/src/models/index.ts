@@ -48,6 +48,6 @@ db.Friend.belongsTo(db.User, { foreignKey: 'SecondUID', as: 'SecondUser' })
 db.Stops.belongsTo(db.User, { foreignKey: 'userId' })
 db.Route.belongsTo(db.User, { foreignKey: 'userId' })
 db.Route.hasMany(db.Stops, { foreignKey: 'routeId' })
-db.RecyclingStation.belongsTo(db.Route, { foreignKey: 'routeId' })
+db.Route.belongsTo(db.RecyclingStation, { foreignKey: 'routeId' })
 
 export default db
