@@ -4,9 +4,10 @@ import sequelize from '../database/sequelize.js'
 const Stops = sequelize.define(
   'Stops',
   {
-    RouteID: {
+    routeId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+       field: 'RouteID',
     },
     StopOrder: {
       type: DataTypes.INTEGER,
@@ -16,9 +17,10 @@ const Stops = sequelize.define(
       type: DataTypes.STRING(70),
       allowNull: false,
     },
-    UID: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      field: 'UID',
     },
     PassengerAmount: {
       type: DataTypes.INTEGER,
@@ -31,6 +33,7 @@ const Stops = sequelize.define(
   },
   {
     timestamps: false,
+    tableName: 'stops',
   },
 )
 
