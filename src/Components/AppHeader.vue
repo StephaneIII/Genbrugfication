@@ -19,10 +19,11 @@
       <a href="/PostcodePage" class="menu-link">Rutevejledning</a>
       <a href="/Cart" class="menu-link">Checkout</a>
 
-      <!-- Show logout button when user is logged in -->
-      <button v-if="isUserLoggedIn" @click="handleLogout" class="menu-link logout-button">
-        Log ud
-      </button>
+      <!-- Show profile and logout buttons when user is logged in -->
+      <template v-if="isUserLoggedIn">
+        <button @click="goToProfile" class="menu-link auth-button">Profil</button>
+        <button @click="handleLogout" class="menu-link logout-button">Log ud</button>
+      </template>
 
       <!-- Show login/signup buttons when user is not logged in -->
       <template v-else>
@@ -112,6 +113,14 @@ export default {
 
       // Navigate to signup page
       this.$router.push('/signup')
+    },
+
+    goToProfile() {
+      // Close the menu
+      this.isMenuOpen = false
+
+      // Navigate to profile page
+      this.$router.push('/profile')
     },
   },
 }

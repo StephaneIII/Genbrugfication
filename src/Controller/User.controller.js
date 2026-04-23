@@ -118,6 +118,118 @@ class UserController {
   }
 
   /**
+   * Get user by ID
+   * @param {string} userId - User ID
+   * @returns {Promise<Object>} API response
+   */
+  async getUserById(userId) {
+    try {
+      const response = await fetch(`${this.apiBaseUrl}/users/${userId}`)
+      const data = await response.json()
+
+      return {
+        success: response.ok,
+        data: data,
+        error: response.ok ? null : data.error || 'Failed to fetch user',
+      }
+    } catch (error) {
+      return {
+        success: false,
+        data: null,
+        error: 'Unable to connect to server. Please try again.',
+      }
+    }
+  }
+
+  /**
+   * Update user information
+   * @param {string} userId - User ID
+   * @param {Object} updateData - Data to update
+   */
+  async updateUser(userId, updateData) {
+    try {
+      const response = await fetch(`${this.apiBaseUrl}/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateData),
+      })
+
+      const data = await response.json()
+
+      return {
+        success: response.ok,
+        data: data,
+        error: response.ok ? null : data.error || 'Failed to update user',
+      }
+    } catch (error) {
+      return {
+        success: false,
+        data: null,
+        error: 'Unable to connect to server. Please try again.',
+      }
+    }
+  }
+
+  /**
+   * Delete user account
+   * @param {string} userId - User ID
+   */
+  async deleteUser(userId) {
+    try {
+      const response = await fetch(`${this.apiBaseUrl}/users/${userId}`, {
+        method: 'DELETE',
+      })
+      const data = await response.json()
+
+      return {
+        success: response.ok,
+        data: data,
+        error: response.ok ? null : data.error || 'Failed to delete user',
+      }
+    } catch (error) {
+      return {
+        success: false,
+        data: null,
+        error: 'Unable to connect to server. Please try again.',
+      }
+    }
+  }
+
+  /**
+   * Verify user password
+   * @param {string} userId - User ID
+   * @param {string} password - Password to verify
+   * @returns {Promise<Object>} API response
+   */
+  async verifyPassword(userId, password) {
+    try {
+      const response = await fetch(`${this.apiBaseUrl}/users/${userId}/verify-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ Password: password }),
+      })
+
+      const data = await response.json()
+
+      return {
+        success: response.ok,
+        data: data,
+        error: response.ok ? null : data.error || 'Password verification failed',
+      }
+    } catch (error) {
+      return {
+        success: false,
+        data: null,
+        error: 'Unable to connect to server. Please try again.',
+      }
+    }
+  }
+
+  /**
    * Store user session in localStorage
    * @param {Object} userData - User data from login response
    */

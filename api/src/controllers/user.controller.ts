@@ -174,3 +174,56 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ error: (error as Error).message })
   }
 }
+
+export const verifyPassword = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = Number(req.params.id)
+    const { Password } = req.body
+
+    console.log('Password verification attempt for user:', id)
+
+    if (!Password) {
+      res.status(400).json({ error: 'Password is required' })
+      return
+    }
+
+    // Find user by ID (including password for verification)
+    const user = await User.findByPk(id)
+
+    if (!user) {
+      console.log('User not found for ID:', id)
+      res.status(404).json({ error: 'User not found' })
+      return
+    }
+
+    console.log('User found for password verification:', {
+      UID: user.UID,
+      hasPassword: !!user.Password,
+    })
+
+    // Check if user has a password stored
+    if (!user.Password) {
+      console.log('User has no password stored')
+      res.status(400).json({ error: 'Account has no password set' })
+      return
+    }
+
+    // Compare provided password with stored hashed password
+    console.log('Comparing passwords for verification...')
+    const isPasswordValid = await comparePassword(Password, user.Password)
+    console.log('Password verification result:', isPasswordValid)
+
+    if (!isPasswordValid) {
+      res.status(401).json({ error: 'Invalid password' })
+      return
+    }
+
+    res.status(200).json({
+      message: 'Password verified successfully',
+      verified: true,
+    })
+  } catch (error) {
+    console.error('Password verification error:', error)
+    res.status(500).json({ error: (error as Error).message })
+  }
+}

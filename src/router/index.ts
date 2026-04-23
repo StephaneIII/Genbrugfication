@@ -10,6 +10,7 @@ import { components } from 'vuetify/dist/vuetify.js'
 import Cart from '@/pages/Cart.vue'
 import SignUp from '@/pages/SignUp.vue'
 import Login from '@/pages/Login.vue'
+import Profile from '@/pages/Profile.vue'
 
 const routes = [
   {
@@ -62,6 +63,11 @@ const routes = [
     name: 'DetailPage',
     component: DetailsPage,
     props: true,
+  },
+  {
+    path: '/profile',
+    name: 'ProfilePage',
+    component: Profile,
   },
 ]
 
