@@ -1,6 +1,6 @@
 modules.exports = (sequelize, DataTypes) => {
   const Stops = sequelize.define('Stops', {
-    RouteID: {
+    routeId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
     },
@@ -12,7 +12,7 @@ modules.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(70),
       allowNull: false,
     },
-    UID: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
