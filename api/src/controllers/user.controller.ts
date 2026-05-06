@@ -27,6 +27,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     const user = await User.create({
       ...userData,
       Password: hashedPassword,
+      IsAdmin: false // New users are not admins by default
     })
 
     // Remove password from response

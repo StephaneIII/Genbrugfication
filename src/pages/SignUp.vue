@@ -13,6 +13,7 @@ export default {
         password: '',
         confirmPassword: '',
         Tlf: '',
+        isAdmin: false
       },
       errors: {},
       errorMessage: '',

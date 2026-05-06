@@ -10,6 +10,7 @@ interface UserAttributes {
   Email: string
   Tlf: string
   FriendCode: number | null
+  IsAdmin: boolean
 }
 
 type UserCreationAttributes = Optional<UserAttributes, 'UID' | 'FriendCode'>
@@ -23,6 +24,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   declare Email: string
   declare Tlf: string
   declare FriendCode: number | null
+  declare IsAdmin: boolean
 }
 
 User.init(
@@ -60,6 +62,10 @@ User.init(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
+    IsAdmin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+    }
   },
   {
     sequelize,

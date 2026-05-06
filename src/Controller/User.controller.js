@@ -236,6 +236,7 @@ class UserController {
   storeUserSession(userData) {
     localStorage.setItem('userId', userData.UID)
     localStorage.setItem('username', userData.Username)
+    localStorage.setItem('isAdmin', userData.isAdmin)
 
     // Dispatch a custom event to notify components of auth state change
     window.dispatchEvent(
@@ -280,6 +281,13 @@ class UserController {
    */
   isLoggedIn() {
     return localStorage.getItem('userId') !== null
+  }
+
+  /**
+   * Check if logged-in user is admin
+   */
+  isAdmin() {
+    return localStorage.getItem('isAdmin') === 'true'
   }
 }
 
