@@ -1,0 +1,169 @@
+<script>
+//import UserController from '../../api/src/controllers/user.controller.js'
+import trash from '../Components/SearchComponents/ItemComponent.vue'
+import plasticIcon from '../Components/Images/RecycleIconPlastic.jpg'
+import metalIcon from '../Components/Images/RecycleIconMetal.jpg'
+import papIcon from '../Components/Images/RecycleIconPap.jpg'
+import foodIcon from '../Components/Images/RecycleIconFood.jpg'
+
+export default {
+    name: 'TrashListPage',
+    data() {
+        return {
+            mockTrash: [
+                { TrashID: 1, TrashCategoryID: 1, Name: 'Carton', image: plasticIcon, URL: 'something', IsRecyclingStation: false, Score: 10 },
+                { TrashID: 2, TrashCategoryID: 2, Name: 'Bottle', image: metalIcon, URL: 'something', IsRecyclingStation: false, Score: 20 },
+                { TrashID: 3, TrashCategoryID: 3, Name: 'Electronic', image: metalIcon, URL: 'something', IsRecyclingStation: true, Score: 50 },
+            ],
+        }
+    },
+    // computed: {
+    //     isAdmin() {
+    //         return UserController.isAdmin()
+    //     }
+    // },
+    methods: {
+        
+    },
+}
+</script>
+
+<template>
+    <div class="trash-list-page">
+        <!-- List of all current types of trash -->
+        <div class="trash-types">
+            <h1>Trash List</h1>
+            <v-row>
+                <v-col v-for="trash in mockTrash" :key="trash.TrashID" cols="12">
+                    <v-card class="pa-4 d-flex align-start item-card" theme="light">
+                        <img :src="item.image" :alt="item.category" class="category-icon" />
+
+                        <div class="card-content">
+                            <v-card-title>TrashID: {{ trash.TrashID }}</v-card-title>
+                            <v-card-title>Name: {{ trash.name }}</v-card-title>
+                            <v-card-subtitle>Sorteres som: {{ trash.TrashCategoryID }}</v-card-subtitle>
+                            <v-card-actions>Thrown in Recycling station: {{ trash.IsRecyclingStation }}</v-card-actions>
+                            <v-card-actions>Point worth: {{ trash.Score }}</v-card-actions>
+                            <v-card-text>Description: </v-card-text>
+                            <v-card-actions>URL: {{ trash.URL }}</v-card-actions>
+                        </div>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </div>
+
+        <!-- <div v-if="isAdmin">
+            User is admin
+        </div>
+        <div v-else>
+            User is not a admin
+        </div> -->
+    </div>
+</template>
+
+<style scoped>
+.trash-list-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 16px 24px;
+  font-family: var(--font-body);
+  background: var(--primary-bg-color);
+}
+
+.trash-types {
+  flex: 1;
+}
+
+h1 {
+  font-family: var(--font-heading);
+  margin: 10px 0 10px 10px;
+  color: var(--white-text);
+}
+
+.item-card {
+  background-color: #d6ecd2;
+  border-radius: 10px;
+}
+
+.category-icon {
+  height: 120px;
+  width: 120px;
+  margin-right: 24px;
+  border-radius: 10px;
+}
+
+.item-card .v-card-title {
+  padding: 0;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.item-card .v-card-subtitle {
+  padding: 0;
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.card-content {
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-footer-area {
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.action-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--dark-text);
+  border-radius: 14px;
+}
+
+.add-icon {
+  font-size: 32px;
+  font-weight: bold;
+  margin-right: 10px;
+  line-height: 1;
+}
+
+.register-card {
+  background-color: var(--accent-color);
+  min-height: 92px;
+  font-size: 20px;
+  color: var(--dark-text);
+  margin-top: 14px;
+}
+
+.category-box {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #3a5c42;
+  border-radius: 50px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.points-text {
+  text-align: center;
+  font-size: 18px;
+  color: var(--white-text);
+  margin: 18px 0 0;
+}
+
+.points-number {
+  color: var(--accent-color);
+  font-weight: bold;
+}
+</style>
