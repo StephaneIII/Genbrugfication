@@ -7,6 +7,8 @@
 <script>
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import 'leaflet-routing-machine'
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
@@ -53,12 +55,17 @@ export default {
     showZoomControl: {
       type: Boolean,
       default: true
+    },
+    routeOrigin: {
+      type: Object,
+      default: null
     }
   },
   data() {
     return {
       map: null,
-      marker: null
+      marker: null,
+      routingControl: null,
     }
   },
   mounted() {
@@ -85,7 +92,34 @@ export default {
       }
     }
   },
+  watch: {
+    routeOrigin(newOrigin) {
+      if (!newOrigin || !this.map) return
+
+      if (this.routingControl) {
+        this.map.removeControl(this.routingControl)
+        this.routingControl = null
+      }
+
+      this.routingControl = L.Routing.control({
+        waypoints: [
+          L.latLng(newOrigin.lat, newOrigin.lng),
+          L.latLng(this.lat, this.lng)
+        ],
+        routeWhileDragging: false,
+        addWaypoints: false,
+        draggableWaypoints: false,
+        fitSelectedRoutes: true,
+        show: false
+      }).addTo(this.map)
+    }
+  },
   beforeUnmount() {
+    if (this.routingControl && this.map) {
+      this.map.removeControl(this.routingControl)
+      this.routingControl = null
+    }
+
     if (this.map) {
       this.map.remove()
       this.map = null

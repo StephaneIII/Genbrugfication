@@ -36,10 +36,10 @@
         Optjen <span class="points-number">{{ totalPoints }}</span> point ved denne sortering!
       </p>
 
-      <v-card class="pa-4 action-card register-card">
+      <base-button class="pa-4 action-card register-card" @click="goToThankYouView">
         Registrer affald
-      </v-card>
-    </div>
+      </base-button>
+    </div> 
   </div>
 </template>
 
@@ -48,6 +48,7 @@ import plasticIcon from '../Components/Images/RecycleIconPlastic.jpg'
 import metalIcon from '../Components/Images/RecycleIconMetal.jpg'
 import papIcon from '../Components/Images/RecycleIconPap.jpg'
 import foodIcon from '../Components/Images/RecycleIconFood.jpg'
+import BaseButton from '@/Components/BaseButton.vue';
 
 export default {
   name: 'Cart',
@@ -70,6 +71,9 @@ export default {
   methods: {
     increase(item) {
       item.amount++
+    },
+    goToThankYouView() {
+      this.$router.push(`/ThankYou`)
     },
     decrease(item) {
       if (item.amount > 1) {

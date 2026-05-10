@@ -14,6 +14,7 @@
           :zoom="13"
           :show-popup="false"
           :show-zoom-control="false"
+          :route-origin="routeOrigin"
           map-id="route-page-map"
         />
       </div>
@@ -73,8 +74,9 @@ export default {
     return {
       station: null,
       startPoint: '',
+      routeOrigin: null,
       loading: false,
-      errorMessage: ''
+      errorMessage: '',
     }
   },
   async mounted() {
@@ -114,24 +116,58 @@ export default {
     }
   },
   methods: {
-    handleOpenRoute() {
-      if (!this.station) return
+    // handleOpenRoute() {
+    //   if (!this.station) return
 
-      const destination = encodeURIComponent(this.station.address)
+    //   const destination = encodeURIComponent(this.station.address)
 
-      if (this.startPoint.trim()) {
-        const origin = encodeURIComponent(this.startPoint.trim())
-        window.open(
-          `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`,
-          '_blank'
-        )
-      } else {
-        window.open(
-          `https://www.google.com/maps/dir/?api=1&destination=${destination}`,
-          '_blank'
-        )
-      }
+    //   if (this.startPoint.trim()) {
+    //     const origin = encodeURIComponent(this.startPoint.trim())
+    //     window.open(
+    //       `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`,
+    //       '_blank'
+    //     )
+    //   } else {
+    //     window.open(
+    //       `https://www.google.com/maps/dir/?api=1&destination=${destination}`,
+    //       '_blank'
+    //     )
+    //   }
+    // }
+    async handleOpenRoute() {
+  if (!this.station) return
+
+  const trimmedStartPoint = this.startPoint.trim()
+
+  if (!trimmedStartPoint) {
+    this.errorMessage = 'Indtast et startpunkt'
+    return
+  }
+
+  try {
+    this.errorMessage = ''
+
+    const query = encodeURIComponent(`${trimmedStartPoint}, Denmark`)
+
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1`
+    )
+
+    const data = await res.json()
+
+    if (!data.length) {
+      this.errorMessage = 'Kunne ikke finde adressen'
+      return
     }
+
+    this.routeOrigin = {
+      lat: Number(data[0].lat),
+      lng: Number(data[0].lon)
+    }
+  } catch (error) {
+    this.errorMessage = 'Kunne ikke hente rute'
+  }
+}
   }
 }
 </script>
