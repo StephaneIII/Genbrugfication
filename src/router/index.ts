@@ -11,6 +11,9 @@ import Cart from '@/pages/Cart.vue'
 import SignUp from '@/pages/SignUp.vue'
 import Login from '@/pages/Login.vue'
 import Profile from '@/pages/Profile.vue'
+import GenerateBooking from '@/pages/GenerateBooking.vue'
+import Carpoolings from '@/pages/Carpoolings.vue'
+import Carpooling from '@/pages/Carpooling.vue'
 
 const routes = [
   {
@@ -68,6 +71,22 @@ const routes = [
     path: '/profile',
     name: 'ProfilePage',
     component: Profile,
+  },
+  {
+    path: '/GenerateBooking',
+    name: 'GenerateBooking',
+    component: GenerateBooking,
+  },
+  {
+    path: '/carpoolings',
+    name: 'Carpoolings',
+    component: Carpoolings,
+  },
+  {
+    path: '/carpooling/:id',
+    name: 'Carpooling',
+    component: Carpooling,
+    props: true,
   },
 ]
 

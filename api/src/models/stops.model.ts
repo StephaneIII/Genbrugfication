@@ -7,7 +7,7 @@ const Stops = sequelize.define(
     routeId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-       field: 'RouteID',
+      field: 'RouteID',
     },
     StopOrder: {
       type: DataTypes.INTEGER,
@@ -25,10 +25,16 @@ const Stops = sequelize.define(
     PassengerAmount: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        min: 1,
+      },
     },
     Weight: {
       type: DataTypes.FLOAT,
       allowNull: false,
+      validate: {
+        min: 0,
+      },
     },
   },
   {

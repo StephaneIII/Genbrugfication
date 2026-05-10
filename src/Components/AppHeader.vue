@@ -30,6 +30,9 @@
         <button @click="goToLogin" class="menu-link auth-button">Log ind</button>
         <button @click="goToSignup" class="menu-link auth-button">Tilmeld dig</button>
       </template>
+      <template v-if="isUserLoggedIn">
+        <a href="/carpoolings" class="menu-link">Samkørsel</a>
+      </template>
     </nav>
   </div>
 </template>

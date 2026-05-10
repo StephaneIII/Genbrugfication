@@ -1,38 +1,58 @@
 modules.exports = (sequelize, DataTypes) => {
-  const Route = sequelize.define('Route', {
-    RouteID: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+  const Route = sequelize.define(
+    'Route',
+    {
+      RouteID: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      UID: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      StartAddress: {
+        type: DataTypes.STRING(70),
+        allowNull: false,
+      },
+      RecyclingStationID: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      AvailableSeats: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          min: 0,
+        },
+      },
+      MaxWeight: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        validate: {
+          min: 0,
+        },
+      },
+      DepartureTime: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      Delay: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+        validate: {
+          min: 0,
+        },
+      },
+      Status: {
+        type: DataTypes.STRING(20),
+        allowNull: false,
+        defaultValue: 'Scheduled',
+      },
     },
-    UID: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+    {
+      timestamps: false,
     },
-    StartAddress: {
-      type: DataTypes.STRING(70),
-      allowNull: false,
-    },
-    RecyclingStationID: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    AvailableSeats: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    MaxWeight: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    DepartureTime: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    Delay: {
-      type: DataTypes.FLOAT,
-      allowNull: true,
-    },
-  })
+  )
   return Route
 }

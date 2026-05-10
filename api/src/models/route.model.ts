@@ -24,10 +24,16 @@ const Route = sequelize.define(
     AvailableSeats: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        min: 0,
+      },
     },
     MaxWeight: {
       type: DataTypes.FLOAT,
       allowNull: false,
+      validate: {
+        min: 0,
+      },
     },
     DepartureTime: {
       type: DataTypes.DATE,
@@ -36,6 +42,14 @@ const Route = sequelize.define(
     Delay: {
       type: DataTypes.FLOAT,
       allowNull: true,
+      validate: {
+        min: 0,
+      },
+    },
+    Status: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+      defaultValue: 'Scheduled',
     },
   },
   {
