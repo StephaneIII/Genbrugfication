@@ -7,58 +7,147 @@ import papIcon from '../Components/Images/RecycleIconPap.jpg'
 import foodIcon from '../Components/Images/RecycleIconFood.jpg'
 
 export default {
-    name: 'TrashListPage',
-    data() {
-        return {
-            mockTrash: [
-                { TrashID: 1, TrashCategoryID: 1, Name: 'Carton', image: plasticIcon, URL: 'something', IsRecyclingStation: false, Score: 10 },
-                { TrashID: 2, TrashCategoryID: 2, Name: 'Bottle', image: metalIcon, URL: 'something', IsRecyclingStation: false, Score: 20 },
-                { TrashID: 3, TrashCategoryID: 3, Name: 'Electronic', image: metalIcon, URL: 'something', IsRecyclingStation: true, Score: 50 },
-            ],
-        }
+  name: 'TrashListPage',
+  data() {
+    return {
+       mockTrash: [
+        { TrashID: 1, TrashCategoryID: 1, Name: 'Carton', Image: plasticIcon, URL: 'something', IsRecyclingStation: false, Score: 10 },
+        { TrashID: 2, TrashCategoryID: 2, Name: 'Bottle', Image: metalIcon, URL: 'something', IsRecyclingStation: false, Score: 20 },
+        { TrashID: 3, TrashCategoryID: 3, Name: 'Electronic', Image: metalIcon, URL: 'something', IsRecyclingStation: true, Score: 50 },
+      ],
+      dataForm: {
+        TrashCategoryID: 0,
+        Name: '',
+        image: '',
+        URL: '',
+        IsRecyclingStation: false,
+        Score: 0,
+      },
+    }
+  },
+  // computed: {
+  //     isAdmin() {
+  //         return UserController.isAdmin()
+  //     }
+  // },
+  methods: {
+    async newTrashType() {
+      this.clearMessages()
+      this.errors = {}
+
+      // Validate form
+      if (!this.validateTrash()) {
+        this.errorMessage = 'Please fix the validation errors below'
+        return
+      }
     },
-    // computed: {
-    //     isAdmin() {
-    //         return UserController.isAdmin()
-    //     }
-    // },
-    methods: {
-        
+
+    validateTrash() {
+      let isValid = true
+      // Category validation
+      
+      // Name validation
+      if (!this.dataForm.Name) {
+        this.error.Name = 'Name is required'
+        isValid = false
+      } else if (this.dataForm.Name.length < 2) {
+        this.errors.Username = 'Username must be at least 2 characters'
+        isValid = false
+      }
+      // Image validation
+
+      // URL validation
+      if (!this.dataForm.URL) {
+        this.errors.URL = 'URL is required'
+        isValid = false
+      }
+      // Recycling validation
+
+      // Score validation
+
+      return isValid
     },
+
+    clearMessages() {
+      this.errorMessage = ''
+      this.successMessage = ''
+    },
+  },
 }
 </script>
 
 <template>
-    <div class="trash-list-page">
-        <!-- List of all current types of trash -->
-        <div class="trash-types">
-            <h1>Trash List</h1>
-            <v-row>
-                <v-col v-for="trash in mockTrash" :key="trash.TrashID" cols="12">
-                    <v-card class="pa-4 d-flex align-start item-card" theme="light">
-                        <img :src="item.image" :alt="item.category" class="category-icon" />
+  <div class="trash-list-page">
+    <!-- List of all current types of trash -->
+    <div class="trash-types">
+      <h1>Trash List</h1>
+      <v-row>
+        <v-col v-for="trash in mockTrash" :key="trash.TrashID" cols="12">
+          <v-card class="pa-4 d-flex align-start item-card" theme="light">
+            <img :src="item.Image" :alt="item.category" class="category-icon" />
 
-                        <div class="card-content">
-                            <v-card-title>TrashID: {{ trash.TrashID }}</v-card-title>
-                            <v-card-title>Name: {{ trash.name }}</v-card-title>
-                            <v-card-subtitle>Sorteres som: {{ trash.TrashCategoryID }}</v-card-subtitle>
-                            <v-card-actions>Thrown in Recycling station: {{ trash.IsRecyclingStation }}</v-card-actions>
-                            <v-card-actions>Point worth: {{ trash.Score }}</v-card-actions>
-                            <v-card-text>Description: </v-card-text>
-                            <v-card-actions>URL: {{ trash.URL }}</v-card-actions>
-                        </div>
-                    </v-card>
-                </v-col>
-            </v-row>
-        </div>
-
-        <!-- <div v-if="isAdmin">
-            User is admin
-        </div>
-        <div v-else>
-            User is not a admin
-        </div> -->
+            <div class="card-content">
+              <v-card-title>TrashID: {{ trash.TrashID }}</v-card-title>
+              <v-card-title>Name: {{ trash.Name }}</v-card-title>
+              <v-card-subtitle>Sorteres som: {{ trash.TrashCategoryID }}</v-card-subtitle>
+              <v-card-actions>Thrown in Recycling station: {{ trash.IsRecyclingStation }}</v-card-actions>
+              <v-card-actions>Point worth: {{ trash.Score }}</v-card-actions>
+              <v-card-text>Description: </v-card-text>
+              <v-card-actions>URL: {{ trash.URL }}</v-card-actions>
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
     </div>
+
+    <!-- <div v-if="isAdmin">
+      User is admin
+    </div>
+    <div v-else>
+      User is not a admin
+    </div> -->
+
+    <!-- Creating new trash -->
+    <div class="card-footer-area">
+      <!-- Trash form: category ID -->
+
+      <!-- Trash form: name -->
+      <div>
+        <label for="name">Name</label>
+        <input
+          id="name"
+          v-model="dataForm.Name"
+          type="text"
+          name="Name"
+          placeholder="Insert a Name"
+          :class="{ error: errors.Name }"
+          required
+          />
+        <span v-if="errors.Name" class="error-text">{{ errors.Name }}</span>
+      </div>
+
+      <!-- Trash form: imsge -->
+
+      <!-- Trash form: URL -->
+      <div>
+        <label for="url">URL</label>
+        <input
+          id="url"
+          v-model="dataForm.URL"
+          type="text"
+          name="URL"
+          placeholder="Insert a URL"
+          :class="{ error: errors.URL }"
+          required
+          />
+        <span v-if="errors.URL" class="error-text">{{ errors.URL }}</span>
+      </div>
+
+      <!-- Trash form: recycling station -->
+
+      <!-- Trash form: score -->
+    </div>
+  </div>
 </template>
 
 <style scoped>
