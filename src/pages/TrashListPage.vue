@@ -18,12 +18,15 @@ export default {
       dataForm: {
         TrashCategoryID: 0,
         Name: '',
-        image: '',
+        Image: '',
         URL: '',
         IsRecyclingStation: false,
         Score: 0,
       },
     }
+  },
+  mounted: {
+    // Will be used after testing with mock data
   },
   // computed: {
   //     isAdmin() {
@@ -37,33 +40,45 @@ export default {
 
       // Validate form
       if (!this.validateTrash()) {
-        this.errorMessage = 'Please fix the validation errors below'
+        this.errorMessage = 'Please fix the validation errors'
         return
       }
+
+      this.successMessage = 'Trash type created successfully'
     },
 
     validateTrash() {
       let isValid = true
       // Category validation
+      if (!this.dataForm.TrashCategoryID || this.dataForm.TrashCategoryID < 1) {
+        this.errors.TrashCategoryID = 'Category is required'
+        isValid = false
+      }
       
       // Name validation
       if (!this.dataForm.Name) {
-        this.error.Name = 'Name is required'
+        this.errors.Name = 'Name is required'
         isValid = false
       } else if (this.dataForm.Name.length < 2) {
-        this.errors.Username = 'Username must be at least 2 characters'
+        this.errors.Name = 'Username must be at least 2 characters'
         isValid = false
       }
       // Image validation
+      
 
       // URL validation
       if (!this.dataForm.URL) {
         this.errors.URL = 'URL is required'
         isValid = false
       }
+
       // Recycling validation
 
       // Score validation
+      if (this.dataForm.Score < 0) {
+        this.errors.Score = 'Score cannot be negative'
+        isValid = false
+      }
 
       return isValid
     },
@@ -84,7 +99,7 @@ export default {
       <v-row>
         <v-col v-for="trash in mockTrash" :key="trash.TrashID" cols="12">
           <v-card class="pa-4 d-flex align-start item-card" theme="light">
-            <img :src="item.Image" :alt="item.category" class="category-icon" />
+            <img :src="trash.Image" :alt="item.category" class="category-icon" />
 
             <div class="card-content">
               <v-card-title>TrashID: {{ trash.TrashID }}</v-card-title>
@@ -110,6 +125,21 @@ export default {
     <!-- Creating new trash -->
     <div class="card-footer-area">
       <!-- Trash form: category ID -->
+       <div>
+        <label for="category">Category ID</label>
+
+        <input
+          id="category"
+          v-model="dataForm.TrashCategoryID"
+          type="number"
+          placeholder="Insert category ID"
+          :class="{ error: errors.TrashCategoryID }"
+        />
+
+        <span v-if="errors.TrashCategoryID" class="error-text">
+          {{ errors.TrashCategoryID }}
+        </span>
+      </div>
 
       <!-- Trash form: name -->
       <div>
@@ -144,8 +174,44 @@ export default {
       </div>
 
       <!-- Trash form: recycling station -->
+      <div>
+        <label>
+          <input
+            v-model="dataForm.IsRecyclingStation"
+            type="checkbox"
+          />
+          Is Recycling Station
+        </label>
+      </div>
 
       <!-- Trash form: score -->
+      <div>
+        <label for="score">Score</label>
+          <input
+            id="score"
+            v-model="dataForm.Score"
+            type="number"
+            placeholder="Insert score"
+            :class="{ error: errors.Score }"
+          />
+        <span v-if="errors.Score" class="error-text">
+          {{ errors.Score }}
+        </span>
+      </div>
+
+      <!-- Button + succes/fail message -->
+      <button @click="newTrashType" class="submit-button">
+        Create Trash Type
+      </button>
+
+      <div v-if="errorMessage" class="error-text">
+        {{ errorMessage }}
+      </div>
+
+      <div v-if="successMessage" class="success-text">
+        {{ successMessage }}
+      </div>
+
     </div>
   </div>
 </template>
