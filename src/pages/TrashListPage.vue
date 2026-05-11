@@ -22,9 +22,12 @@ export default {
         IsRecyclingStation: false,
         Score: 0,
       },
+        errors: {},
+        errorMessage: '',
+        successMessage: '',
     }
   },
-  mounted: {
+  mounted() {
     // Will be used after testing with mock data
   },
   // computed: {
@@ -98,7 +101,7 @@ export default {
       <v-row>
         <v-col v-for="trash in mockTrash" :key="trash.TrashID" cols="12">
           <v-card class="pa-4 d-flex align-start item-card" theme="light">
-            <img :src="trash.Image" :alt="item.category" class="category-icon" />
+            <img :src="trash.Image" :alt="trash.Name" class="category-icon" />
 
             <div class="card-content">
               <v-card-title>TrashID: {{ trash.TrashID }}</v-card-title>
