@@ -3,7 +3,10 @@
 import plasticIcon from '../Components/Images/RecycleIconPlastic.jpg'
 import metalIcon from '../Components/Images/RecycleIconMetal.jpg'
 import papIcon from '../Components/Images/RecycleIconPap.jpg'
+import paperIcon from '../Components/Images/RecycleIconPaper.jpg'
 import foodIcon from '../Components/Images/RecycleIconFood.jpg'
+import glassIcon from '../Components/Images/RecycleIconGlass.jpg'
+import restAffaldIcon from '../Components/Images/RecycleIconRestaffald.jpg'
 
 export default {
   name: 'TrashListPage',
@@ -15,10 +18,13 @@ export default {
         { TrashID: 3, TrashCategoryID: 2, Name: 'Electronic', Image: metalIcon, URL: 'something 3', IsRecyclingStation: true, Score: 50 },
       ],
       iconOptions: [
-        { name: 'Plastic', value: plasticIcon, },
-        { name: 'Metal', value: metalIcon, },
-        { name: 'Pap', value: papIcon, },
-        { name: 'Food', value: foodIcon, },
+        { name: 'Plastic', value: plasticIcon },
+        { name: 'Metal', value: metalIcon },
+        { name: 'Pap', value: papIcon },
+        { name: 'Papir', value: paperIcon },
+        { name: 'Food', value: foodIcon },
+        { name: 'Glas', value: glassIcon },
+        { name: 'Rest Affald', value: restAffaldIcon },
       ],
       dataForm: {
         TrashCategoryID: 0,
