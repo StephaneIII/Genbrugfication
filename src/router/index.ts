@@ -12,6 +12,7 @@ import SignUp from '@/pages/SignUp.vue'
 import Login from '@/pages/Login.vue'
 import Profile from '@/pages/Profile.vue'
 import ThankYou from '@/pages/ThankYou.vue'
+import TrashListPage from '@/pages/TrashListPage.vue'
 
 const routes = [
   {
@@ -74,6 +75,11 @@ const routes = [
     path: '/ThankYou',
     name: 'ThankYouPage',
     component: ThankYou,
+  },
+  {
+    path: '/TrashList',
+    name: 'TrashListPage',
+    component: TrashListPage,
   },
 ]
 
