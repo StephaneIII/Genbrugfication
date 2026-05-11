@@ -75,17 +75,17 @@ export default {
         this.error = null
         this.routes = await this.carpoolingController.getRouteOverview(this.uid)
       } catch (err) {
-        this.error = `Failed to fetch routes: ${err.message}`
+        this.error = `Kunne ikke hente ruter: ${err.message}`
       } finally {
         this.loading = false
       }
     },
     formatDeparture(value) {
-      if (!value) return 'Unknown departure time'
+      if (!value) return 'Ukendt afgangstid'
 
       const date = new Date(value)
       if (Number.isNaN(date.getTime())) {
-        return 'Unknown departure time'
+        return 'Ukendt afgangstid'
       }
 
       return date.toLocaleString('en-GB', {
@@ -124,32 +124,34 @@ export default {
     <div class="carpoolings-container">
       <div class="generate-booking-card">
         <div class="header-row">
-          <h1 class="generate-booking-title">Available Carpoolings</h1>
+          <h1 class="generate-booking-title">Tilgængelige Samkørsler</h1>
           <div class="header-actions">
             <button class="btn-secondary" type="button" @click="$router.push('/GenerateBooking')">
-              Generate Booking
+              Generer Booking
             </button>
             <button class="btn-secondary" type="button" :disabled="loading" @click="fetchRoutes">
-              {{ loading ? 'Loading...' : 'Refresh' }}
+              {{ loading ? 'Indlæser...' : 'Opdater' }}
             </button>
-            <button class="btn-secondary" type="button" @click="resetFilters">Reset filters</button>
+            <button class="btn-secondary" type="button" @click="resetFilters">
+              Nulstil filtre
+            </button>
           </div>
         </div>
 
         <section class="filter-panel">
           <div class="filter-grid">
             <div class="filter-group">
-              <label for="fromTime">From departure</label>
+              <label for="fromTime">Fra afgang</label>
               <input id="fromTime" v-model="filters.fromTime" type="datetime-local" />
             </div>
 
             <div class="filter-group">
-              <label for="toTime">To departure</label>
+              <label for="toTime">Til afgang</label>
               <input id="toTime" v-model="filters.toTime" type="datetime-local" />
             </div>
 
             <div class="filter-group">
-              <label for="minSeatsLeft">Minimum seats left</label>
+              <label for="minSeatsLeft">Minimum pladser tilbage</label>
               <input
                 id="minSeatsLeft"
                 v-model.number="filters.minSeatsLeft"
@@ -159,19 +161,19 @@ export default {
             </div>
 
             <div class="filter-group filter-group-wide">
-              <label for="stationQuery">Destination or postnr</label>
+              <label for="stationQuery">Destination eller postnr</label>
               <input
                 id="stationQuery"
                 v-model="filters.stationQuery"
                 type="text"
-                placeholder="Search station address or postnr"
+                placeholder="Søg stationsadresse eller postnr"
               />
             </div>
           </div>
 
           <label class="checkbox-filter">
             <input v-model="filters.onlyBookedByMe" type="checkbox" />
-            <span>Only routes booked by me</span>
+            <span>Kun ruter booket af mig</span>
           </label>
         </section>
 
@@ -180,9 +182,9 @@ export default {
           {{ error }}
         </div>
 
-        <div v-if="loading" class="loading-spinner">Loading routes...</div>
+        <div v-if="loading" class="loading-spinner">Indlæser ruter...</div>
 
-        <div v-else-if="sortedRoutes.length === 0" class="empty-state">No routes found.</div>
+        <div v-else-if="sortedRoutes.length === 0" class="empty-state">Ingen ruter fundet.</div>
 
         <div v-else class="routes-grid">
           <article
@@ -193,22 +195,22 @@ export default {
             @click="$router.push('/carpooling/' + route.RouteID)"
           >
             <div class="route-card-top">
-              <h2 class="route-title">Route #{{ route.RouteID }}</h2>
+              <h2 class="route-title">Rute #{{ route.RouteID }}</h2>
 
               <div class="tag-row">
-                <span v-if="route.IsDriver" class="route-tag is-driver">You are the driver</span>
-                <span v-if="route.IsBookedByUser" class="route-tag is-booked">Booked by you</span>
+                <span v-if="route.IsDriver" class="route-tag is-driver">Du er chauffør</span>
+                <span v-if="route.IsBookedByUser" class="route-tag is-booked">Booket af dig</span>
               </div>
             </div>
 
             <div class="route-info-grid">
-              <p><strong>Driver:</strong> {{ route.DriverUsername }}</p>
-              <p><strong>Departure:</strong> {{ formatDeparture(route.DepartureTime) }}</p>
+              <p><strong>Chauffør:</strong> {{ route.DriverUsername }}</p>
+              <p><strong>Afgang:</strong> {{ formatDeparture(route.DepartureTime) }}</p>
               <p>
-                <strong>Seats left:</strong>
+                <strong>Pladser tilbage:</strong>
                 {{ route.SeatsLeft }} / {{ route.AvailableSeats }}
               </p>
-              <p><strong>Station address:</strong> {{ route.StationAddress }}</p>
+              <p><strong>Stationsadresse:</strong> {{ route.StationAddress }}</p>
               <p><strong>Postnr:</strong> {{ route.StationPostNo }}</p>
             </div>
           </article>

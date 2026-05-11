@@ -13,7 +13,7 @@ export default {
         password: '',
         confirmPassword: '',
         Tlf: '',
-        isAdmin: false
+        isAdmin: false,
       },
       errors: {},
       errorMessage: '',
@@ -310,7 +310,7 @@ export default {
         <footer class="login-link">
           <p>
             Already have an account?
-            <router-link to="/login" class="link">Sign in here</router-link>
+            <router-link to="/login" class="link">Log in here</router-link>
           </p>
         </footer>
       </div>

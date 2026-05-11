@@ -40,7 +40,7 @@ export default {
       )
       return selected
         ? `${selected.Name} (${selected.PostNo}) - ${selected.Address}`
-        : 'Select a recycling station'
+        : 'Vælg en genbrugningsstation'
     },
   },
   methods: {
@@ -49,11 +49,11 @@ export default {
         this.loading = true
         const response = await fetch(`${this.carpoolingController.apiBaseUrl}/recyclingstations`)
         if (!response.ok) {
-          throw new Error('Failed to fetch recycling stations')
+          throw new Error('Kunne ikke hente genbrugningsstationer')
         }
         this.recyclingStations = await response.json()
       } catch (err) {
-        this.error = `Failed to load recycling stations: ${err.message}`
+        this.error = `Kunne ikke indlæse genbrugningsstationer: ${err.message}`
       } finally {
         this.loading = false
       }
@@ -86,23 +86,23 @@ export default {
     },
     async handleSubmit() {
       if (!this.formData.startAddress.trim()) {
-        this.error = 'Start address is required'
+        this.error = 'Startadresse er påkrævet'
         return
       }
       if (!this.formData.recyclingStationId) {
-        this.error = 'Please select a recycling station'
+        this.error = 'Vælg venligst en genbrugningsstation'
         return
       }
       if (this.formData.availableSeats < 1) {
-        this.error = 'Available seats must be at least 1'
+        this.error = 'Tilgængelige pladser skal være mindst 1'
         return
       }
       if (this.formData.maxWeight <= 0) {
-        this.error = 'Max weight must be greater than 0'
+        this.error = 'Maksimal vægt skal være større end 0'
         return
       }
       if (!this.formData.departureTime) {
-        this.error = 'Departure time is required'
+        this.error = 'Afgangstid er påkrævet'
         return
       }
 
@@ -126,7 +126,7 @@ export default {
         const createdRouteId = response?.RouteID || response?.id
         if (createdRouteId) {
           this.success = true
-          this.successMessage = `Route was added to the database (ID: ${createdRouteId}).`
+          this.successMessage = `Rute blev tilføjet til databasen (ID: ${createdRouteId}).`
           this.formData = {
             startAddress: '',
             recyclingStationId: null,
@@ -144,10 +144,10 @@ export default {
         } else {
           this.success = false
           this.error =
-            response?.error || response?.message || 'Route was not added to the database.'
+            response?.error || response?.message || 'Rute blev ikke tilføjet til databasen.'
         }
       } catch (err) {
-        this.error = `Failed to create route: ${err.message}`
+        this.error = `Kunne ikke oprette rute: ${err.message}`
       } finally {
         this.loading = false
       }
@@ -171,7 +171,7 @@ export default {
     <div class="generate-booking-container">
       <div class="generate-booking-card">
         <div class="header">
-          <h1 class="generate-booking-title">Generate New Carpool Route</h1>
+          <h1 class="generate-booking-title">Generer ny samkørselsrute</h1>
         </div>
 
         <div v-if="error" class="error-alert">
@@ -181,10 +181,10 @@ export default {
 
         <div v-if="success" class="success-alert">
           <i class="success-icon">✓</i>
-          {{ successMessage || 'Route created successfully!' }}
+          {{ successMessage || 'Rute oprettet med succes!' }}
         </div>
 
-        <div v-if="loading && !success" class="loading-spinner">Processing...</div>
+        <div v-if="loading && !success" class="loading-spinner">Behandler...</div>
 
         <form
           v-if="!loading || success"
@@ -192,18 +192,18 @@ export default {
           @submit.prevent="handleSubmit"
         >
           <div class="form-group">
-            <label for="startAddress">Start Address *</label>
+            <label for="startAddress">Startadresse *</label>
             <input
               id="startAddress"
               v-model="formData.startAddress"
               type="text"
-              placeholder="Enter your starting address"
+              placeholder="Indtast din startadresse"
               required
             />
           </div>
 
           <div class="form-group">
-            <label>Recycling Station *</label>
+            <label>Genbrugningsstation *</label>
             <div class="dropdown-wrapper">
               <button type="button" class="dropdown-toggle" @click="toggleDropdown">
                 <span class="selected-station">{{ selectedStationDisplay }}</span>
@@ -215,14 +215,14 @@ export default {
                   <input
                     v-model="searchPostalNumber"
                     type="text"
-                    placeholder="Search by postal number..."
+                    placeholder="Søg efter postnummer..."
                     class="search-input"
                   />
                 </div>
 
                 <div class="dropdown-options">
                   <div v-if="filteredStationsBySearch.length === 0" class="no-results">
-                    No stations found
+                    Ingen stationer fundet
                   </div>
 
                   <button
@@ -245,7 +245,7 @@ export default {
           </div>
 
           <div class="form-group">
-            <label for="availableSeats">Available Seats *</label>
+            <label for="availableSeats">Tilgængelige pladser *</label>
             <input
               id="availableSeats"
               v-model.number="formData.availableSeats"
@@ -256,7 +256,7 @@ export default {
           </div>
 
           <div class="form-group">
-            <label for="maxWeight">Max Weight (kg) *</label>
+            <label for="maxWeight">Maksimal vægt (kg) *</label>
             <input
               id="maxWeight"
               v-model.number="formData.maxWeight"
@@ -268,7 +268,7 @@ export default {
           </div>
 
           <div class="form-group">
-            <label for="departureTime">Departure Time *</label>
+            <label for="departureTime">Afgangstid *</label>
             <input
               id="departureTime"
               v-model="formData.departureTime"
@@ -278,15 +278,15 @@ export default {
           </div>
 
           <div class="form-group">
-            <label for="delay">Possible Delay (minutes)</label>
+            <label for="delay">Mulig forsinkelse (minutter)</label>
             <input id="delay" v-model.number="formData.delay" type="number" min="0" step="0.1" />
           </div>
 
           <div class="form-buttons">
             <button type="submit" class="generate-booking-button" :disabled="loading">
-              {{ loading ? 'Creating Route...' : 'Create Route' }}
+              {{ loading ? 'Opretter rute...' : 'Opret rute' }}
             </button>
-            <button type="button" class="btn-secondary" @click="handleReset">Reset</button>
+            <button type="button" class="btn-secondary" @click="handleReset">Nulstil</button>
           </div>
         </form>
       </div>

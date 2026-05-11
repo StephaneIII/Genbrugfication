@@ -33,15 +33,15 @@ export default {
         this.error = null
         this.route = await this.carpoolingController.getRouteDetail(this.routeId, this.uid)
       } catch (err) {
-        this.error = `Failed to load carpooling: ${err.message}`
+        this.error = `Kunne ikke indlæse samkørsel: ${err.message}`
       } finally {
         this.loading = false
       }
     },
     formatDeparture(value) {
-      if (!value) return 'Unknown departure time'
+      if (!value) return 'Ukendt afgangstid'
       const date = new Date(value)
-      if (Number.isNaN(date.getTime())) return 'Unknown departure time'
+      if (Number.isNaN(date.getTime())) return 'Ukendt afgangstid'
       return date.toLocaleString('en-GB', {
         year: 'numeric',
         month: 'short',
@@ -55,19 +55,19 @@ export default {
       this.bookingSuccess = false
 
       if (!this.bookingForm.address.trim()) {
-        this.bookingError = 'Pick-up address is required.'
+        this.bookingError = 'Afhentingsadresse er påkrævet.'
         return
       }
       if (this.bookingForm.passengerAmount < 1) {
-        this.bookingError = 'At least 1 passenger is required.'
+        this.bookingError = 'Mindst 1 passager er påkrævet.'
         return
       }
       if (this.bookingForm.weight < 0) {
-        this.bookingError = 'Weight cannot be negative.'
+        this.bookingError = 'Vægt kan ikke være negativ.'
         return
       }
       if (Number(this.bookingForm.passengerAmount) > Number(this.route.SeatsLeft)) {
-        this.bookingError = `Only ${this.route.SeatsLeft} seat(s) available.`
+        this.bookingError = `Kun ${this.route.SeatsLeft} plads(er) tilgængelig(e).`
         return
       }
 
@@ -90,10 +90,10 @@ export default {
           this.bookingForm = { address: '', passengerAmount: 1, weight: 0 }
           await this.fetchRoute()
         } else {
-          this.bookingError = result.error || 'Failed to book the seat.'
+          this.bookingError = result.error || 'Kunne ikke booke sædet.'
         }
       } catch (err) {
-        this.bookingError = `Booking failed: ${err.message}`
+        this.bookingError = `Booking mislykkedes: ${err.message}`
       } finally {
         this.bookingLoading = false
       }
@@ -114,10 +114,10 @@ export default {
 <template>
   <div class="generate-booking-page">
     <div class="detail-container">
-      <button class="back-btn" type="button" @click="$router.back()">← Back</button>
+      <button class="back-btn" type="button" @click="$router.back()">← Tilbage</button>
 
       <div v-if="loading" class="generate-booking-card">
-        <p class="loading-spinner">Loading carpooling details...</p>
+        <p class="loading-spinner">Indlæser samkørselsdetaljer...</p>
       </div>
 
       <div v-else-if="error" class="generate-booking-card">
@@ -131,21 +131,21 @@ export default {
         <!-- Main info card -->
         <div class="generate-booking-card">
           <div class="header-row">
-            <h1 class="generate-booking-title">Route #{{ route.RouteID }}</h1>
+            <h1 class="generate-booking-title">Rute #{{ route.RouteID }}</h1>
             <div class="tag-row">
-              <span v-if="route.IsDriver" class="route-tag is-driver">You are the driver</span>
-              <span v-if="route.IsBookedByUser" class="route-tag is-booked">Booked by you</span>
+              <span v-if="route.IsDriver" class="route-tag is-driver">Du er chauffør</span>
+              <span v-if="route.IsBookedByUser" class="route-tag is-booked">Booket af dig</span>
             </div>
           </div>
 
           <div class="info-section">
             <div class="info-grid">
               <div class="info-item">
-                <span class="info-label">Driver</span>
+                <span class="info-label">Chauffør</span>
                 <span class="info-value">{{ route.DriverUsername }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Driver phone</span>
+                <span class="info-label">Chaufförens telefon</span>
                 <span class="info-value">
                   <a v-if="route.DriverTlf" :href="'tel:' + route.DriverTlf" class="phone-link">{{
                     route.DriverTlf
@@ -154,11 +154,11 @@ export default {
                 </span>
               </div>
               <div class="info-item">
-                <span class="info-label">Departure</span>
+                <span class="info-label">Afgang</span>
                 <span class="info-value">{{ formatDeparture(route.DepartureTime) }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Start address</span>
+                <span class="info-label">Startadresse</span>
                 <span class="info-value">{{ route.StartAddress }}</span>
               </div>
               <div class="info-item">
@@ -166,7 +166,7 @@ export default {
                 <span class="info-value">{{ route.StationName || route.StationAddress }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Station address</span>
+                <span class="info-label">Stationsadresse</span>
                 <span class="info-value">{{ route.StationAddress }}</span>
               </div>
               <div class="info-item">
@@ -174,15 +174,15 @@ export default {
                 <span class="info-value">{{ route.StationPostNo }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Seats left</span>
+                <span class="info-label">Pladser tilbage</span>
                 <span class="info-value">{{ route.SeatsLeft }} / {{ route.AvailableSeats }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Max weight</span>
+                <span class="info-label">Maksimal vægt</span>
                 <span class="info-value">{{ route.MaxWeight }} kg</span>
               </div>
               <div v-if="route.Delay" class="info-item">
-                <span class="info-label">Possible delay</span>
+                <span class="info-label">Mulig forsinkelse</span>
                 <span class="info-value">{{ route.Delay }} min</span>
               </div>
               <div class="info-item">
@@ -194,16 +194,16 @@ export default {
 
           <!-- Stops list -->
           <div v-if="route.Stops && route.Stops.length > 0" class="stops-section">
-            <h2 class="section-title">Booked stops</h2>
+            <h2 class="section-title">Bookede stop</h2>
             <div class="stops-list">
               <div v-for="stop in route.Stops" :key="stop.StopOrder" class="stop-item">
                 <span class="stop-order">#{{ stop.StopOrder }}</span>
                 <div class="stop-details">
                   <strong>{{ stop.Username }}</strong>
                   <a v-if="stop.Tlf" :href="'tel:' + stop.Tlf" class="phone-link">{{ stop.Tlf }}</a>
-                  <span v-else class="no-phone">No phone on record</span>
+                  <span v-else class="no-phone">Ingen telefon registreret</span>
                   <span>{{ stop.Address }}</span>
-                  <span>{{ stop.PassengerAmount }} passenger(s) · {{ stop.Weight }} kg</span>
+                  <span>{{ stop.PassengerAmount }} passager(er) · {{ stop.Weight }} kg</span>
                 </div>
               </div>
             </div>
@@ -216,12 +216,12 @@ export default {
           class="generate-booking-card booking-card"
         >
           <h2 class="generate-booking-title" style="font-size: 1.4rem; margin-bottom: 16px">
-            Book a seat
+            Book et sæde
           </h2>
 
           <div v-if="bookingSuccess" class="success-alert">
             <i class="success-icon">✓</i>
-            Your seat has been booked!
+            Dit sæde er blevet booket!
           </div>
 
           <div v-if="bookingError" class="error-alert">
@@ -231,18 +231,18 @@ export default {
 
           <form class="generate-booking-form" @submit.prevent="handleBook">
             <div class="form-group">
-              <label for="bookAddress">Your pick-up address *</label>
+              <label for="bookAddress">Din afhentingsadresse *</label>
               <input
                 id="bookAddress"
                 v-model="bookingForm.address"
                 type="text"
-                placeholder="Enter the address we should pick you up at"
+                placeholder="Indtast adressen hvor vi skal hente dig"
                 required
               />
             </div>
 
             <div class="form-group">
-              <label for="bookPassengers">Number of passengers *</label>
+              <label for="bookPassengers">Antal passagerer *</label>
               <input
                 id="bookPassengers"
                 v-model.number="bookingForm.passengerAmount"
@@ -254,7 +254,7 @@ export default {
             </div>
 
             <div class="form-group">
-              <label for="bookWeight">Total weight of items (kg) *</label>
+              <label for="bookWeight">Samlet vægt af genstande (kg) *</label>
               <input
                 id="bookWeight"
                 v-model.number="bookingForm.weight"
@@ -267,14 +267,14 @@ export default {
 
             <div class="form-buttons">
               <button type="submit" class="generate-booking-button" :disabled="bookingLoading">
-                {{ bookingLoading ? 'Booking...' : 'Confirm booking' }}
+                {{ bookingLoading ? 'Booker...' : 'Bekræft booking' }}
               </button>
             </div>
           </form>
         </div>
 
         <div v-else-if="!route.IsDriver && route.SeatsLeft === 0" class="generate-booking-card">
-          <p class="empty-state">This route is fully booked.</p>
+          <p class="empty-state">Denne rute er fuldt booket.</p>
         </div>
       </template>
     </div>
