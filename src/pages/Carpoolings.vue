@@ -126,6 +126,9 @@ export default {
         <div class="header-row">
           <h1 class="generate-booking-title">Available Carpoolings</h1>
           <div class="header-actions">
+            <button class="btn-secondary" type="button" @click="$router.push('/GenerateBooking')">
+              Generate Booking
+            </button>
             <button class="btn-secondary" type="button" :disabled="loading" @click="fetchRoutes">
               {{ loading ? 'Loading...' : 'Refresh' }}
             </button>

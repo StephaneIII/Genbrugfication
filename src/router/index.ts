@@ -76,6 +76,7 @@ const routes = [
     path: '/GenerateBooking',
     name: 'GenerateBooking',
     component: GenerateBooking,
+    meta: { requiresAuth: true },
   },
   {
     path: '/carpoolings',
@@ -93,6 +94,15 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+})
+
+router.beforeEach((to) => {
+  if (to.meta.requiresAuth) {
+    const userId = localStorage.getItem('userId')
+    if (!userId) {
+      return { name: 'LoginPage' }
+    }
+  }
 })
 
 export default router
