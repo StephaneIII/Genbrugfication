@@ -13,6 +13,9 @@ import Login from '@/pages/Login.vue'
 import Profile from '@/pages/Profile.vue'
 import ThankYou from '@/pages/ThankYou.vue'
 import TrashListPage from '@/pages/TrashListPage.vue'
+import GenerateBooking from '@/pages/GenerateBooking.vue'
+import Carpoolings from '@/pages/Carpoolings.vue'
+import Carpooling from '@/pages/Carpooling.vue'
 
 const routes = [
   {
@@ -81,11 +84,37 @@ const routes = [
     name: 'TrashListPage',
     component: TrashListPage,
   },
+  {
+    path: '/GenerateBooking',
+    name: 'GenerateBooking',
+    component: GenerateBooking,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/carpoolings',
+    name: 'Carpoolings',
+    component: Carpoolings,
+  },
+  {
+    path: '/carpooling/:id',
+    name: 'Carpooling',
+    component: Carpooling,
+    props: true,
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+})
+
+router.beforeEach((to) => {
+  if (to.meta.requiresAuth) {
+    const userId = localStorage.getItem('userId')
+    if (!userId) {
+      return { name: 'LoginPage' }
+    }
+  }
 })
 
 export default router

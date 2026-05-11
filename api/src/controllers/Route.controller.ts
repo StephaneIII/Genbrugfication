@@ -12,6 +12,7 @@ export const createRoute = async (req: Request, res: Response): Promise<void> =>
       MaxWeight,
       DepartureTime,
       Delay,
+      Status,
     } = req.body
 
     const route = await Route.create({
@@ -22,6 +23,7 @@ export const createRoute = async (req: Request, res: Response): Promise<void> =>
       MaxWeight,
       DepartureTime,
       Delay,
+      Status: Status || 'Scheduled',
     })
 
     res.status(201).json(route)
@@ -88,6 +90,7 @@ export const updateRoute = async (req: Request, res: Response): Promise<void> =>
       MaxWeight,
       DepartureTime,
       Delay,
+      Status,
     } = req.body
 
     await route.update({
@@ -98,6 +101,7 @@ export const updateRoute = async (req: Request, res: Response): Promise<void> =>
       MaxWeight,
       DepartureTime,
       Delay,
+      Status,
     })
 
     res.status(200).json(route)

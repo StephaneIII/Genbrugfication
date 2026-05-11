@@ -46,8 +46,8 @@ db.User.hasMany(db.Checkout, { foreignKey: 'userId' })
 db.Friend.belongsTo(db.User, { foreignKey: 'FirstUID', as: 'FirstUser' })
 db.Friend.belongsTo(db.User, { foreignKey: 'SecondUID', as: 'SecondUser' })
 db.Stops.belongsTo(db.User, { foreignKey: 'userId' })
-db.Route.belongsTo(db.User, { foreignKey: 'userId' })
+db.Route.belongsTo(db.User, { foreignKey: 'UID' })
 db.Route.hasMany(db.Stops, { foreignKey: 'routeId' })
-db.Route.belongsTo(db.RecyclingStation, { foreignKey: 'routeId' })
+db.Route.belongsTo(db.RecyclingStation, { foreignKey: 'RecyclingStationID' })
 
 export default db
