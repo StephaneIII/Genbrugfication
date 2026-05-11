@@ -1,18 +1,30 @@
 <script>
-//import UserController from '../../api/src/controllers/user.controller.js'
+import UserController from '@/Controller/User.controller.js'
 import plasticIcon from '../Components/Images/RecycleIconPlastic.jpg'
 import metalIcon from '../Components/Images/RecycleIconMetal.jpg'
 import papIcon from '../Components/Images/RecycleIconPap.jpg'
+import paperIcon from '../Components/Images/RecycleIconPaper.jpg'
 import foodIcon from '../Components/Images/RecycleIconFood.jpg'
+import glassIcon from '../Components/Images/RecycleIconGlass.jpg'
+import restAffaldIcon from '../Components/Images/RecycleIconRestaffald.jpg'
 
 export default {
   name: 'TrashListPage',
   data() {
     return {
        mockTrash: [
-        { TrashID: 1, TrashCategoryID: 1, Name: 'Carton', Image: plasticIcon, URL: 'something', IsRecyclingStation: false, Score: 10 },
-        { TrashID: 2, TrashCategoryID: 2, Name: 'Bottle', Image: metalIcon, URL: 'something', IsRecyclingStation: false, Score: 20 },
-        { TrashID: 3, TrashCategoryID: 3, Name: 'Electronic', Image: metalIcon, URL: 'something', IsRecyclingStation: true, Score: 50 },
+        { TrashID: 1, TrashCategoryID: 1, Name: 'Carton', Image: plasticIcon, URL: 'something 1', IsRecyclingStation: false, Score: 10 },
+        { TrashID: 2, TrashCategoryID: 2, Name: 'Bottle', Image: metalIcon, URL: 'something 2', IsRecyclingStation: false, Score: 20 },
+        { TrashID: 3, TrashCategoryID: 3, Name: 'Electronic', Image: metalIcon, URL: 'something 3', IsRecyclingStation: true, Score: 50 },
+      ],
+      iconOptions: [
+        { name: 'Plastic', value: plasticIcon },
+        { name: 'Metal', value: metalIcon },
+        { name: 'Pap', value: papIcon },
+        { name: 'Papir', value: paperIcon },
+        { name: 'Food', value: foodIcon },
+        { name: 'Glas', value: glassIcon },
+        { name: 'Rest Affald', value: restAffaldIcon },
       ],
       dataForm: {
         TrashCategoryID: 0,
@@ -30,11 +42,11 @@ export default {
   mounted() {
     // Will be used after testing with mock data
   },
-  // computed: {
-  //     isAdmin() {
-  //         return UserController.isAdmin()
-  //     }
-  // },
+  computed: {
+   isAdmin() {
+     return UserController.isAdmin()
+   }
+  },
   methods: {
     async newTrashType() {
       this.clearMessages()
@@ -46,7 +58,22 @@ export default {
         return
       }
 
+      const newTrash = {
+        TrashID: this.mockTrash.length + 1,
+        ...this.dataForm,
+      }
+
+      this.mockTrash.push(newTrash)
       this.successMessage = 'Trash type created successfully'
+
+      this.dataForm = {
+        TrashCategoryID: 0,
+        Name: '',
+        Image: '',
+        URL: '',
+        IsRecyclingStation: false,
+        Score: 0,
+      }
     },
 
     validateTrash() {
@@ -65,8 +92,12 @@ export default {
         this.errors.Name = 'Username must be at least 2 characters'
         isValid = false
       }
+
       // Image validation
-      
+      if (!this.dataForm.Image) {
+        this.errors.Image = 'Image URL is required'
+        isValid = false
+      }
 
       // URL validation
       if (!this.dataForm.URL) {
@@ -74,11 +105,11 @@ export default {
         isValid = false
       }
 
-      // Recycling validation
+      // Recycling validation - NOT needed
 
       // Score validation
-      if (this.dataForm.Score < 0) {
-        this.errors.Score = 'Score cannot be negative'
+      if (this.dataForm.Score <= 0) {
+        this.errors.Score = 'Score cannot be negative or zero'
         isValid = false
       }
 
@@ -106,29 +137,29 @@ export default {
             <div class="card-content">
               <v-card-title>TrashID: {{ trash.TrashID }}</v-card-title>
               <v-card-title>Name: {{ trash.Name }}</v-card-title>
-              <v-card-subtitle>Sorteres som: {{ trash.TrashCategoryID }}</v-card-subtitle>
-              <v-card-actions>Thrown in Recycling station: {{ trash.IsRecyclingStation }}</v-card-actions>
-              <v-card-actions>Point worth: {{ trash.Score }}</v-card-actions>
+              <v-card-text>Sorteres som: {{ trash.TrashCategoryID }}</v-card-text>
+              <v-card-text>Thrown in Recycling station: {{ trash.IsRecyclingStation }}</v-card-text>
+              <v-card-text>Point worth: {{ trash.Score }}</v-card-text>
               <v-card-text>Description: </v-card-text>
-              <v-card-actions>URL: {{ trash.URL }}</v-card-actions>
+              <v-card-text>URL: {{ trash.URL }}</v-card-text>
             </div>
           </v-card>
         </v-col>
       </v-row>
     </div>
 
-    <!-- <div v-if="isAdmin">
+    <div v-if="isAdmin">
       User is admin
     </div>
     <div v-else>
       User is not a admin
-    </div> -->
+    </div>
 
     <!-- Creating new trash -->
     <div class="card-footer-area">
       <!-- Trash form: category ID -->
        <div>
-        <label for="category">Category ID</label>
+        <label for="category">Category ID: </label>
 
         <input
           id="category"
@@ -145,7 +176,7 @@ export default {
 
       <!-- Trash form: name -->
       <div>
-        <label for="name">Name</label>
+        <label for="name">Name: </label>
         <input
           id="name"
           v-model="dataForm.Name"
@@ -154,15 +185,36 @@ export default {
           placeholder="Insert a Name"
           :class="{ error: errors.Name }"
           required
-          />
+        />
         <span v-if="errors.Name" class="error-text">{{ errors.Name }}</span>
       </div>
 
       <!-- Trash form: imsge -->
+      <div>
+        <label for="image">Select Image</label>
+        <select
+          id="image"
+          v-model="dataForm.Image"
+          :class="{ error: errors.Image }"
+        >
+        <option disabled value="">
+          Select an icon
+        </option>
+
+        <option
+          v-for="icon in iconOptions"
+          :key="icon.name"
+          :value="icon.value"
+        >
+          {{ icon.name }}
+        </option>
+      </select>
+      <span v-if="errors.Image" class="error-text">{{ errors.Image }}</span>
+      </div>
 
       <!-- Trash form: URL -->
       <div>
-        <label for="url">URL</label>
+        <label for="url">URL: </label>
         <input
           id="url"
           v-model="dataForm.URL"
@@ -178,17 +230,17 @@ export default {
       <!-- Trash form: recycling station -->
       <div>
         <label>
+          Is Recycling Station: 
           <input
             v-model="dataForm.IsRecyclingStation"
             type="checkbox"
           />
-          Is Recycling Station
         </label>
       </div>
 
       <!-- Trash form: score -->
       <div>
-        <label for="score">Score</label>
+        <label for="score">Score: </label>
           <input
             id="score"
             v-model="dataForm.Score"
@@ -265,7 +317,7 @@ h1 {
 }
 
 .card-content {
-  height: 120px;
+  height: 135px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -309,6 +361,17 @@ h1 {
   border-radius: 50px;
   padding: 2px 10px;
   font-size: 12px;
+  font-weight: bold;
+}
+
+.submit-button {
+  margin-top: 20px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #3a5c42;
+  color: white;
   font-weight: bold;
 }
 
