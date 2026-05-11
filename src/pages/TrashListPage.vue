@@ -1,6 +1,5 @@
 <script>
 //import UserController from '../../api/src/controllers/user.controller.js'
-import trash from '../Components/SearchComponents/ItemComponent.vue'
 import plasticIcon from '../Components/Images/RecycleIconPlastic.jpg'
 import metalIcon from '../Components/Images/RecycleIconMetal.jpg'
 import papIcon from '../Components/Images/RecycleIconPap.jpg'

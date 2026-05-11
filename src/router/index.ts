@@ -73,7 +73,7 @@ const routes = [
   {
     path: '/TrashList',
     name: 'TrashListPage',
-    components: TrashListPage,
+    component: TrashListPage,
   },
 ]
 
