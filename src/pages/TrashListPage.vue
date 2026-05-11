@@ -1,5 +1,5 @@
 <script>
-//import UserController from '../../api/src/controllers/user.controller.js'
+import UserController from '@/Controller/User.controller.js'
 import plasticIcon from '../Components/Images/RecycleIconPlastic.jpg'
 import metalIcon from '../Components/Images/RecycleIconMetal.jpg'
 import papIcon from '../Components/Images/RecycleIconPap.jpg'
@@ -15,7 +15,7 @@ export default {
        mockTrash: [
         { TrashID: 1, TrashCategoryID: 1, Name: 'Carton', Image: plasticIcon, URL: 'something 1', IsRecyclingStation: false, Score: 10 },
         { TrashID: 2, TrashCategoryID: 2, Name: 'Bottle', Image: metalIcon, URL: 'something 2', IsRecyclingStation: false, Score: 20 },
-        { TrashID: 3, TrashCategoryID: 2, Name: 'Electronic', Image: metalIcon, URL: 'something 3', IsRecyclingStation: true, Score: 50 },
+        { TrashID: 3, TrashCategoryID: 3, Name: 'Electronic', Image: metalIcon, URL: 'something 3', IsRecyclingStation: true, Score: 50 },
       ],
       iconOptions: [
         { name: 'Plastic', value: plasticIcon },
@@ -42,11 +42,11 @@ export default {
   mounted() {
     // Will be used after testing with mock data
   },
-  // computed: {
-  //     isAdmin() {
-  //         return UserController.isAdmin()
-  //     }
-  // },
+  computed: {
+   isAdmin() {
+     return UserController.isAdmin()
+   }
+  },
   methods: {
     async newTrashType() {
       this.clearMessages()
@@ -148,12 +148,12 @@ export default {
       </v-row>
     </div>
 
-    <!-- <div v-if="isAdmin">
+    <div v-if="isAdmin">
       User is admin
     </div>
     <div v-else>
       User is not a admin
-    </div> -->
+    </div>
 
     <!-- Creating new trash -->
     <div class="card-footer-area">
