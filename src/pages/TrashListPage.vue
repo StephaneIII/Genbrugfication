@@ -1,12 +1,15 @@
 <script>
 import UserController from '@/Controller/User.controller.js'
 import plasticIcon from '../Components/Images/RecycleIconPlastic.jpg'
-import metalIcon from '../Components/Images/RecycleIconMetal.jpg'
-import papIcon from '../Components/Images/RecycleIconPap.jpg'
+import pantIcon from '../Components/Images/RecycleIconPant.jpg'
 import paperIcon from '../Components/Images/RecycleIconPaper.jpg'
-import foodIcon from '../Components/Images/RecycleIconFood.jpg'
+import papIcon from '../Components/Images/RecycleIconPap.jpg'
 import glassIcon from '../Components/Images/RecycleIconGlass.jpg'
+import metalIcon from '../Components/Images/RecycleIconMetal.jpg'
+import foodIcon from '../Components/Images/RecycleIconFood.jpg'
 import restAffaldIcon from '../Components/Images/RecycleIconRestaffald.jpg'
+import batteriesIcon from '../Components/Images/RecycleIconBatteries.jpg'
+import dangerIcon from '../Components/Images/RecycleIconDanger.jpg'
 
 export default {
   name: 'TrashListPage',
@@ -19,12 +22,16 @@ export default {
       ],
       iconOptions: [
         { name: 'Plastic', value: plasticIcon },
-        { name: 'Metal', value: metalIcon },
-        { name: 'Pap', value: papIcon },
+        { name: 'Pant', value: pantIcon },
         { name: 'Papir', value: paperIcon },
-        { name: 'Food', value: foodIcon },
+        { name: 'Pap', value: papIcon },
         { name: 'Glas', value: glassIcon },
+        { name: 'Metal', value: metalIcon },
+        { name: 'Food', value: foodIcon },
         { name: 'Rest Affald', value: restAffaldIcon },
+        { name: 'Battery', value: batteriesIcon },
+        { name: 'Papir', value: paperIcon },
+        { name: 'Advarelse', value: dangerIcon },
       ],
       dataForm: {
         TrashCategoryID: 0,
