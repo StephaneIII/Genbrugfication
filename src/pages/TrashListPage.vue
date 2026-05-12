@@ -16,9 +16,9 @@ export default {
   data() {
     return {
        mockTrash: [
-        { TrashID: 1, TrashCategoryID: 1, Name: 'Carton', Image: plasticIcon, URL: 'something 1', IsRecyclingStation: false, Score: 10 },
-        { TrashID: 2, TrashCategoryID: 2, Name: 'Bottle', Image: metalIcon, URL: 'something 2', IsRecyclingStation: false, Score: 20 },
-        { TrashID: 3, TrashCategoryID: 3, Name: 'Electronic', Image: metalIcon, URL: 'something 3', IsRecyclingStation: true, Score: 50 },
+        { TrashID: 1, TrashCategoryID: 1, Name: 'Carton', Url: plasticIcon, IsRecyclingStation: false, Score: 10 },
+        { TrashID: 2, TrashCategoryID: 2, Name: 'Bottle', Url: metalIcon, IsRecyclingStation: false, Score: 20 },
+        { TrashID: 3, TrashCategoryID: 3, Name: 'Electronic', Url: metalIcon, IsRecyclingStation: true, Score: 50 },
       ],
       iconOptions: [
         { name: 'Plastic', value: plasticIcon },
@@ -36,8 +36,7 @@ export default {
       dataForm: {
         TrashCategoryID: 0,
         Name: '',
-        Image: '',
-        URL: '',
+        Url: '',
         IsRecyclingStation: false,
         Score: 0,
       },
@@ -76,8 +75,7 @@ export default {
       this.dataForm = {
         TrashCategoryID: 0,
         Name: '',
-        Image: '',
-        URL: '',
+        Url: '', // Url is image
         IsRecyclingStation: false,
         Score: 0,
       }
@@ -96,19 +94,13 @@ export default {
         this.errors.Name = 'Name is required'
         isValid = false
       } else if (this.dataForm.Name.length < 2) {
-        this.errors.Name = 'Username must be at least 2 characters'
+        this.errors.Name = 'Name must be at least 2 characters'
         isValid = false
       }
 
-      // Image validation
-      if (!this.dataForm.Image) {
-        this.errors.Image = 'Image URL is required'
-        isValid = false
-      }
-
-      // URL validation
-      if (!this.dataForm.URL) {
-        this.errors.URL = 'URL is required'
+      // Url/Image validation
+      if (!this.dataForm.Url) {
+        this.errors.URL = 'Image is required'
         isValid = false
       }
 
@@ -139,7 +131,7 @@ export default {
       <v-row>
         <v-col v-for="trash in mockTrash" :key="trash.TrashID" cols="12">
           <v-card class="pa-4 d-flex align-start item-card" theme="light">
-            <img :src="trash.Image" :alt="trash.Name" class="category-icon" />
+            <img :src="trash.Url" :alt="trash.Name" class="category-icon" />
 
             <div class="card-content">
               <v-card-title>TrashID: {{ trash.TrashID }}</v-card-title>
@@ -147,8 +139,7 @@ export default {
               <v-card-text>Sorteres som: {{ trash.TrashCategoryID }}</v-card-text>
               <v-card-text>Thrown in Recycling station: {{ trash.IsRecyclingStation }}</v-card-text>
               <v-card-text>Point worth: {{ trash.Score }}</v-card-text>
-              <v-card-text>Description: </v-card-text>
-              <v-card-text>URL: {{ trash.URL }}</v-card-text>
+              <!--<v-card-text>Description: </v-card-text>-->
             </div>
           </v-card>
         </v-col>
@@ -163,7 +154,7 @@ export default {
     </div>
 
     <!-- Creating new trash -->
-    <div class="card-footer-area">
+    <div class="card-footer-area"> <!-- div v-if="isAdmin" class="card-footer-area" -->
       <!-- Trash form: category ID -->
        <div>
         <label for="category">Category ID: </label>
@@ -196,13 +187,13 @@ export default {
         <span v-if="errors.Name" class="error-text">{{ errors.Name }}</span>
       </div>
 
-      <!-- Trash form: imsge -->
+      <!-- Trash form: Url/image -->
       <div>
         <label for="image">Select Image</label>
         <select
-          id="image"
-          v-model="dataForm.Image"
-          :class="{ error: errors.Image }"
+          id="Url"
+          v-model="dataForm.Url"
+          :class="{ error: errors.Url }"
         >
         <option disabled value="">
           Select an icon
@@ -216,22 +207,7 @@ export default {
           {{ icon.name }}
         </option>
       </select>
-      <span v-if="errors.Image" class="error-text">{{ errors.Image }}</span>
-      </div>
-
-      <!-- Trash form: URL -->
-      <div>
-        <label for="url">URL: </label>
-        <input
-          id="url"
-          v-model="dataForm.URL"
-          type="text"
-          name="URL"
-          placeholder="Insert a URL"
-          :class="{ error: errors.URL }"
-          required
-          />
-        <span v-if="errors.URL" class="error-text">{{ errors.URL }}</span>
+      <span v-if="errors.Url" class="error-text">{{ errors.Url }}</span>
       </div>
 
       <!-- Trash form: recycling station -->
