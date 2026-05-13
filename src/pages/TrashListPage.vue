@@ -1,5 +1,6 @@
 <script>
 import UserController from '@/Controller/User.controller.js'
+import TrashController from '@/Controller/Trash.controller'
 import plasticIcon from '../Components/Images/RecycleIconPlastic.jpg'
 import pantIcon from '../Components/Images/RecycleIconPant.jpg'
 import paperIcon from '../Components/Images/RecycleIconPaper.jpg'
@@ -15,11 +16,12 @@ export default {
   name: 'TrashListPage',
   data() {
     return {
-       mockTrash: [
-        { TrashID: 1, TrashCategoryID: 1, Name: 'Carton', Url: plasticIcon, IsRecyclingStation: false, Score: 10 },
-        { TrashID: 2, TrashCategoryID: 2, Name: 'Bottle', Url: metalIcon, IsRecyclingStation: false, Score: 20 },
-        { TrashID: 3, TrashCategoryID: 3, Name: 'Electronic', Url: metalIcon, IsRecyclingStation: true, Score: 50 },
-      ],
+      trashList: [],
+      //  mockTrash: [
+      //   { TrashID: 1, TrashCategoryID: 1, Name: 'Carton', Url: plasticIcon, IsRecyclingStation: false, Score: 10 },
+      //   { TrashID: 2, TrashCategoryID: 2, Name: 'Bottle', Url: metalIcon, IsRecyclingStation: false, Score: 20 },
+      //   { TrashID: 3, TrashCategoryID: 3, Name: 'Electronic', Url: metalIcon, IsRecyclingStation: true, Score: 50 },
+      // ],
       iconOptions: [
         { name: 'Plastic', value: plasticIcon },
         { name: 'Pant', value: pantIcon },
@@ -45,8 +47,14 @@ export default {
         successMessage: '',
     }
   },
-  mounted() {
-    // Will be used after testing with mock data
+  async mounted() {
+    const result = await TrashController.getAllTrash()
+
+    if (result.success) {
+      this.trashList = result.data
+    } else {
+      this.errorMessage = result.error
+  }
   },
   computed: {
    isAdmin() {
@@ -64,13 +72,23 @@ export default {
         return
       }
 
-      const newTrash = {
-        TrashID: this.mockTrash.length + 1,
-        ...this.dataForm,
-      }
+      const result = await TrashController.createTrash(this.dataForm)
 
-      this.mockTrash.push(newTrash)
-      this.successMessage = 'Trash type created successfully'
+      if (result.success) {
+        this.trashList.push(result.data)
+
+        this.successMessage = 'Trash type created successfully'
+
+        this.dataForm = {
+          TrashCategoryID: 0,
+          Name: '',
+          Url: '',
+          IsRecyclingStation: false,
+          Score: 0,
+        }
+      } else {
+        this.errorMessage = result.error
+      }
 
       this.dataForm = {
         TrashCategoryID: 0,
@@ -129,7 +147,7 @@ export default {
     <div class="trash-types">
       <h1>Trash List</h1>
       <v-row>
-        <v-col v-for="trash in mockTrash" :key="trash.TrashID" cols="12">
+        <v-col v-for="trash in trashList" :key="trash.TrashID" cols="12">
           <v-card class="pa-4 d-flex align-start item-card" theme="light">
             <img :src="trash.Url" :alt="trash.Name" class="category-icon" />
 
@@ -154,7 +172,7 @@ export default {
     </div>
 
     <!-- Creating new trash -->
-    <div class="card-footer-area"> <!-- div v-if="isAdmin" class="card-footer-area" -->
+    <div v-if="isAdmin" class="card-footer-area">
       <!-- Trash form: category ID -->
        <div>
         <label for="category">Category ID: </label>
