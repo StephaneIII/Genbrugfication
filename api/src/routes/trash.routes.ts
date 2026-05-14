@@ -9,11 +9,11 @@ import {
 } from '../controllers/Trash.controller.js'
 
 const router = Router()
-router.post('/trashes', createTrash)
-router.get('/trashes', getAllTrash)
-router.get('/trashes/:id', getTrashById)
-router.put('/trashes/:id', updateTrash)
-router.delete('/trashes/:id', deleteTrash)
-router.delete('/trashes', deleteAllTrash)
+router.post('/trash', createTrash)
+router.get('/trash', getAllTrash)
+router.get('/trash/:id', getTrashById)
+router.put('/trash/:id', updateTrash)
+router.delete('/trash/:id', deleteTrash)
+router.delete('/trash', deleteAllTrash)
 
 export default router
