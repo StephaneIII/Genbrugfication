@@ -18,19 +18,16 @@ class UserController {
    */
   async createUser(userData) {
     try {
-      // Generate friend code if not provided
       const userDataWithFriendCode = {
         ...userData,
         FriendCode: userData.FriendCode || this.generateFriendCode(),
       }
 
-      // Remove confirmPassword and map field names for API
       const { confirmPassword, password, ...otherData } = userDataWithFriendCode
 
-      // Map frontend field names to API field names
       const apiData = {
         ...otherData,
-        Password: password, // Map lowercase 'password' to uppercase 'Password'
+        Password: password,
       }
 
       const response = await fetch(`${this.apiBaseUrl}/users`, {
@@ -64,10 +61,9 @@ class UserController {
    */
   async loginUser(loginData) {
     try {
-      // Map field names for API (password -> Password)
       const apiData = {
         Email: loginData.Email,
-        Password: loginData.password, // Map lowercase 'password' to uppercase 'Password'
+        Password: loginData.password,
       }
 
       const response = await fetch(`${this.apiBaseUrl}/users/login`, {
@@ -181,12 +177,17 @@ class UserController {
       const response = await fetch(`${this.apiBaseUrl}/users/${userId}`, {
         method: 'DELETE',
       })
-      const data = await response.json()
+
+      let data = null
+
+      if (response.status !== 204) {
+        data = await response.json()
+      }
 
       return {
         success: response.ok,
         data: data,
-        error: response.ok ? null : data.error || 'Failed to delete user',
+        error: response.ok ? null : data?.error || 'Failed to delete user',
       }
     } catch (error) {
       return {
@@ -236,7 +237,7 @@ class UserController {
   storeUserSession(userData) {
     localStorage.setItem('userId', userData.UID)
     localStorage.setItem('username', userData.Username)
-    localStorage.setItem('isAdmin', userData.isAdmin)
+    localStorage.setItem('isAdmin', String(userData.IsAdmin))
 
     // Dispatch a custom event to notify components of auth state change
     window.dispatchEvent(
@@ -253,10 +254,12 @@ class UserController {
   getUserSession() {
     const userId = localStorage.getItem('userId')
     const username = localStorage.getItem('username')
+    const isAdmin = localStorage.getItem('isAdmin')
 
     if (userId) {
-      return { userId, username }
+      return { userId, username, isAdmin }
     }
+
     return null
   }
 
@@ -266,6 +269,7 @@ class UserController {
   clearUserSession() {
     localStorage.removeItem('userId')
     localStorage.removeItem('username')
+    localStorage.removeItem('isAdmin')
 
     // Dispatch a custom event to notify components of auth state change
     window.dispatchEvent(
@@ -287,7 +291,8 @@ class UserController {
    * Check if logged-in user is admin
    */
   isAdmin() {
-    return localStorage.getItem('isAdmin') === 'true'
+    const isAdmin = localStorage.getItem('isAdmin')
+    return isAdmin === 'true' || isAdmin === '1'
   }
 }
 
