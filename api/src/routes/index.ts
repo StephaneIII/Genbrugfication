@@ -3,6 +3,7 @@ import healthRouter from './health.routes.js'
 import usersRouter from './users.routes.js'
 import trashCategoriesRouter from './trashcategories.routes.js'
 import recyclingStationsRouter from './recycling-station.routes.js'
+import TrashRouter from '../routes/trash.routes.js'
 import routesRouter from './route.routes.js'
 import stopsRoutes from './Stops.routes.js'
 
@@ -12,6 +13,7 @@ router.use('/', healthRouter)
 router.use('/', usersRouter)
 router.use('/', trashCategoriesRouter)
 router.use('/', recyclingStationsRouter)
+router.use('/', TrashRouter)
 router.use('/', routesRouter)
 router.use('/', stopsRoutes)
 
