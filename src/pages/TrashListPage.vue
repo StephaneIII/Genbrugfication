@@ -1,6 +1,6 @@
 <script>
 import UserController from '@/Controller/User.controller.js'
-import TrashController from '@/Controller/Trash.controller'
+import TrashController from '@/Controller/Trash.controller.js'
 import plasticIcon from '../Components/Images/RecycleIconPlastic.jpg'
 import pantIcon from '../Components/Images/RecycleIconPant.jpg'
 import paperIcon from '../Components/Images/RecycleIconPaper.jpg'
