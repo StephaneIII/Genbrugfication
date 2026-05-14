@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       trashList: [],
-      //  mockTrash: [
+      //  trashList: [ //mock-data for testing
       //   { TrashID: 1, TrashCategoryID: 1, Name: 'Carton', Url: plasticIcon, IsRecyclingStation: false, Score: 10 },
       //   { TrashID: 2, TrashCategoryID: 2, Name: 'Bottle', Url: metalIcon, IsRecyclingStation: false, Score: 20 },
       //   { TrashID: 3, TrashCategoryID: 3, Name: 'Electronic', Url: metalIcon, IsRecyclingStation: true, Score: 50 },
