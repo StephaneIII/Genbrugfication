@@ -16,6 +16,7 @@ import TrashListPage from '@/pages/TrashListPage.vue'
 import GenerateBooking from '@/pages/GenerateBooking.vue'
 import Carpoolings from '@/pages/Carpoolings.vue'
 import Carpooling from '@/pages/Carpooling.vue'
+import MyPoint from '@/pages/MyPoint.vue'
 
 const routes = [
   {
@@ -100,6 +101,12 @@ const routes = [
     name: 'Carpooling',
     component: Carpooling,
     props: true,
+  },
+  {
+    path: '/mypoint',
+    name: 'MyPoint',
+    component: MyPoint,
+    meta: { requiresAuth: true },
   },
 ]
 

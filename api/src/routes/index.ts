@@ -6,6 +6,7 @@ import recyclingStationsRouter from './recycling-station.routes.js'
 import TrashRouter from '../routes/trash.routes.js'
 import routesRouter from './route.routes.js'
 import stopsRoutes from './Stops.routes.js'
+import checkoutRouter from './checkout.routes.js'
 
 const router = Router()
 
@@ -16,5 +17,6 @@ router.use('/', recyclingStationsRouter)
 router.use('/', TrashRouter)
 router.use('/', routesRouter)
 router.use('/', stopsRoutes)
+router.use('/', checkoutRouter)
 
 export default router
