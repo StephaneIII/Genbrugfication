@@ -103,7 +103,8 @@ const routes = [
     props: true,
   },
   {
-    path: '/mypoint',
+    path: '/MyPoints',
+    alias: ['/mypoint'],
     name: 'MyPoint',
     component: MyPoint,
     meta: { requiresAuth: true },

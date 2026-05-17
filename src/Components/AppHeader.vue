@@ -33,6 +33,9 @@
       <template v-if="isUserLoggedIn">
         <a href="/carpoolings" class="menu-link">Samkørsel</a>
       </template>
+      <template v-if="isUserLoggedIn">
+        <a href="/MyPoints" class="menu-link">Mine Point</a>
+      </template>
     </nav>
   </div>
 </template>
