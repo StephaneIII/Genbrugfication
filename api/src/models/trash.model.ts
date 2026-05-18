@@ -9,7 +9,7 @@ const Trash = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    TrashCategoryID: {
+    TrashCanID: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

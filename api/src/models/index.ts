@@ -39,7 +39,7 @@ const db: DbInterface = {
   Friend,
 }
 
-db.Trash.belongsTo(db.TrashCategory, { foreignKey: 'TrashCategoryID' })
+db.Trash.belongsTo(db.TrashCategory, { foreignKey: 'TrashCanID' })
 db.CheckoutItem.belongsTo(db.Trash, { foreignKey: 'TrashID' })
 db.Checkout.hasMany(db.CheckoutItem, { foreignKey: 'CheckoutID' })
 db.User.hasMany(db.Checkout, { foreignKey: 'UID' })
