@@ -1,22 +1,79 @@
 :root {
-/* Fonts */
---font-heading: 'Poppins', sans-serif;
---font-body: 'Montserrat', sans-serif;
-/* Color */
---primary-bg-color: #121212;
---secondary-color: #2f6b5f;
---accent-color: #E58A3A;
-/* Text Color */
---white-text: #f8f8f8;
---dark-text: #222222;
-/* Margin/Padding */
---gap-small: 0.5rem;
---gap-med: 1rem;
---gap-large: 2rem;
-/* border-radius */
---border-radius-small: 4px;
---border-radius-med: 8px;
---border-radius-large: 12px;
-/* shadow */
---shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  /* Fonts */
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
+
+  /* Colors - new style tile */
+  --color-primary: #2F6B5F;
+  --color-secondary: #7FAF9F;
+  --color-accent: #D89B3C;
+
+  --color-bg: #F4F3EE;
+  --color-surface: #ffffff;
+  --color-surface-muted: #DCEBE4;
+
+  --color-text: #1F2A24;
+  --color-text-muted: #4f5f57;
+  --color-text-light: #F8F8F8;
+
+  --color-border: #cfd8d3;
+
+  /* Old variables  */
+  --primary-bg-color: var(--color-bg);
+  --secondary-color: var(--color-primary);
+  --accent-color: var(--color-accent);
+
+  --white-text: var(--color-text-light);
+  --dark-text: var(--color-text);
+
+  /* Old styling */
+  /*
+  --primary-bg-color: #121212;
+  --secondary-color: #2f6b5f;
+  --accent-color: #E58A3A;
+  */
+
+  /* Spacing */
+  --gap-xs: 0.25rem;
+  --gap-small: 0.5rem;
+  --gap-med: 1rem;
+  --gap-large: 2rem;
+  --gap-xl: 3rem;
+
+  /* Border radius */
+  --border-radius-small: 4px;
+  --border-radius-med: 8px;
+  --border-radius-large: 12px;
+  --border-radius-xl: 20px;
+  --border-radius-round: 999px;
+
+  /* Shadows */
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.08);
+
+  /* Font sizes */
+  --font-size-small: 0.875rem;
+  --font-size-body: 1rem;
+  --font-size-h3: 1.25rem;
+  --font-size-h2: 1.5rem;
+  --font-size-h1: 2rem;
+
+  /* Font weights */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+
+  /* Layout */
+  --max-width: 1200px;
+  --header-height: 80px;
+  --footer-height: 64px;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-med: 0.3s ease;
+
+  /* Breakpoints */
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-large-desktop: 1200px;
 }
