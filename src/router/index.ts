@@ -5,7 +5,6 @@ import RoutePage from '../pages/RoutePage.vue'
 import SearchPage from '@/pages/SearchPage.vue'
 import DetailPage from '@/pages/DetailPage.vue'
 import DetailsPage from '@/pages/DetailsPage.vue'
-import LandingPage from '@/pages/LandingPage.vue'
 import { components } from 'vuetify/dist/vuetify.js'
 import Cart from '@/pages/Cart.vue'
 import SignUp from '@/pages/SignUp.vue'
@@ -19,11 +18,6 @@ import Carpooling from '@/pages/Carpooling.vue'
 import MyPoint from '@/pages/MyPoint.vue'
 
 const routes = [
-  {
-    path: '/LandingPage',
-    name: 'LandingPage',
-    component: LandingPage,
-  },
   {
     path: '/PostcodePage',
     name: 'PostcodePage',
