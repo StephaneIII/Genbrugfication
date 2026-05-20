@@ -179,6 +179,8 @@ export default {
   height: 48px;
   object-fit: contain;
   display: block;
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-round);
 }
 
 .logo-text {
