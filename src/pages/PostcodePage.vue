@@ -1,30 +1,3 @@
-<template>
-  <v-main class="postcode-page">
-    <AppHeader />
-
-    <section class="postcode-content">
-      <h1 class="postcode-title">Indtast postnummer</h1>
-      <p class="postcode-subtitle">Se affaldsinfo i dit område</p>
-
-      <input
-        v-model="postcode"
-        type="text"
-        placeholder="Prøv: 4000, 4040, 4130"
-        class="postcode-input"
-      />
-
-      <BaseButton @click="handleShowMap">
-        Vis kort
-      </BaseButton>
-
-
-      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-    </section>
-
-    <AppFooter />
-  </v-main>
-</template>
-
 <script>
 import BaseButton from '../Components/BaseButton.vue'
 
@@ -54,6 +27,33 @@ export default {
     }
 }
 </script>
+
+<template>
+  <v-main class="postcode-page">
+    <AppHeader />
+
+    <section class="postcode-content">
+      <h1 class="postcode-title">Indtast postnummer</h1>
+      <p class="postcode-subtitle">Se affaldsinfo i dit område</p>
+
+      <input
+        v-model="postcode"
+        type="text"
+        placeholder="Prøv: 4000, 4040, 4130"
+        class="postcode-input"
+      />
+
+      <BaseButton @click="handleShowMap">
+        Vis kort
+      </BaseButton>
+
+
+      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+    </section>
+
+    <AppFooter />
+  </v-main>
+</template>
 
 <style scoped>
 .postcode-page {

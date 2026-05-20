@@ -1,53 +1,3 @@
-<template>
-  <v-main class="map-page">
-    <section v-if="loading" class="map-content">
-      <p class="error-message">Henter station...</p>
-    </section>
-
-    <section v-else-if="station" class="map-content">
-      <div class="map-wrapper">
-        <StationMap
-          :lat="station.lat"
-          :lng="station.lng"
-          :station-name="station.name"
-          :station-address="station.address"
-          :zoom="13"
-          map-id="map-page-map"
-        />
-      </div>
-
-      <section class="station-panel">
-        <h2 class="station-title">1 genbrugsstation i {{ areaName }}</h2>
-
-        <article class="station-card">
-          <div class="station-image-wrapper">
-            <img
-              :src="station.imageUrl"
-              :alt="station.name"
-              class="station-image"
-            />
-          </div>
-
-          <div class="station-info">
-            <h3>{{ station.name }}</h3>
-            <p>{{ station.address }}</p>
-          </div>
-
-          <div class="route-button-wrapper">
-            <BaseButton @click="handleFindRoute">
-              Find rute
-            </BaseButton>
-          </div>
-        </article>
-      </section>
-    </section>
-
-    <section v-else class="map-content">
-      <p class="error-message">{{ errorMessage }}</p>
-    </section>
-  </v-main>
-</template>
-
 <script>
 import BaseButton from '../Components/BaseButton.vue'
 import StationMap from '../Components/StationMap.vue'
@@ -120,6 +70,56 @@ export default {
   }
 }
 </script>
+
+<template>
+  <v-main class="map-page">
+    <section v-if="loading" class="map-content">
+      <p class="error-message">Henter station...</p>
+    </section>
+
+    <section v-else-if="station" class="map-content">
+      <div class="map-wrapper">
+        <StationMap
+          :lat="station.lat"
+          :lng="station.lng"
+          :station-name="station.name"
+          :station-address="station.address"
+          :zoom="13"
+          map-id="map-page-map"
+        />
+      </div>
+
+      <section class="station-panel">
+        <h2 class="station-title">1 genbrugsstation i {{ areaName }}</h2>
+
+        <article class="station-card">
+          <div class="station-image-wrapper">
+            <img
+              :src="station.imageUrl"
+              :alt="station.name"
+              class="station-image"
+            />
+          </div>
+
+          <div class="station-info">
+            <h3>{{ station.name }}</h3>
+            <p>{{ station.address }}</p>
+          </div>
+
+          <div class="route-button-wrapper">
+            <BaseButton @click="handleFindRoute">
+              Find rute
+            </BaseButton>
+          </div>
+        </article>
+      </section>
+    </section>
+
+    <section v-else class="map-content">
+      <p class="error-message">{{ errorMessage }}</p>
+    </section>
+  </v-main>
+</template>
 
 <style scoped>
 .map-page {
