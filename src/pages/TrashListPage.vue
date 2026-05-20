@@ -68,7 +68,7 @@ export default {
 
       // Validate form
       if (!this.validateTrash()) {
-        this.errorMessage = 'Please fix the validation errors'
+        this.errorMessage = 'Error: Ret venligst valideringsfejlene'
         return
       }
 
@@ -77,7 +77,7 @@ export default {
       if (result.success) {
         this.trashList.push(result.data)
 
-        this.successMessage = 'Trash type created successfully'
+        this.successMessage = 'Nyt type skrald oprettet'
 
         this.dataForm = {
           TrashCategoryID: 0,
@@ -103,22 +103,22 @@ export default {
       let isValid = true
       // Category validation
       if (!this.dataForm.TrashCategoryID || this.dataForm.TrashCategoryID < 1) {
-        this.errors.TrashCategoryID = 'Category is required'
+        this.errors.TrashCategoryID = 'Category påkrævet'
         isValid = false
       }
       
       // Name validation
       if (!this.dataForm.Name) {
-        this.errors.Name = 'Name is required'
+        this.errors.Name = 'Navn påkrævet'
         isValid = false
       } else if (this.dataForm.Name.length < 2) {
-        this.errors.Name = 'Name must be at least 2 characters'
+        this.errors.Name = 'Navn skal være mindst 2 tegn langt'
         isValid = false
       }
 
       // Url/Image validation
       if (!this.dataForm.Url) {
-        this.errors.URL = 'Image is required'
+        this.errors.URL = 'Billede påkrævet'
         isValid = false
       }
 
@@ -126,7 +126,7 @@ export default {
 
       // Score validation
       if (this.dataForm.Score <= 0) {
-        this.errors.Score = 'Score cannot be negative or zero'
+        this.errors.Score = 'Point score kan ikke være negativ eller nul'
         isValid = false
       }
 
@@ -145,7 +145,7 @@ export default {
   <div class="trash-list-page">
     <!-- List of all current types of trash -->
     <div class="trash-types">
-      <h1>Trash List</h1>
+      <h1>Liste af skrald</h1>
       <v-row>
         <v-col v-for="trash in trashList" :key="trash.TrashID" cols="12">
           <v-card class="pa-4 d-flex align-start item-card" theme="light">
@@ -153,10 +153,10 @@ export default {
 
             <div class="card-content">
               <v-card-title>TrashID: {{ trash.TrashID }}</v-card-title>
-              <v-card-title>Name: {{ trash.Name }}</v-card-title>
+              <v-card-title>Navn: {{ trash.Name }}</v-card-title>
               <v-card-text>Sorteres som: {{ trash.TrashCategoryID }}</v-card-text>
-              <v-card-text>Thrown in Recycling station: {{ trash.IsRecyclingStation }}</v-card-text>
-              <v-card-text>Point worth: {{ trash.Score }}</v-card-text>
+              <v-card-text>Smides i en Recycling station: {{ trash.IsRecyclingStation }}</v-card-text>
+              <v-card-text>Point værdi: {{ trash.Score }}</v-card-text>
               <!--<v-card-text>Description: </v-card-text>-->
             </div>
           </v-card>
@@ -165,10 +165,10 @@ export default {
     </div>
 
     <div v-if="isAdmin">
-      User is admin
+      Bruger er admin
     </div>
     <div v-else>
-      User is not a admin
+      Bruger er ikke admin
     </div>
 
     <!-- Creating new trash -->
@@ -192,13 +192,13 @@ export default {
 
       <!-- Trash form: name -->
       <div>
-        <label for="name">Name: </label>
+        <label for="name">Navn: </label>
         <input
           id="name"
           v-model="dataForm.Name"
           type="text"
           name="Name"
-          placeholder="Insert a Name"
+          placeholder="Indsæt navn"
           :class="{ error: errors.Name }"
           required
         />
@@ -207,14 +207,14 @@ export default {
 
       <!-- Trash form: Url/image -->
       <div>
-        <label for="image">Select Image</label>
+        <label for="image">Vælgde Billede</label>
         <select
           id="Url"
           v-model="dataForm.Url"
           :class="{ error: errors.Url }"
         >
         <option disabled value="">
-          Select an icon
+          Vælg et Ikon
         </option>
 
         <option
@@ -231,7 +231,7 @@ export default {
       <!-- Trash form: recycling station -->
       <div>
         <label>
-          Is Recycling Station: 
+          Skal bruge Recycling station: 
           <input
             v-model="dataForm.IsRecyclingStation"
             type="checkbox"
@@ -246,7 +246,7 @@ export default {
             id="score"
             v-model="dataForm.Score"
             type="number"
-            placeholder="Insert score"
+            placeholder="Indsæt score værdi"
             :class="{ error: errors.Score }"
           />
         <span v-if="errors.Score" class="error-text">
@@ -256,7 +256,7 @@ export default {
 
       <!-- Button + succes/fail message -->
       <button @click="newTrashType" class="submit-button">
-        Create Trash Type
+        Opret nyt skrald
       </button>
 
       <div v-if="errorMessage" class="error-text">

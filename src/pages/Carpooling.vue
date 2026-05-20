@@ -145,7 +145,7 @@ export default {
                 <span class="info-value">{{ route.DriverUsername }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Chaufförens telefon</span>
+                <span class="info-label">Chaufførens telefon</span>
                 <span class="info-value">
                   <a v-if="route.DriverTlf" :href="'tel:' + route.DriverTlf" class="phone-link">{{
                     route.DriverTlf

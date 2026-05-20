@@ -36,7 +36,7 @@ export default {
         const session = UserController.getUserSession()
 
         if (!session || !session.userId) {
-          this.errorMessage = 'User session not found. Please login again.'
+          this.errorMessage = 'Brugersession ikke fundet. Prøv at login igen.'
           this.redirectToLogin()
           return
         }
@@ -48,11 +48,11 @@ export default {
           this.user = result.data
           this.editableUser = { ...result.data }
         } else {
-          this.errorMessage = result.error || 'Failed to load user profile'
+          this.errorMessage = result.error || 'Profile fejlet med at loade'
         }
       } catch (error) {
         console.error('Profile loading error:', error)
-        this.errorMessage = 'Unable to connect to server. Please try again.'
+        this.errorMessage = 'Kunne ikke oprette forbindelse til server. Prøve igen.'
       } finally {
         this.isLoading = false
       }
@@ -62,7 +62,7 @@ export default {
       // Clear user session
       UserController.clearUserSession()
 
-      this.successMessage = 'Logged out successfully! Redirecting...'
+      this.successMessage = 'Du har logged ud! Redirecting...'
 
       // Redirect to home page
       setTimeout(() => {
@@ -102,7 +102,7 @@ export default {
         // Get user session to get userId
         const session = UserController.getUserSession()
         if (!session || !session.userId) {
-          this.errorMessage = 'Session expired. Please login again.'
+          this.errorMessage = 'Sessionen er udløbet. Log venligst ind igen.'
           this.redirectToLogin()
           return
         }
@@ -114,13 +114,13 @@ export default {
           this.user = { ...this.editableUser }
           this.isEditing = false
           this.hasChanges = false
-          this.successMessage = 'Profile updated successfully!'
+          this.successMessage = 'Profile er opdateret!'
         } else {
           this.errorMessage = result.error
         }
       } catch (error) {
         console.error('Update error:', error)
-        this.errorMessage = 'Failed to update profile. Please try again.'
+        this.errorMessage = 'Fejlet med at opdatere profile. Prøv venligst igen.'
       } finally {
         this.isLoading = false
       }
@@ -151,7 +151,7 @@ export default {
 
     async confirmDelete() {
       if (!this.deletePassword) {
-        this.deleteError = 'Password is required to delete your account'
+        this.deleteError = 'Dit password skal bruges til at slette din profile.'
         return
       }
 
@@ -162,7 +162,7 @@ export default {
         // Get user session to get userId
         const session = UserController.getUserSession()
         if (!session || !session.userId) {
-          this.deleteError = 'Session expired. Please login again.'
+          this.deleteError = 'Sessionen er udløbet. Log venligst ind igen .'
           return
         }
 
@@ -183,17 +183,17 @@ export default {
         if (deleteResult.success) {
           UserController.clearUserSession()
           this.showDeleteModal = false
-          this.successMessage = 'Account deleted successfully. Redirecting...'
+          this.successMessage = 'Profilen er slettet. Redirecting...'
 
           setTimeout(() => {
             this.$router.push('/')
           }, 2000)
         } else {
-          this.deleteError = deleteResult.error || 'Failed to delete account'
+          this.deleteError = deleteResult.error || 'Fejlet med at slette profilen.'
         }
       } catch (error) {
         console.error('Delete error:', error)
-        this.deleteError = 'Failed to delete account. Please try again.'
+        this.deleteError = 'Fejlet med at slette profilen. Prøv venligst igen.'
       } finally {
         this.isLoading = false
       }
@@ -207,8 +207,8 @@ export default {
     <div class="profile-container">
       <div class="profile-card">
         <header class="header">
-          <h1 class="profile-title">My Profile</h1>
-          <p class="profile-subtitle">Your account information</p>
+          <h1 class="profile-title">Din Profile</h1>
+          <p class="profile-subtitle">Profile information</p>
         </header>
 
         <!-- Loading Display -->
@@ -234,7 +234,7 @@ export default {
           <div class="profile-info">
             <div class="info-row">
               <div class="info-group">
-                <label>Username</label>
+                <label>Brugernavn</label>
                 <div class="input-container">
                   <input
                     v-if="isEditing"
@@ -259,7 +259,7 @@ export default {
 
             <div class="info-row">
               <div class="info-group">
-                <label>First Name</label>
+                <label>Fornavn</label>
                 <div class="input-container">
                   <input
                     v-if="isEditing"
@@ -282,7 +282,7 @@ export default {
               </div>
 
               <div class="info-group">
-                <label>Last Name</label>
+                <label>Efternavn</label>
                 <div class="input-container">
                   <input
                     v-if="isEditing"
@@ -306,12 +306,12 @@ export default {
             </div>
 
             <div class="info-group">
-              <label>Email Address (Login Credential)</label>
+              <label>Email Address (Loginoplysninger)</label>
               <div class="info-value sealed-value">{{ user.Email }}</div>
             </div>
 
             <div class="info-group">
-              <label>Phone Number</label>
+              <label>Telefon Nummer</label>
               <div class="input-container">
                 <input
                   v-if="isEditing"
@@ -334,7 +334,7 @@ export default {
             </div>
 
             <div class="info-group" v-if="user.FriendCode">
-              <label>Friend Code</label>
+              <label>Venne-kode</label>
               <div class="info-value friend-code">{{ user.FriendCode }}</div>
             </div>
           </div>
@@ -345,14 +345,14 @@ export default {
                 <span v-if="isLoading" class="loading-spinner">⟳</span>
                 {{ isLoading ? 'Saving...' : 'Save Changes' }}
               </button>
-              <button @click="cancelEditing" class="cancel-button">Cancel</button>
+              <button @click="cancelEditing" class="cancel-button">Afbryd</button>
             </div>
             <div v-else class="default-actions">
               <button @click="handleDeleteAccount" :disabled="isLoading" class="delete-button">
-                Delete Account
+                Slet profile
               </button>
-              <button @click="handleReturn" class="return-button">Return</button>
-              <button @click="handleLogout" class="logout-button">Log Out</button>
+              <button @click="handleReturn" class="return-button">Tilbage</button>
+              <button @click="handleLogout" class="logout-button">Log ud</button>
             </div>
           </div>
         </div>
@@ -360,7 +360,7 @@ export default {
         <!-- Login Link (if no user data) -->
         <footer v-if="!user && !isLoading" class="login-link">
           <p>
-            Need to sign in?
+            brug for at logge ind?
             <router-link to="/login" class="link">Login here</router-link>
           </p>
         </footer>
@@ -371,17 +371,17 @@ export default {
     <div v-if="showDeleteModal" class="modal-overlay" @click="cancelDelete">
       <div class="modal-content" @click.stop>
         <div class="modal-header">
-          <h3>Delete Account</h3>
+          <h3>Slet Profile</h3>
           <button @click="cancelDelete" class="modal-close">×</button>
         </div>
 
         <div class="modal-body">
           <p class="warning-text">
-            ⚠️ This action cannot be undone. Your account and all data will be permanently deleted.
+            ⚠️ Denne handling kan ikke fortrydes. Din profile og alt din data vil blive permanent slettet.
           </p>
 
           <div class="password-group">
-            <label for="delete-password">Enter your password to confirm:</label>
+            <label for="delete-password">Skriv dit password for at godkende:</label>
             <input
               id="delete-password"
               v-model="deletePassword"
@@ -395,7 +395,7 @@ export default {
         </div>
 
         <div class="modal-actions">
-          <button @click="cancelDelete" class="modal-cancel-btn">Cancel</button>
+          <button @click="cancelDelete" class="modal-cancel-btn">Fortryd</button>
           <button
             @click="confirmDelete"
             :disabled="isLoading || !deletePassword"

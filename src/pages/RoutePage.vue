@@ -1,65 +1,3 @@
-<template>
-  <v-main class="route-page">
-    <section v-if="loading" class="route-content">
-      <p class="error-message">Henter station...</p>
-    </section>
-
-    <section v-else-if="station" class="route-content">
-      <div class="map-wrapper">
-        <StationMap
-          :lat="station.lat"
-          :lng="station.lng"
-          :station-name="station.name"
-          :station-address="station.address"
-          :zoom="13"
-          :show-popup="false"
-          :show-zoom-control="false"
-          :route-origin="routeOrigin"
-          map-id="route-page-map"
-        />
-      </div>
-
-      <section class="route-panel">
-        <div class="drag-handle"></div>
-
-        <div class="route-form">
-          <div class="route-input-group">
-            <span class="route-dot start-dot"></span>
-            <input
-              v-model="startPoint"
-              type="text"
-              placeholder="Vælg startpunkt"
-              class="route-input"
-            />
-          </div>
-
-          <div class="route-line"></div>
-
-          <div class="route-input-group">
-            <span class="route-dot end-dot"></span>
-            <input
-              :value="station.address"
-              type="text"
-              class="route-input"
-              readonly
-            />
-          </div>
-
-          <div class="route-button-wrapper">
-            <BaseButton @click="handleOpenRoute">
-              Find rute
-            </BaseButton>
-          </div>
-        </div>
-      </section>
-    </section>
-
-    <section v-else class="route-content">
-      <p class="error-message">{{ errorMessage }}</p>
-    </section>
-  </v-main>
-</template>
-
 <script>
 import BaseButton from '../Components/BaseButton.vue'
 import StationMap from '../Components/StationMap.vue'
@@ -171,6 +109,68 @@ export default {
   }
 }
 </script>
+
+<template>
+  <v-main class="route-page">
+    <section v-if="loading" class="route-content">
+      <p class="error-message">Henter station...</p>
+    </section>
+
+    <section v-else-if="station" class="route-content">
+      <div class="map-wrapper">
+        <StationMap
+          :lat="station.lat"
+          :lng="station.lng"
+          :station-name="station.name"
+          :station-address="station.address"
+          :zoom="13"
+          :show-popup="false"
+          :show-zoom-control="false"
+          :route-origin="routeOrigin"
+          map-id="route-page-map"
+        />
+      </div>
+
+      <section class="route-panel">
+        <div class="drag-handle"></div>
+
+        <div class="route-form">
+          <div class="route-input-group">
+            <span class="route-dot start-dot"></span>
+            <input
+              v-model="startPoint"
+              type="text"
+              placeholder="Vælg startpunkt"
+              class="route-input"
+            />
+          </div>
+
+          <div class="route-line"></div>
+
+          <div class="route-input-group">
+            <span class="route-dot end-dot"></span>
+            <input
+              :value="station.address"
+              type="text"
+              class="route-input"
+              readonly
+            />
+          </div>
+
+          <div class="route-button-wrapper">
+            <BaseButton @click="handleOpenRoute">
+              Find rute
+            </BaseButton>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section v-else class="route-content">
+      <p class="error-message">{{ errorMessage }}</p>
+    </section>
+  </v-main>
+</template>
 
 <style scoped>
 .route-page {

@@ -35,14 +35,14 @@ export default {
 
       // Validate form
       if (!this.validateForm()) {
-        this.errorMessage = 'Please fix the validation errors below'
+        this.errorMessage = 'Ret venligst valideringsfejlene nedenfor'
         return
       }
 
       // Check if passwords match
       if (this.formData.password !== this.formData.confirmPassword) {
-        this.errors.confirmPassword = 'Passwords do not match'
-        this.errorMessage = 'Please fix the validation errors below'
+        this.errors.confirmPassword = 'Passwords er ikke ens'
+        this.errorMessage = 'Ret venligst valideringsfejlene nedenfor'
         return
       }
 
@@ -53,7 +53,7 @@ export default {
         const result = await UserController.createUser(this.formData)
 
         if (result.success) {
-          this.successMessage = 'Account created successfully! You can now login.'
+          this.successMessage = 'Profile oprettet! Du kan nu logge ind.'
           this.resetForm()
 
           // Redirect to login page after successful signup
@@ -65,7 +65,7 @@ export default {
         }
       } catch (error) {
         console.error('Signup error:', error)
-        this.errorMessage = 'Unable to connect to server. Please try again.'
+        this.errorMessage = 'Kunne ikke oprette forbindelse til server. Prøve venligst igen.'
       } finally {
         this.isLoading = false
       }
@@ -76,53 +76,53 @@ export default {
 
       // Username validation
       if (!this.formData.Username) {
-        this.errors.Username = 'Username is required'
+        this.errors.Username = 'Brugernavn mangler'
         isValid = false
       } else if (this.formData.Username.length < 3) {
-        this.errors.Username = 'Username must be at least 3 characters'
+        this.errors.Username = 'Brugernavn skal være mindst 3 tegn langt.'
         isValid = false
       }
 
       // First name validation
       if (!this.formData.Firstname) {
-        this.errors.Firstname = 'First name is required'
+        this.errors.Firstname = 'Fornavn mangler'
         isValid = false
       }
 
       // Last name validation
       if (!this.formData.Lastname) {
-        this.errors.Lastname = 'Last name is required'
+        this.errors.Lastname = 'Efternavn mangler'
         isValid = false
       }
 
       // Email validation
       if (!this.formData.Email) {
-        this.errors.Email = 'Email is required'
+        this.errors.Email = 'Email mangler'
         isValid = false
       } else if (!this.validateEmail(this.formData.Email)) {
-        this.errors.Email = 'Please enter a valid email address'
+        this.errors.Email = 'Vær venlig at indskrive en gyldig email addresse.'
         isValid = false
       }
 
       // Password validation
       if (!this.formData.password) {
-        this.errors.password = 'Password is required'
+        this.errors.password = 'Password mangler'
         isValid = false
       } else if (!this.validatePassword(this.formData.password)) {
         this.errors.password =
-          'Password must be at least 8 characters with uppercase, lowercase, and number'
+          'Password skal være mindst 8 tgen langt. Det skal inkludere tal, store og små bogstaver'
         isValid = false
       }
 
       // Confirm password validation
       if (!this.formData.confirmPassword) {
-        this.errors.confirmPassword = 'Please confirm your password'
+        this.errors.confirmPassword = 'Bekræft dit password'
         isValid = false
       }
 
       // Phone validation
       if (!this.formData.Tlf) {
-        this.errors.Tlf = 'Phone number is required'
+        this.errors.Tlf = 'Telefonnummer mangler'
         isValid = false
       }
 
@@ -168,8 +168,8 @@ export default {
     <div class="signup-container">
       <div class="signup-card">
         <header class="header">
-          <h1 class="signup-title">Create Your Account</h1>
-          <p class="signup-subtitle">Join us and start your journey</p>
+          <h1 class="signup-title">Oprette din profile</h1>
+          <p class="signup-subtitle">Tilmeld dig og start din rejse til bedre genbrugs bevidsthed</p>
         </header>
 
         <!-- Error Display -->
@@ -188,7 +188,7 @@ export default {
         <form @submit.prevent="handleSignup" class="signup-form">
           <div class="form-row">
             <div class="form-group">
-              <label for="username">Username</label>
+              <label for="username">Brugernavn</label>
               <input
                 id="username"
                 v-model="formData.Username"
@@ -205,7 +205,7 @@ export default {
 
           <div class="form-row">
             <div class="form-group">
-              <label for="firstname">First Name</label>
+              <label for="firstname">Fornavn</label>
               <input
                 id="firstname"
                 v-model="formData.Firstname"
@@ -220,7 +220,7 @@ export default {
             </div>
 
             <div class="form-group">
-              <label for="lastname">Last Name</label>
+              <label for="lastname">Efternavn</label>
               <input
                 id="lastname"
                 v-model="formData.Lastname"
@@ -236,13 +236,13 @@ export default {
           </div>
 
           <div class="form-group">
-            <label for="email">Email Address</label>
+            <label for="email">Email Addresse</label>
             <input
               id="email"
               v-model="formData.Email"
               type="email"
               name="Email"
-              placeholder="Enter your email address"
+              placeholder="Indskrik din email"
               :class="{ error: errors.Email }"
               :disabled="isLoading"
               required
@@ -257,25 +257,25 @@ export default {
               v-model="formData.password"
               type="password"
               name="password"
-              placeholder="Create a strong password"
+              placeholder="Lav et stærkt password"
               :class="{ error: errors.password }"
               :disabled="isLoading"
               required
             />
             <span v-if="errors.password" class="error-text">{{ errors.password }}</span>
             <div class="password-requirements">
-              At least 8 characters with uppercase, lowercase, and number
+              Skal være mindst 8 tegn langt og inkludere tal, store og små bogstaver
             </div>
           </div>
 
           <div class="form-group">
-            <label for="confirm-password">Confirm Password</label>
+            <label for="confirm-password">Bekræft Password</label>
             <input
               id="confirm-password"
               v-model="formData.confirmPassword"
               type="password"
               name="confirmPassword"
-              placeholder="Confirm your password"
+              placeholder="Bekræft password"
               :class="{ error: errors.confirmPassword }"
               :disabled="isLoading"
               required
@@ -286,13 +286,13 @@ export default {
           </div>
 
           <div class="form-group">
-            <label for="tlf">Phone Number</label>
+            <label for="tlf">Telefonnummer</label>
             <input
               id="tlf"
               v-model="formData.Tlf"
               type="tel"
               name="Tlf"
-              placeholder="Enter your phone number"
+              placeholder="Indskriv dit telefonnummer"
               :class="{ error: errors.Tlf }"
               :disabled="isLoading"
               required
@@ -309,8 +309,8 @@ export default {
         <!-- Login Link -->
         <footer class="login-link">
           <p>
-            Already have an account?
-            <router-link to="/login" class="link">Log in here</router-link>
+            Har du allerede en profile?
+            <router-link to="/login" class="link">Log ind</router-link>
           </p>
         </footer>
       </div>

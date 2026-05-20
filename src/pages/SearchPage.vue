@@ -126,7 +126,7 @@ export default {
       )
     },
     handleAddToCart(item) {
-      console.log(`Added "${item.Name}" to cart!`)
+      console.log(`Tilføjet "${item.Name}" til genbrugs liste!`)
     },
   },
   emits: ['nav-to-detail', 'AddToCart'],

@@ -1,48 +1,3 @@
-<template>
-  <div class="cart-page">
-    <div class="cart-content">
-      <h1>Cart</h1>
-
-      <v-row>
-        <v-col v-for="item in items" :key="item.name" cols="12">
-          <v-card class="pa-4 d-flex align-start item-card" theme="light">
-            <img :src="item.image" :alt="item.category" class="category-icon" />
-
-            <div class="card-content">
-              <v-card-title>{{ item.name }}</v-card-title>
-
-              <v-card-subtitle>Sorteres som</v-card-subtitle>
-
-              <div class="category-box">{{ item.category }}</div>
-
-              <div class="d-flex align-center mt-1">
-                <v-btn variant="text" @click="decrease(item)">—</v-btn>
-                <span class="mx-2">{{ item.amount }}</span>
-                <v-btn variant="text" @click="increase(item)">+</v-btn>
-              </div>
-            </div>
-          </v-card>
-        </v-col>
-      </v-row>
-    </div>
-
-    <div class="cart-footer-area">
-      <v-card class="pa-4 item-card action-card add-item-card">
-        <span class="add-icon">+</span>
-        Tilføj nyt affald
-      </v-card>
-
-      <p class="points-text">
-        Optjen <span class="points-number">{{ totalPoints }}</span> point ved denne sortering!
-      </p>
-
-      <base-button class="pa-4 action-card register-card" @click="goToThankYouView">
-        Registrer affald
-      </base-button>
-    </div> 
-  </div>
-</template>
-
 <script>
 import plasticIcon from '../Components/Images/RecycleIconPlastic.jpg'
 import metalIcon from '../Components/Images/RecycleIconMetal.jpg'
@@ -86,6 +41,51 @@ export default {
   },
 }
 </script>
+
+<template>
+  <div class="cart-page">
+    <div class="cart-content">
+      <h1>genbrugs liste</h1>
+
+      <v-row>
+        <v-col v-for="item in items" :key="item.name" cols="12">
+          <v-card class="pa-4 d-flex align-start item-card" theme="light">
+            <img :src="item.image" :alt="item.category" class="category-icon" />
+
+            <div class="card-content">
+              <v-card-title>{{ item.name }}</v-card-title>
+
+              <v-card-subtitle>Sorteres som</v-card-subtitle>
+
+              <div class="category-box">{{ item.category }}</div>
+
+              <div class="d-flex align-center mt-1">
+                <v-btn variant="text" @click="decrease(item)">—</v-btn>
+                <span class="mx-2">{{ item.amount }}</span>
+                <v-btn variant="text" @click="increase(item)">+</v-btn>
+              </div>
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
+
+    <div class="cart-footer-area">
+      <v-card class="pa-4 item-card action-card add-item-card">
+        <span class="add-icon">+</span>
+        Tilføj nyt affald
+      </v-card>
+
+      <p class="points-text">
+        Optjen <span class="points-number">{{ totalPoints }}</span> point ved denne sortering!
+      </p>
+
+      <base-button class="pa-4 action-card register-card" @click="goToThankYouView">
+        Registrer affald
+      </base-button>
+    </div> 
+  </div>
+</template>
 
 <style scoped>
 .cart-page {
