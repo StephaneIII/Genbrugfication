@@ -1,4 +1,294 @@
 <script>
+export default {
+  name: 'SearchPage',
+
+  data() {
+    return {
+      searchParameter: '',
+      categories: [
+        {
+          name: 'Metal',
+          image: '/images/icons/metal.png',
+          route: '/category/metal',
+        },
+        {
+          name: 'Restaffald',
+          image: '/images/icons/restaffald.png',
+          route: '/category/restaffald',
+        },
+        {
+          name: 'Plast',
+          image: '/images/icons/plast.png',
+          route: '/category/plast',
+        },
+        {
+          name: 'Madaffald',
+          image: '/images/icons/madaffald.png',
+          route: '/category/madaffald',
+        },
+        {
+          name: 'Papir',
+          image: '/images/icons/papir.png',
+          route: '/category/papir',
+        },
+        {
+          name: 'Farligt affald',
+          image: '/images/icons/farligt-affald.png',
+          route: '/category/farligt-affald',
+        },
+      ],
+
+      popularSearches: ['Pizzæske', 'Blød plast', 'Kaffeposer', 'Batteri'],
+    }
+  },
+
+  computed: {
+    filteredCategories() {
+      return this.categories.filter((category) =>
+        category.name.toLowerCase().includes(this.searchParameter.toLowerCase()),
+      )
+    },
+  },
+
+  methods: {
+    goToCategory(route) {
+      this.$router.push(route)
+    },
+
+    searchPopular(search) {
+      this.searchParameter = search
+    },
+  },
+}
+</script>
+
+<template>
+  <main class="search-page">
+    <section class="search-hero">
+      <h1>Sortering</h1>
+
+      <form class="search-form" @submit.prevent>
+        <input
+          v-model="searchParameter"
+          type="text"
+          placeholder="Søg efter skrald"
+          class="search-input"
+        />
+
+        <button class="search-button" type="submit">
+          Søg
+        </button>
+      </form>
+    </section>
+
+    <section class="category-section">
+      <h2>Vælg kategori</h2>
+
+      <div class="category-grid">
+        <button
+          v-for="category in filteredCategories"
+          :key="category.name"
+          class="category-card"
+          type="button"
+          @click="goToCategory(category.route)"
+        >
+          <img :src="category.image" :alt="category.name" class="category-icon" />
+          <span>{{ category.name }}</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="popular-section">
+      <h2>Mest søgte lige nu</h2>
+
+      <button
+        v-for="search in popularSearches"
+        :key="search"
+        class="popular-item"
+        type="button"
+        @click="searchPopular(search)"
+      >
+        <span>{{ search }}</span>
+        <span class="popular-arrow">›</span>
+      </button>
+    </section>
+  </main>
+</template>
+
+<style scoped>
+.search-page {
+  min-height: calc(100vh - var(--header-height));
+  background-color: var(--color-bg);
+  padding: var(--gap-med);
+  font-family: var(--font-body);
+  color: var(--color-text);
+}
+
+.search-hero {
+  text-align: center;
+  margin-bottom: var(--gap-large);
+}
+
+.search-hero h1 {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin-bottom: var(--gap-small);
+}
+
+.search-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-small);
+}
+
+.search-input {
+  width: 100%;
+  max-width: 320px;
+  height: 44px;
+  padding: 0 var(--gap-med);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-med);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: var(--color-primary);
+}
+
+.search-button {
+  min-width: 120px;
+  height: 40px;
+  border: none;
+  border-radius: var(--border-radius-med);
+  background-color: var(--color-accent);
+  color: var(--color-text-light);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.category-section {
+  background-color: var(--color-surface-muted);
+  border-radius: var(--border-radius-large);
+  padding: var(--gap-large) var(--gap-med);
+  margin-bottom: var(--gap-large);
+}
+
+.category-section h2,
+.popular-section h2 {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin-bottom: var(--gap-med);
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap-med);
+}
+
+.category-card {
+  aspect-ratio: 1 / 1;
+  background-color: var(--color-text);
+  border: none;
+  border-radius: var(--border-radius-small);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-small);
+  cursor: pointer;
+}
+
+.category-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.category-card span {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-light);
+  text-transform: uppercase;
+}
+
+.popular-section {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-large);
+  padding: var(--gap-med);
+  box-shadow: var(--shadow);
+}
+
+.popular-item {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--gap-med) 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  cursor: pointer;
+}
+
+.popular-item:last-child {
+  border-bottom: none;
+}
+
+.popular-arrow {
+  font-size: 1.8rem;
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 768px) {
+  .search-page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: var(--gap-large);
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .search-form {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .search-page {
+    max-width: 900px;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+</style>
+
+
+
+<!-- gammelkode -->
+ <!-- <script>
 import { purple } from 'vuetify/util/colors'
 import ItemComponent from '../Components/SearchComponents/ItemComponent.vue'
 import BaseButton from '@/Components/BaseButton.vue';
@@ -289,4 +579,4 @@ export default {
     min-width: 120px;
   }
 }
-</style>
+</style> -->
