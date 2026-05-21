@@ -1,16 +1,58 @@
 <script>
-import appleJuice from '@/Components/Images/applejuice.png'
-import BaseButton from '@/Components/BaseButton.vue';
+import BaseButton from '@/Components/BaseButton.vue'
+
 export default {
   components: {
     BaseButton,
   },
   data() {
     return {
+      earnedPoints: 0,
+      totalPoints: 0,
     }
   },
 
+  mounted() {
+    this.applyScoresFromRouteOrStorage()
+  },
+
+  watch: {
+    '$route.query': {
+      deep: true,
+      handler() {
+        this.applyScoresFromRouteOrStorage()
+      },
+    },
+  },
+
   methods: {
+    toQueryValue(value) {
+      if (Array.isArray(value)) {
+        return value[0]
+      }
+
+      return value
+    },
+    toSafeNumber(value) {
+      const parsed = Number(value)
+      return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0
+    },
+    applyScoresFromRouteOrStorage() {
+      const earnedQuery = this.toQueryValue(this.$route.query.earned)
+      const totalQuery = this.toQueryValue(this.$route.query.total)
+
+      const earnedFromQuery = this.toSafeNumber(earnedQuery)
+      const totalFromQuery = this.toSafeNumber(totalQuery)
+
+      const earnedFromStorage = this.toSafeNumber(sessionStorage.getItem('lastEarnedPoints'))
+      const totalFromStorage = this.toSafeNumber(sessionStorage.getItem('lastTotalPoints'))
+
+      const earned = earnedFromQuery > 0 ? earnedFromQuery : earnedFromStorage
+      const totalCandidate = totalFromQuery > 0 ? totalFromQuery : totalFromStorage
+
+      this.earnedPoints = earned
+      this.totalPoints = totalCandidate >= earned ? totalCandidate : earned
+    },
     goToHome() {
       this.$router.push(`/`)
     },
@@ -23,25 +65,23 @@ export default {
     <article class="content">
       <p class="takBesked">Tak for at gøre en forskel!</p>
 
-      <hr>
+      <hr />
 
       <p class="optjentBesked">
         Du har optjent
-        <span class="points-number">{{ trashCount * 10 }}</span>
+        <span class="points-number">{{ earnedPoints }}</span>
         point ved denne sortering!
       </p>
 
-      <hr>
+      <hr />
 
       <p>
         Du har nu
-        <span class="points-number">{{ totalPoints * 10 }}</span>
+        <span class="points-number">{{ totalPoints }}</span>
         point i alt!
       </p>
 
-      <BaseButton class="baseButton" @click="goToHome">
-        Hjem
-      </BaseButton>
+      <BaseButton class="baseButton" @click="goToHome"> Hjem </BaseButton>
     </article>
   </main>
 </template>
