@@ -13,7 +13,7 @@ export default {
 
 <style scoped>
 .base-button {
-  background-color: var(--accent-color) !important;
+  background-color: var(--accent-color);
   color: var(--dark-text) !important;
   font-family: var(--font-body);
   font-weight: 600;

@@ -66,7 +66,7 @@
   /* Layout */
   --max-width: 1200px;
   --header-height: 80px;
-  --footer-height: 64px;
+  --footer-height: 40px;
 
   /* Transitions */
   --transition-fast: 0.2s ease;

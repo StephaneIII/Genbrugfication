@@ -1,10 +1,12 @@
 <script>
 import appleJuice from '@/Components/Images/applejuice.png'
-import BaseButton from '@/Components/BaseButton.vue';
+import BaseButton from '@/Components/BaseButton.vue'
+
 export default {
   components: {
     BaseButton,
   },
+
   data() {
     return {
       trashCount: 0,
@@ -24,188 +26,325 @@ export default {
     },
 
     goToMap() {
-      this.$router.push(`/PostcodePage`)
+      this.$router.push('/PostcodePage')
     },
 
     goToCheckout() {
-      this.$router.push(`/Cart`)
+      this.$router.push('/Cart')
     },
   },
 }
 </script>
 
 <template>
-  <div class="page">
-    <div class="image-card">
-      <img :src="trash.image" class="trash-img" />
-      <button class="floating-btn" @click="goToCheckout"><img src="@/Components/Images/TrashCanIcon.png" alt="Checkout" style="width: 40px; height: 40px;" /></button>
-      <p class="trashcount">{{ trashCount }}</p>
-    </div>
+  <main class="page">
+    <section class="detail-layout">
+      <div class="product-card">
+        <button class="floating-btn" @click="goToCheckout">
+          <span class="trashcount">{{ trashCount }}</span>
+          <img
+            src="@/Components/Images/TrashCanIcon.png"
+            alt="Checkout"
+          />
+        </button>
 
-    <h1>{{ trash.name }}</h1>
+        <img :src="trash.image" class="trash-img" :alt="trash.name" />
 
-    <div class="info-box">
-      <div class="info-wrapper">
-        <h3>Hjemme</h3>
-        <p>{{ trash.home }}</p>
+        <h1>{{ trash.name }}</h1>
       </div>
 
-      <div class="info-wrapper">
-        <h3>Genbrugsstation</h3>
-        <p>{{ trash.station }}</p>
-      </div>
-    </div>
+      <div class="divider"></div>
 
-    <div class="buttons">
+      <section class="info-card">
+        <article class="info-row">
+          <div class="icon-box">
+            <img src="@/Components/Images/TrashCanIcon.png" alt="" />
+            <span>PLAST</span>
+          </div>
+
+          <div class="info-text">
+            <h3>Hjemme</h3>
+            <p>{{ trash.home }}</p>
+          </div>
+
+          <span class="arrow">›</span>
+        </article>
+
+        <article class="info-row">
+          <div class="icon-box">
+            <img src="@/Components/Images/TrashCanIcon.png" alt="" />
+            <span>PLAST</span>
+          </div>
+
+          <div class="info-text">
+            <h3>Genbrugsstation</h3>
+            <p>{{ trash.station }}</p>
+          </div>
+
+          <span class="arrow">›</span>
+        </article>
+      </section>
+    </section>
+
+    <section class="buttons">
       <BaseButton @click="addtrash">
-        Tilføj Affald
+        Tilføj affald
       </BaseButton>
-      <BaseButton @click="goToMap">
-        Vis kort
+
+      <BaseButton class="secondary-btn" @click="goToMap">
+        Kort
       </BaseButton>
-    </div>
-  </div>
+    </section>
+  </main>
 </template>
 
 <style scoped>
 .page {
-  background: var(--primary-bg-color);
-  color: white;
-  padding: 10px;
-  width: 100%;
+  min-height: calc(100dvh - var(--header-height));
+  background: var(--color-bg);
+  padding: var(--gap-med);
+  padding-bottom: var(--gap-large);
+  font-family: var(--font-body);
+  color: var(--color-text);
+  box-sizing: border-box;
 }
 
-.image-card {
-  background: var(--secondary-color);
-  padding: 10px;
-  margin-top: 10px;
-  position: relative;
+.detail-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-large);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.product-card,
+.info-card,
+.buttons {
   width: 100%;
-  height: 300px;
-  overflow: hidden;
-  border-radius: 15px;
+  max-width: 430px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.product-card {
+  position: relative;
+  background: var(--color-surface-muted);
+  border-radius: var(--border-radius-large);
+  padding: var(--gap-large);
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-card);
 }
 
 .trash-img {
-  width: 30%;
+  width: 55%;
+  max-width: 150px;
   height: auto;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  translate: -50% -50%;
-  padding: 10px;
+  object-fit: contain;
+}
+
+h1 {
+  margin-top: var(--gap-med);
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h2);
+  text-align: center;
 }
 
 .floating-btn {
   position: absolute;
-  top: 30px;
-  right: 5px;
-  border-radius: 50%;
-  box-shadow: var(--shadow);
-  font-family: var(--font-body);
-}
-
-h1 {
-  text-align: center;
-  font-family: var(--font-heading);
-  margin-top: 10px;
-  /* margin-top: 1rem; */
-}
-
-.info-box {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  background: var(--secondary-color);
-  color: white;
-  padding: 10px;
-  margin-top: 10px;
-  height: 250px;
-  font-family: var(--font-body);
-  border-radius: 15px;
-}
-
-.info-wrapper > h3{
-  margin-bottom: 0.4rem;
-}
-
-.buttons {
-  display: flex;
-  gap: 5px;
-  margin-top: 10px;
-}
-
-button {
-  flex: 1;
-  background: var(--accent-color);
+  top: var(--gap-med);
+  right: var(--gap-med);
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--border-radius-round);
   border: none;
-  padding: 8px;
-  font-family: var(--font-body);
+  background: var(--color-accent);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.floating-btn img {
+  width: 2rem;
+  height: 2rem;
 }
 
 .trashcount {
   position: absolute;
-  top: 20px;
-  right: 10px;
-  font-family: var(--font-body);
+  top: -0.6rem;
+  right: -0.1rem;
+  color: var(--color-text-light);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
 }
 
-@media (max-height: 700px) {
-  .image-card {
-background: var(--secondary-color);
-  padding: 10px;
-  margin-top: 10px;
-  position: relative;
-  width: 100%;
-  height: 300px;
+.info-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-large);
   overflow: hidden;
-  border-radius: 15px;
+  box-shadow: var(--shadow);
+}
+
+.info-row {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  align-items: center;
+  gap: var(--gap-med);
+  padding: var(--gap-med);
+}
+
+.info-row + .info-row {
+  border-top: 1px solid var(--color-border);
+}
+
+.icon-box {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.icon-box img {
+  width: 32px;
+  height: 32px;
+  filter: brightness(0) invert(1);
+}
+
+.info-text h3 {
+  margin-bottom: var(--gap-xs);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-body);
+  color: var(--color-text);
+}
+
+.info-text p {
+  font-size: var(--font-size-small);
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
+.arrow {
+  font-size: 2rem;
+  color: var(--color-text);
+}
+
+.buttons {
+  margin-top: var(--gap-large);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-med);
+}
+
+.buttons :deep(button) {
+  width: 100%;
+  border-radius: var(--border-radius-med);
+}
+
+.secondary-btn :deep(button),
+.buttons :deep(.secondary-btn) {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+/* Tablet: svarer til --breakpoint-tablet: 768px */
+@media (min-width: 768px) {
+  .page {
+    padding: var(--gap-xl) var(--gap-large);
+  }
+
+  .product-card,
+  .info-card,
+  .buttons {
+    max-width: 520px;
+  }
+
+  .product-card {
+    min-height: 300px;
+  }
+
+  .trash-img {
+    width: 50%;
+    max-width: 170px;
+  }
+
+  h1 {
+    font-size: var(--font-size-h1);
+  }
+
+  .info-row {
+    grid-template-columns: 76px 1fr auto;
+    padding: 1.25rem;
+  }
+
+  .icon-box {
+    width: 76px;
+    height: 76px;
+  }
+
+  .icon-box img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .info-text h3 {
+    font-size: var(--font-size-h3);
+  }
+
+  .info-text p {
+    font-size: var(--font-size-body);
   }
 }
 
+/* Desktop: svarer til --breakpoint-desktop: 1024px */
+@media (min-width: 1024px) {
+  .page {
+    padding: var(--gap-xl);
+  }
 
-@media (min-height: 840px) {
-  .image-card {
-  background: var(--secondary-color);
-  padding: 10px;
-  margin-top: 10px;
-  position: relative;
-  width: 100%;
-  height: 400px;
-  overflow: hidden;
-  border-radius: 15px;
+  .detail-layout {
+    grid-template-columns: 1fr 1px 1fr;
+    align-items: center;
+  }
+
+  .product-card {
+    max-width: 430px;
+    min-height: 330px;
+  }
+
+  .trash-img {
+    max-width: 170px;
+  }
+
+  .divider {
+    width: 1px;
+    height: 300px;
+    background: var(--color-border);
+  }
+
+  .info-card {
+    max-width: 430px;
+  }
+
+  .buttons {
+    max-width: 860px;
+  }
 }
 
-.info-box {
-  background: var(--secondary-color);
-  color: white;
-  padding: 10px;
-  margin-top: 10px;
-  height: 320px;
-  font-family: var(--font-body);
-  border-radius: 15px;
-}
-}
-@media (min-height: 900px) {
-  .image-card {
-  background: var(--secondary-color);
-  padding: 10px;
-  margin-top: 10px;
-  position: relative;
-  width: 100%;
-  height: 500px;
-  overflow: hidden;
-  border-radius: 15px;
-}
-
-.info-box {
-  background: var(--secondary-color);
-  color: white;
-  padding: 10px;
-  margin-top: 10px;
-  height: 300px;
-  font-family: var(--font-body);
-  border-radius: 15px;
-}
+/* Large desktop: svarer til --breakpoint-large-desktop: 1200px */
+@media (min-width: 1200px) {
+  .page {
+    padding: var(--gap-xl) 4rem;
+  }
 }
 </style>

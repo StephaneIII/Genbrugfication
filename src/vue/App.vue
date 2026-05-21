@@ -20,7 +20,11 @@ export default {
 <template>
   <v-app>
     <AppHeader />
-    <router-view @nav-to-detail="handleNavToDetail" />
+
+    <main>
+      <router-view @nav-to-detail="handleNavToDetail" />
+    </main>
+
     <AppFooter />
   </v-app>
 </template>

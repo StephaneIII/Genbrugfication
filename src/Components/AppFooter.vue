@@ -10,11 +10,12 @@
 <style scoped>
 .app-footer {
   width: 100%;
+  height: var(--footer-height);
   background-color: #4a4a4a;
-  padding: 0.75rem 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .footer-text {

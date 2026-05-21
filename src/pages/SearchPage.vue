@@ -120,7 +120,7 @@ export default {
 
 <style scoped>
 .search-page {
-  min-height: calc(100vh - var(--header-height));
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
   background-color: var(--color-bg);
   padding: var(--gap-med);
   font-family: var(--font-body);
@@ -275,7 +275,7 @@ export default {
 @media (min-width: 1024px) {
   .search-page {
     max-width: var(--max-width);
-    min-height: calc(100vh - 80px - var(--footer-height));
+    min-height: calc(100vh - var(--header-height) - var(--footer-height));
     padding: var(--gap-xl);
     margin: 0 auto;
     display: grid;
