@@ -39,6 +39,7 @@ export default {
         type="text"
         placeholder="Prøv: 4000, 4040, 4130"
         class="postcode-input"
+        @keyup.enter="handleShowMap"
       />
 
       <BaseButton class="postcode-button" @click="handleShowMap">
