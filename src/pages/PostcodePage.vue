@@ -29,12 +29,10 @@ export default {
 </script>
 
 <template>
-  <v-main class="postcode-page">
-    <AppHeader />
-
-    <section class="postcode-content">
+  <main class="postcode-page">
+    <section class="postcode-card">
       <h1 class="postcode-title">Indtast postnummer</h1>
-      <p class="postcode-subtitle">Se affaldsinfo i dit område</p>
+      <p class="postcode-subtitle">Find nærmeste genbrugsstation og se affaldsinfo i dit område.</p>
 
       <input
         v-model="postcode"
@@ -43,74 +41,108 @@ export default {
         class="postcode-input"
       />
 
-      <BaseButton @click="handleShowMap">
+      <BaseButton class="postcode-button" @click="handleShowMap">
         Vis kort
       </BaseButton>
 
-
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     </section>
-
-    <AppFooter />
-  </v-main>
+  </main>
 </template>
 
 <style scoped>
 .postcode-page {
-  min-height: 100vh;
-  background-color: var(--primary-bg-color);
+  width: 100%;
+  min-height: 100%;
+  background: var(--color-bg);
+  padding: var(--gap-large) var(--gap-med);
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.postcode-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 3.5rem 1.5rem 1.5rem;
+.postcode-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--color-surface-muted);
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--shadow-card);
+  padding: var(--gap-large);
   text-align: center;
+  margin-top: var(--gap-large);
 }
 
 .postcode-title {
   font-family: var(--font-heading);
-  color: var(--white-text);
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: var(--gap-med);
+  color: var(--color-primary);
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--gap-small);
 }
 
 .postcode-subtitle {
   font-family: var(--font-body);
-  color: var(--white-text);
-  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-body);
+  line-height: 1.5;
   margin-bottom: var(--gap-large);
 }
 
 .postcode-input {
   width: 100%;
-  max-width: 260px;
   height: 44px;
-  padding: 0 12px;
-  border: none;
+  padding: 0 var(--gap-med);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-med);
-  background-color: #f1f1f1;
-  color: var(--dark-text);
+  background: var(--color-surface);
+  color: var(--color-text);
   font-family: var(--font-body);
-  margin-bottom: var(--gap-large);
+  font-size: var(--font-size-small);
+  margin-bottom: var(--gap-med);
+  outline: none;
 }
 
-/* .show-map-btn {
-  background-color: var(--accent-color) !important;
-  color: var(--dark-text) !important;
-  font-family: var(--font-body);
-  font-weight: 600;
-  text-transform: none;
-  border-radius: 999px !important;
-  padding-inline: 1.5rem;
-} */
+.postcode-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow);
+}
+
+.postcode-button {
+  display: block;
+  width: 100%;
+}
+
+.postcode-button :deep(button) {
+  width: 100%;
+  border-radius: var(--border-radius-round);
+}
 
 .error-message {
-    margin-top: var(--gap-med);
+  margin-top: var(--gap-med);
+  color: var(--color-accent);
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+}
+
+@media (min-width: 768px) {
+  .postcode-page {
+    padding: var(--gap-xl) var(--gap-large);
+  }
+
+  .postcode-card {
+    max-width: 520px;
+    padding: var(--gap-xl);
+  }
+
+  .postcode-title {
+    font-size: var(--font-size-h1);
+  }
+}
+
+@media (min-width: 1024px) {
+  .postcode-card {
+    margin-top: var(--gap-xl);
+  }
 }
 </style>

@@ -20,11 +20,6 @@ body {
   overflow-x: hidden;
 }
 
-.v-application {
-  min-height: 100dvh;
-  background: var(--color-bg) !important;
-}
-
 .v-application__wrap {
   min-height: 100dvh;
   display: flex;
@@ -32,11 +27,18 @@ body {
   background: var(--color-bg) !important;
 }
 
-.v-application__wrap > main,
-.v-application__wrap > .page,
-.v-application__wrap > [data-v-app],
-.v-application__wrap > :not(header):not(footer) {
+.v-application__wrap > .header-wrapper {
+  flex: 0 0 auto;
+}
+
+.v-application__wrap > main {
   flex: 1;
+  width: 100%;
+  background: var(--color-bg);
+}
+
+.v-application__wrap > footer {
+  flex: 0 0 auto;
 }
 
 img,
