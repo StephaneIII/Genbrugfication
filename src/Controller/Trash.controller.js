@@ -1,6 +1,7 @@
 class TrashController {
   constructor() {
     this.apiBaseUrl = 'http://localhost:3001/api/trash'
+    this.categoriesApiBaseUrl = 'http://localhost:3001/api/trashcategories'
   }
 
   /**
@@ -49,6 +50,28 @@ class TrashController {
       return {
         success: false,
         data: null,
+        error: 'Could not connect to server',
+      }
+    }
+  }
+
+  /**
+   * Get all trash categories
+   */
+  async getAllTrashCategories() {
+    try {
+      const response = await fetch(this.categoriesApiBaseUrl)
+      const data = await response.json()
+
+      return {
+        success: response.ok,
+        data,
+        error: response.ok ? null : data.error,
+      }
+    } catch (error) {
+      return {
+        success: false,
+        data: [],
         error: 'Could not connect to server',
       }
     }
