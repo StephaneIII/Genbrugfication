@@ -1,6 +1,6 @@
 <script>
 import appleJuice from '@/Components/Images/applejuice.png'
-import BaseButton from '@/Components/BaseButton.vue';
+import BaseButton from '@/Components/BaseButton.vue'
 export default {
   components: {
     BaseButton,
@@ -35,36 +35,55 @@ export default {
 </script>
 
 <template>
-  <div class="page">
-    <div class="image-card">
-      <img :src="trash.image" class="trash-img" />
-      <button class="floating-btn" @click="goToCheckout"><img src="@/Components/Images/TrashCanIcon.png" alt="Checkout" style="width: 40px; height: 40px;" /></button>
-      <p class="trashcount">{{ trashCount }}</p>
-    </div>
+  <main class="page">
+    <article class="trash-detail">
+      <section class="image-card" :aria-label="`${trash.name} billede og handlingsmuligheder`">
+        <img :src="trash.image" :alt="trash.name" class="trash-img" />
 
-    <h1>{{ trash.name }}</h1>
+        <button
+          type="button"
+          class="floating-btn"
+          aria-label="gå til checkout "
+          @click="goToCheckout"
+        >
+          <img
+            src="@/Components/Images/TrashCanIcon.png"
+            alt=""
+            aria-hidden="true"
+            class="checkout-icon"
+          />
+        </button>
 
-    <div class="info-box">
-      <div class="info-wrapper">
-        <h3>Hjemme</h3>
-        <p>{{ trash.home }}</p>
-      </div>
+        <output class="trashcount" aria-label="Antal affald tilføjet">
+          {{ trashCount }}
+        </output>
+      </section>
 
-      <div class="info-wrapper">
-        <h3>Genbrugsstation</h3>
-        <p>{{ trash.station }}</p>
-      </div>
-    </div>
+      <header>
+        <h1>{{ trash.name }}</h1>
+      </header>
 
-    <div class="buttons">
-      <BaseButton @click="addtrash">
-        Tilføj Affald
-      </BaseButton>
-      <BaseButton @click="goToMap">
-        Vis kort
-      </BaseButton>
-    </div>
-  </div>
+      <section class="info-box" aria-labelledby="sorting-info-heading">
+        <h2 id="sorting-info-heading" class="sr-only">Sorteringsinformation</h2>
+
+        <section class="info-wrapper" aria-labelledby="home-heading">
+          <h3 id="home-heading">Hjemme</h3>
+          <p>{{ trash.home }}</p>
+        </section>
+
+        <section class="info-wrapper" aria-labelledby="station-heading">
+          <h3 id="station-heading">Genbrugsstation</h3>
+          <p>{{ trash.station }}</p>
+        </section>
+      </section>
+
+      <nav class="buttons" aria-label="Affaldshandlinger">
+        <BaseButton @click="addtrash"> Tilføj Affald </BaseButton>
+
+        <BaseButton @click="goToMap"> Vis kort </BaseButton>
+      </nav>
+    </article>
+  </main>
 </template>
 
 <style scoped>
@@ -125,7 +144,7 @@ h1 {
   border-radius: 15px;
 }
 
-.info-wrapper > h3{
+.info-wrapper > h3 {
   margin-bottom: 0.4rem;
 }
 
@@ -135,7 +154,7 @@ h1 {
   margin-top: 10px;
 }
 
-button {
+.buttons button {
   flex: 1;
   background: var(--accent-color);
   border: none;
@@ -149,63 +168,82 @@ button {
   right: 10px;
   font-family: var(--font-body);
 }
+.checkout-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.trash-detail {
+  width: 100%;
+}
 
 @media (max-height: 700px) {
   .image-card {
-background: var(--secondary-color);
-  padding: 10px;
-  margin-top: 10px;
-  position: relative;
-  width: 100%;
-  height: 300px;
-  overflow: hidden;
-  border-radius: 15px;
+    background: var(--secondary-color);
+    padding: 10px;
+    margin-top: 10px;
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 15px;
   }
 }
 
-
 @media (min-height: 840px) {
   .image-card {
-  background: var(--secondary-color);
-  padding: 10px;
-  margin-top: 10px;
-  position: relative;
-  width: 100%;
-  height: 400px;
-  overflow: hidden;
-  border-radius: 15px;
-}
+    background: var(--secondary-color);
+    padding: 10px;
+    margin-top: 10px;
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 15px;
+  }
 
-.info-box {
-  background: var(--secondary-color);
-  color: white;
-  padding: 10px;
-  margin-top: 10px;
-  height: 320px;
-  font-family: var(--font-body);
-  border-radius: 15px;
-}
+  .info-box {
+    background: var(--secondary-color);
+    color: white;
+    padding: 10px;
+    margin-top: 10px;
+    height: 320px;
+    font-family: var(--font-body);
+    border-radius: 15px;
+  }
 }
 @media (min-height: 900px) {
   .image-card {
-  background: var(--secondary-color);
-  padding: 10px;
-  margin-top: 10px;
-  position: relative;
-  width: 100%;
-  height: 500px;
-  overflow: hidden;
-  border-radius: 15px;
-}
+    background: var(--secondary-color);
+    padding: 10px;
+    margin-top: 10px;
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 15px;
+  }
 
-.info-box {
-  background: var(--secondary-color);
-  color: white;
-  padding: 10px;
-  margin-top: 10px;
-  height: 300px;
-  font-family: var(--font-body);
-  border-radius: 15px;
-}
+  .info-box {
+    background: var(--secondary-color);
+    color: white;
+    padding: 10px;
+    margin-top: 10px;
+    height: 300px;
+    font-family: var(--font-body);
+    border-radius: 15px;
+  }
 }
 </style>

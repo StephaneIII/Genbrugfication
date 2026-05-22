@@ -3,6 +3,220 @@ import Checkout from '../models/checkout.model.js'
 import CheckoutItem from '../models/checkout-item.model.js'
 import Trash from '../models/trash.model.js'
 
+const resolveCheckoutId = (checkout: any) => checkout.CheckoutID ?? checkout.ID ?? checkout.id
+
+const toPlain = (value: any) => {
+  if (!value) {
+    return null
+  }
+
+  return typeof value.toJSON === 'function' ? value.toJSON() : value
+}
+
+const getOrCreateOpenCheckout = async (userId: number) => {
+  let checkout = await Checkout.findOne({
+    where: { UID: userId, Locked: false },
+  })
+
+  if (!checkout) {
+    checkout = await Checkout.create({
+      UID: userId,
+      Date: new Date(),
+      Locked: false,
+    })
+  }
+
+  return checkout
+}
+
+const getOpenCheckout = async (userId: number) => {
+  return Checkout.findOne({
+    where: { UID: userId, Locked: false },
+  })
+}
+
+const buildOpenCheckoutResponse = async (checkout: any) => {
+  const checkoutId = resolveCheckoutId(checkout)
+  const checkoutItems = (await CheckoutItem.findAll({ where: { CheckoutID: checkoutId } })) as any[]
+
+  const items = await Promise.all(
+    checkoutItems.map(async (item) => {
+      const checkoutItem = item as Record<string, any>
+      const trash = await Trash.findByPk(checkoutItem.TrashID)
+
+      return {
+        ...toPlain(checkoutItem),
+        Trash: toPlain(trash),
+      }
+    }),
+  )
+
+  return {
+    checkout: toPlain(checkout),
+    items,
+  }
+}
+
+export const getOpenCheckoutByUserId = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = Number(req.params.userId)
+
+    if (Number.isNaN(userId)) {
+      res.status(400).json({ error: 'Invalid user id' })
+      return
+    }
+
+    const checkout = await getOrCreateOpenCheckout(userId)
+    const response = await buildOpenCheckoutResponse(checkout)
+
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message })
+  }
+}
+
+export const addTrashToOpenCheckout = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = Number(req.params.userId)
+    const trashId = Number(req.body.TrashID ?? req.body.trashId)
+    const amount = Number(req.body.Amount ?? req.body.amount ?? 1)
+
+    if (Number.isNaN(userId) || Number.isNaN(trashId)) {
+      res.status(400).json({ error: 'Invalid checkout or trash id' })
+      return
+    }
+
+    if (!amount || amount < 1) {
+      res.status(400).json({ error: 'Amount must be at least 1' })
+      return
+    }
+
+    const trash = await Trash.findByPk(trashId)
+    if (!trash) {
+      res.status(404).json({ error: 'Trash not found' })
+      return
+    }
+
+    const checkout = await getOrCreateOpenCheckout(userId)
+    const checkoutId = resolveCheckoutId(checkout)
+    const checkoutItem = (await CheckoutItem.findOne({
+      where: { CheckoutID: checkoutId, TrashID: trashId },
+    })) as any
+
+    if (checkoutItem) {
+      const existingItem = checkoutItem as Record<string, any>
+      await checkoutItem.update({ Amount: Number(existingItem.Amount) + amount })
+    } else {
+      await CheckoutItem.create({
+        CheckoutID: checkoutId,
+        TrashID: trashId,
+        Amount: amount,
+      })
+    }
+
+    const response = await buildOpenCheckoutResponse(checkout)
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message })
+  }
+}
+
+export const updateOpenCheckoutTrashAmount = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = Number(req.params.userId)
+    const trashId = Number(req.params.trashId)
+    const amount = Number(req.body.Amount ?? req.body.amount)
+
+    if (Number.isNaN(userId) || Number.isNaN(trashId) || Number.isNaN(amount)) {
+      res.status(400).json({ error: 'Invalid checkout payload' })
+      return
+    }
+
+    const checkout = await getOrCreateOpenCheckout(userId)
+    const checkoutId = resolveCheckoutId(checkout)
+    const checkoutItem = await CheckoutItem.findOne({
+      where: { CheckoutID: checkoutId, TrashID: trashId },
+    })
+
+    if (!checkoutItem) {
+      if (amount <= 0) {
+        const response = await buildOpenCheckoutResponse(checkout)
+        res.status(200).json(response)
+        return
+      }
+
+      await CheckoutItem.create({
+        CheckoutID: checkoutId,
+        TrashID: trashId,
+        Amount: amount,
+      })
+    } else if (amount <= 0) {
+      await checkoutItem.destroy()
+    } else {
+      await checkoutItem.update({ Amount: amount })
+    }
+
+    const response = await buildOpenCheckoutResponse(checkout)
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message })
+  }
+}
+
+export const deleteOpenCheckoutTrash = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = Number(req.params.userId)
+    const trashId = Number(req.params.trashId)
+
+    if (Number.isNaN(userId) || Number.isNaN(trashId)) {
+      res.status(400).json({ error: 'Invalid checkout payload' })
+      return
+    }
+
+    const checkout = await getOrCreateOpenCheckout(userId)
+    const checkoutId = resolveCheckoutId(checkout)
+    const checkoutItem = await CheckoutItem.findOne({
+      where: { CheckoutID: checkoutId, TrashID: trashId },
+    })
+
+    if (checkoutItem) {
+      await checkoutItem.destroy()
+    }
+
+    const response = await buildOpenCheckoutResponse(checkout)
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message })
+  }
+}
+
+export const lockOpenCheckoutByUserId = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = Number(req.params.userId)
+
+    if (Number.isNaN(userId)) {
+      res.status(400).json({ error: 'Invalid user id' })
+      return
+    }
+
+    const checkout = await getOpenCheckout(userId)
+
+    if (!checkout) {
+      res.status(404).json({ error: 'No open checkout found' })
+      return
+    }
+
+    await checkout.update({ Locked: true })
+
+    res.status(200).json({
+      success: true,
+      checkout: toPlain(checkout),
+    })
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message })
+  }
+}
+
 export const createCheckout = async (req: Request, res: Response): Promise<void> => {
   try {
     const checkout = await Checkout.create(req.body)

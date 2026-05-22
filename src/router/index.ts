@@ -16,6 +16,7 @@ import GenerateBooking from '@/pages/GenerateBooking.vue'
 import Carpoolings from '@/pages/Carpoolings.vue'
 import Carpooling from '@/pages/Carpooling.vue'
 import MyPoint from '@/pages/MyPoint.vue'
+import ListOfTrash from '@/pages/ListOfTrash.vue'
 
 const routes = [
   {
@@ -103,6 +104,12 @@ const routes = [
     component: MyPoint,
     meta: { requiresAuth: true },
   },
+  {
+    path: '/ListOfTrash/:id',
+    name: 'ListOfTrash',
+    component: ListOfTrash,
+    props: true,
+  }
 ]
 
 const router = createRouter({
