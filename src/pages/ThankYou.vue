@@ -88,47 +88,91 @@ export default {
 
 <style scoped>
 .page {
-  min-height: 100vh;
-  background: var(--primary-bg-color);
-  color: white;
-
+  width: 100%;
+  min-height: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
   display: flex;
   justify-content: center;
-  align-items: center;
-
-  padding: 1.5rem;
+  align-items: flex-start;
+  padding: var(--gap-large) var(--gap-med);
 }
 
 .content {
+  width: 100%;
+  max-width: 420px;
+  background: var(--color-surface-muted);
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--shadow-card);
+  padding: var(--gap-large);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-
-  gap: 1.5rem;
-  width: min(90%, 600px);
+  gap: var(--gap-large);
 }
 
 .takBesked {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: bold;
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
 }
 
-.optjentBesked {
-  font-size: clamp(1.2rem, 3vw, 1.8rem);
+.optjentBesked,
+.content p:not(.takBesked) {
+  font-family: var(--font-body);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-body);
+  line-height: 1.5;
 }
 
 .points-number {
-  font-weight: bold;
-  color: var(--accent-color);
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent);
 }
 
 hr {
   width: 100%;
-  border: 1px solid var(--white-text);
+  border: none;
+  border-top: 1px solid var(--color-border);
 }
 
 .baseButton {
-  margin-top: 1rem;
+  width: 100%;
+  margin-top: var(--gap-small);
+}
+
+.baseButton :deep(button) {
+  width: 100%;
+  border-radius: var(--border-radius-round);
+}
+
+@media (min-width: 768px) {
+  .page {
+    padding: var(--gap-xl) var(--gap-large);
+  }
+
+  .content {
+    max-width: 520px;
+    padding: var(--gap-xl);
+  }
+
+  .takBesked {
+    font-size: var(--font-size-h1);
+  }
+
+  .optjentBesked,
+  .content p:not(.takBesked) {
+    font-size: var(--font-size-h3);
+  }
+}
+
+@media (min-width: 1024px) {
+  .content {
+    max-width: 560px;
+  }
 }
 </style>
