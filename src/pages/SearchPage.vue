@@ -6,19 +6,19 @@ export default {
     return {
       searchParameter: '',
       categories: [
-        { name: 'Metal', image: '/images/icons/metal.jpg', route: '/category/metal' },
+        { name: 'Metal', image: '/images/icons/metal.jpg', route: '/ListOfTrash/1/' },
         {
           name: 'Restaffald',
           image: '/images/icons/restaffald.jpg',
-          route: '/category/restaffald',
+          route: '/ListOfTrash/2/',
         },
-        { name: 'Plast', image: '/images/icons/plast.jpg', route: '/category/plast' },
-        { name: 'Madaffald', image: '/images/icons/madaffald.jpg', route: '/category/madaffald' },
-        { name: 'Pap', image: '/images/icons/pap.jpg', route: '/category/pap' },
+        { name: 'Plast', image: '/images/icons/plast.jpg', route: '/ListOfTrash/3/' },
+        { name: 'Madaffald', image: '/images/icons/madaffald.jpg', route: '/ListOfTrash/4/' },
+        { name: 'Pap', image: '/images/icons/pap.jpg', route: '/ListOfTrash/5/' },
         {
           name: 'Farligt affald',
           image: '/images/icons/farligt-affald.jpg',
-          route: '/category/farligt-affald',
+          route: '/ListOfTrash/6/',
         },
       ],
       popularSearches: ['Pizzæske', 'Blød plast', 'Kaffeposer', 'Batteri'],

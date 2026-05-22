@@ -72,11 +72,7 @@ export default {
           <v-col v-for="trash in filteredTrash" :key="trash.TrashID" cols="12">
             <v-card class="item-card pa-3">
               <div class="trash-card-layout">
-                <v-img v-if="trash.imgurl" :src="trash.imgurl" class="category-icon" cover />
-
-                <div v-else class="category-icon placeholder-icon">
-                  {{ trash.Name.charAt(0) }}
-                </div>
+                <v-img :src="trash.imgurl" class="category-icon" cover />
 
                 <div class="card-content">
                   <div>
@@ -124,7 +120,7 @@ export default {
 h1 {
   font-family: var(--font-heading);
   margin: 10px 0 10px 10px;
-  color: var(--white-text);
+  color: var(--dark-text);
 }
 
 .item-card {
@@ -226,7 +222,7 @@ h1 {
 }
 .category-description {
   margin: 0 0 18px 10px;
-  color: var(--white-text);
+  color: var(--dark-text);
   font-size: 14px;
 }
 
@@ -235,7 +231,7 @@ h1 {
   align-items: center;
   justify-content: center;
   background: var(--primary-bg-color);
-  color: var(--white-text);
+  color: var(--dark-text);
   font-size: 42px;
   font-weight: bold;
 }
@@ -248,7 +244,7 @@ h1 {
 }
 
 .status-text {
-  color: var(--white-text);
+  color: var(--dark-text);
   margin: 20px 10px;
   font-weight: bold;
 }
