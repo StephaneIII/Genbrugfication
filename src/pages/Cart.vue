@@ -113,12 +113,12 @@ export default {
       try {
         const session = UserController.getUserSession()
 
-        if (!session || !session.userId) {
+        if (!session || !session.UID) {
           this.$router.push('/login')
           return
         }
 
-        this.uid = Number(session.userId)
+        this.uid = Number(session.UID)
 
         const [checkoutResult, trashResult, categoryResponse] = await Promise.all([
           this.checkoutController.getOrCreateOpenCheckout(this.uid),
@@ -218,7 +218,7 @@ export default {
         return
       }
 
-      const totalResult = await PointController.getTotalScoreByUserId(this.uid)
+      const totalResult = await PointController.getTotalScoreByUID(this.uid)
       const totalPoints = totalResult.success
         ? Number(totalResult.data?.totalScore ?? earnedPoints)
         : earnedPoints

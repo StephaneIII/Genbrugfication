@@ -108,12 +108,12 @@ export default {
   },
   mounted() {
     const session = UserController.getUserSession()
-    if (!session || !session.userId) {
+    if (!session || !session.UID) {
       this.$router.push('/login')
       return
     }
 
-    this.uid = Number(session.userId)
+    this.uid = Number(session.UID)
     this.fetchRoutes()
   },
 }

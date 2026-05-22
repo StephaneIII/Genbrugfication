@@ -78,7 +78,7 @@ export default {
           routeId: this.routeId,
           StopOrder: this.route.NextStopOrder,
           Address: this.bookingForm.address.trim(),
-          userId: this.uid,
+          UID: this.uid,
           PassengerAmount: Number(this.bookingForm.passengerAmount),
           Weight: Number(this.bookingForm.weight),
         }
@@ -101,11 +101,11 @@ export default {
   },
   mounted() {
     const session = UserController.getUserSession()
-    if (!session || !session.userId) {
+    if (!session || !session.UID) {
       this.$router.push('/login')
       return
     }
-    this.uid = Number(session.userId)
+    this.uid = Number(session.UID)
     this.fetchRoute()
   },
 }

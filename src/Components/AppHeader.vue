@@ -83,7 +83,7 @@ export default {
     },
 
     handleStorageChange(event) {
-      if (event.key === 'userId' || event.key === 'username') {
+      if (event.key === 'UID' || event.key === 'username') {
         this.updateLoginState()
       }
     },

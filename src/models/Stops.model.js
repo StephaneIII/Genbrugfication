@@ -15,7 +15,7 @@ modules.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(70),
         allowNull: false,
       },
-      userId: {
+      UID: {
         type: DataTypes.INTEGER,
         allowNull: false,
         field: 'UID',

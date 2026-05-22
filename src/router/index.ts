@@ -119,8 +119,8 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   if (to.meta.requiresAuth) {
-    const userId = localStorage.getItem('userId')
-    if (!userId) {
+    const UID = localStorage.getItem('UID')
+    if (!UID) {
       return { name: 'LoginPage' }
     }
   }

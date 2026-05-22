@@ -115,12 +115,12 @@ class UserController {
 
   /**
    * Get user by ID
-   * @param {string} userId - User ID
+   * @param {string} UID - User ID
    * @returns {Promise<Object>} API response
    */
-  async getUserById(userId) {
+  async getUserById(UID) {
     try {
-      const response = await fetch(`${this.apiBaseUrl}/users/${userId}`)
+      const response = await fetch(`${this.apiBaseUrl}/users/${UID}`)
       const data = await response.json()
 
       return {
@@ -139,12 +139,12 @@ class UserController {
 
   /**
    * Update user information
-   * @param {string} userId - User ID
+   * @param {string} UID - User ID
    * @param {Object} updateData - Data to update
    */
-  async updateUser(userId, updateData) {
+  async updateUser(UID, updateData) {
     try {
-      const response = await fetch(`${this.apiBaseUrl}/users/${userId}`, {
+      const response = await fetch(`${this.apiBaseUrl}/users/${UID}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -170,11 +170,11 @@ class UserController {
 
   /**
    * Delete user account
-   * @param {string} userId - User ID
+   * @param {string} UID - User ID
    */
-  async deleteUser(userId) {
+  async deleteUser(UID) {
     try {
-      const response = await fetch(`${this.apiBaseUrl}/users/${userId}`, {
+      const response = await fetch(`${this.apiBaseUrl}/users/${UID}`, {
         method: 'DELETE',
       })
 
@@ -200,13 +200,13 @@ class UserController {
 
   /**
    * Verify user password
-   * @param {string} userId - User ID
+   * @param {string} UID - User ID
    * @param {string} password - Password to verify
    * @returns {Promise<Object>} API response
    */
-  async verifyPassword(userId, password) {
+  async verifyPassword(UID, password) {
     try {
-      const response = await fetch(`${this.apiBaseUrl}/users/${userId}/verify-password`, {
+      const response = await fetch(`${this.apiBaseUrl}/users/${UID}/verify-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -235,7 +235,7 @@ class UserController {
    * @param {Object} userData - User data from login response
    */
   storeUserSession(userData) {
-    localStorage.setItem('userId', userData.UID)
+    localStorage.setItem('UID', userData.UID)
     localStorage.setItem('username', userData.Username)
     localStorage.setItem('isAdmin', String(userData.IsAdmin))
 
@@ -252,12 +252,12 @@ class UserController {
    * @returns {Object|null} User session data or null if not found
    */
   getUserSession() {
-    const userId = localStorage.getItem('userId')
+    const UID = localStorage.getItem('UID')
     const username = localStorage.getItem('username')
     const isAdmin = localStorage.getItem('isAdmin')
 
-    if (userId) {
-      return { userId, username, isAdmin }
+    if (UID) {
+      return { UID, username, isAdmin }
     }
 
     return null
@@ -267,7 +267,7 @@ class UserController {
    * Clear user session from localStorage
    */
   clearUserSession() {
-    localStorage.removeItem('userId')
+    localStorage.removeItem('UID')
     localStorage.removeItem('username')
     localStorage.removeItem('isAdmin')
 
@@ -284,7 +284,7 @@ class UserController {
    * @returns {boolean} True if user is logged in
    */
   isLoggedIn() {
-    return localStorage.getItem('userId') !== null
+    return localStorage.getItem('UID') !== null
   }
 
   /**

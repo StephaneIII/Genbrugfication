@@ -35,14 +35,14 @@ export default {
         // Get user session from localStorage
         const session = UserController.getUserSession()
 
-        if (!session || !session.userId) {
+        if (!session || !session.UID) {
           this.errorMessage = 'Brugersession ikke fundet. Prøv at login igen.'
           this.redirectToLogin()
           return
         }
 
         // Fetch full user data from API
-        const result = await UserController.getUserById(session.userId)
+        const result = await UserController.getUserById(session.UID)
 
         if (result.success) {
           this.user = result.data
@@ -99,16 +99,16 @@ export default {
       this.clearMessages()
 
       try {
-        // Get user session to get userId
+        // Get user session to get UID
         const session = UserController.getUserSession()
-        if (!session || !session.userId) {
+        if (!session || !session.UID) {
           this.errorMessage = 'Sessionen er udløbet. Log venligst ind igen.'
           this.redirectToLogin()
           return
         }
 
         // Call API to update user data
-        const result = await UserController.updateUser(session.userId, this.editableUser)
+        const result = await UserController.updateUser(session.UID, this.editableUser)
 
         if (result.success) {
           this.user = { ...this.editableUser }
@@ -159,16 +159,16 @@ export default {
       this.deleteError = ''
 
       try {
-        // Get user session to get userId
+        // Get user session to get UID
         const session = UserController.getUserSession()
-        if (!session || !session.userId) {
+        if (!session || !session.UID) {
           this.deleteError = 'Sessionen er udløbet. Log venligst ind igen .'
           return
         }
 
         // First verify the password
         const passwordResult = await UserController.verifyPassword(
-          session.userId,
+          session.UID,
           this.deletePassword,
         )
 
@@ -178,7 +178,7 @@ export default {
         }
 
         // If password is correct, proceed with account deletion
-        const deleteResult = await UserController.deleteUser(session.userId)
+        const deleteResult = await UserController.deleteUser(session.UID)
 
         if (deleteResult.success) {
           UserController.clearUserSession()

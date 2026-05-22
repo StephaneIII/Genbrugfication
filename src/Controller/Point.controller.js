@@ -3,10 +3,10 @@ class PointController {
     this.apiBaseUrl = 'http://localhost:3001/api'
   }
 
-  async getTotalScoreByMonth(userId, month, year) {
+  async getTotalScoreByMonth(UID, month, year) {
     try {
       const response = await fetch(
-        `${this.apiBaseUrl}/checkout/score/month/${userId}?month=${month}&year=${year}`,
+        `${this.apiBaseUrl}/checkout/score/month/${UID}?month=${month}&year=${year}`,
       )
       const data = await response.json()
 
@@ -24,13 +24,13 @@ class PointController {
     }
   }
 
-  async getTotalScoreByUserId(userId) {
+  async getTotalScoreByUID(UID) {
     try {
-      let response = await fetch(`${this.apiBaseUrl}/checkout/score/user/${userId}`)
+      let response = await fetch(`${this.apiBaseUrl}/checkout/score/user/${UID}`)
 
       // Fallback in case backend route is configured without /user.
       if (!response.ok) {
-        response = await fetch(`${this.apiBaseUrl}/checkout/score/${userId}`)
+        response = await fetch(`${this.apiBaseUrl}/checkout/score/${UID}`)
       }
 
       const data = await response.json()

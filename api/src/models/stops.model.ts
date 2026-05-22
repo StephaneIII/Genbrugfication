@@ -17,7 +17,7 @@ const Stops = sequelize.define(
       type: DataTypes.STRING(70),
       allowNull: false,
     },
-    userId: {
+    UID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       field: 'UID',

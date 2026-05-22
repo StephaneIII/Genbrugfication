@@ -13,14 +13,14 @@ const toPlain = (value: any) => {
   return typeof value.toJSON === 'function' ? value.toJSON() : value
 }
 
-const getOrCreateOpenCheckout = async (userId: number) => {
+const getOrCreateOpenCheckout = async (UID: number) => {
   let checkout = await Checkout.findOne({
-    where: { UID: userId, Locked: false },
+    where: { UID: UID, Locked: false },
   })
 
   if (!checkout) {
     checkout = await Checkout.create({
-      UID: userId,
+      UID: UID,
       Date: new Date(),
       Locked: false,
     })
@@ -29,9 +29,9 @@ const getOrCreateOpenCheckout = async (userId: number) => {
   return checkout
 }
 
-const getOpenCheckout = async (userId: number) => {
+const getOpenCheckout = async (UID: number) => {
   return Checkout.findOne({
-    where: { UID: userId, Locked: false },
+    where: { UID: UID, Locked: false },
   })
 }
 
@@ -57,16 +57,16 @@ const buildOpenCheckoutResponse = async (checkout: any) => {
   }
 }
 
-export const getOpenCheckoutByUserId = async (req: Request, res: Response): Promise<void> => {
+export const getOpenCheckoutByUID = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userId = Number(req.params.userId)
+    const UID = Number(req.params.UID)
 
-    if (Number.isNaN(userId)) {
+    if (Number.isNaN(UID)) {
       res.status(400).json({ error: 'Invalid user id' })
       return
     }
 
-    const checkout = await getOrCreateOpenCheckout(userId)
+    const checkout = await getOrCreateOpenCheckout(UID)
     const response = await buildOpenCheckoutResponse(checkout)
 
     res.status(200).json(response)
@@ -77,11 +77,11 @@ export const getOpenCheckoutByUserId = async (req: Request, res: Response): Prom
 
 export const addTrashToOpenCheckout = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userId = Number(req.params.userId)
+    const UID = Number(req.params.UID)
     const trashId = Number(req.body.TrashID ?? req.body.trashId)
     const amount = Number(req.body.Amount ?? req.body.amount ?? 1)
 
-    if (Number.isNaN(userId) || Number.isNaN(trashId)) {
+    if (Number.isNaN(UID) || Number.isNaN(trashId)) {
       res.status(400).json({ error: 'Invalid checkout or trash id' })
       return
     }
@@ -97,7 +97,7 @@ export const addTrashToOpenCheckout = async (req: Request, res: Response): Promi
       return
     }
 
-    const checkout = await getOrCreateOpenCheckout(userId)
+    const checkout = await getOrCreateOpenCheckout(UID)
     const checkoutId = resolveCheckoutId(checkout)
     const checkoutItem = (await CheckoutItem.findOne({
       where: { CheckoutID: checkoutId, TrashID: trashId },
@@ -123,16 +123,16 @@ export const addTrashToOpenCheckout = async (req: Request, res: Response): Promi
 
 export const updateOpenCheckoutTrashAmount = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userId = Number(req.params.userId)
+    const UID = Number(req.params.UID)
     const trashId = Number(req.params.trashId)
     const amount = Number(req.body.Amount ?? req.body.amount)
 
-    if (Number.isNaN(userId) || Number.isNaN(trashId) || Number.isNaN(amount)) {
+    if (Number.isNaN(UID) || Number.isNaN(trashId) || Number.isNaN(amount)) {
       res.status(400).json({ error: 'Invalid checkout payload' })
       return
     }
 
-    const checkout = await getOrCreateOpenCheckout(userId)
+    const checkout = await getOrCreateOpenCheckout(UID)
     const checkoutId = resolveCheckoutId(checkout)
     const checkoutItem = await CheckoutItem.findOne({
       where: { CheckoutID: checkoutId, TrashID: trashId },
@@ -165,15 +165,15 @@ export const updateOpenCheckoutTrashAmount = async (req: Request, res: Response)
 
 export const deleteOpenCheckoutTrash = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userId = Number(req.params.userId)
+    const UID = Number(req.params.UID)
     const trashId = Number(req.params.trashId)
 
-    if (Number.isNaN(userId) || Number.isNaN(trashId)) {
+    if (Number.isNaN(UID) || Number.isNaN(trashId)) {
       res.status(400).json({ error: 'Invalid checkout payload' })
       return
     }
 
-    const checkout = await getOrCreateOpenCheckout(userId)
+    const checkout = await getOrCreateOpenCheckout(UID)
     const checkoutId = resolveCheckoutId(checkout)
     const checkoutItem = await CheckoutItem.findOne({
       where: { CheckoutID: checkoutId, TrashID: trashId },
@@ -190,16 +190,16 @@ export const deleteOpenCheckoutTrash = async (req: Request, res: Response): Prom
   }
 }
 
-export const lockOpenCheckoutByUserId = async (req: Request, res: Response): Promise<void> => {
+export const lockOpenCheckoutByUID = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userId = Number(req.params.userId)
+    const UID = Number(req.params.UID)
 
-    if (Number.isNaN(userId)) {
+    if (Number.isNaN(UID)) {
       res.status(400).json({ error: 'Invalid user id' })
       return
     }
 
-    const checkout = await getOpenCheckout(userId)
+    const checkout = await getOpenCheckout(UID)
 
     if (!checkout) {
       res.status(404).json({ error: 'No open checkout found' })
@@ -306,16 +306,16 @@ export const scoreCheckout = async (req: Request, res: Response): Promise<void> 
 /// total score for specific month parameter: month (1-12) and year (e.g. 2023)+ user id
 export const scoreCheckoutByMonth = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userId = Number(req.params.userId)
+    const UID = Number(req.params.UID)
     const month = Number(req.query.month)
     const year = Number(req.query.year)
     const checkoutAttributes = (Checkout as any).rawAttributes || {}
-    const checkoutUserField = checkoutAttributes.UID ? 'UID' : 'UserID'
+    const checkoutUserField = checkoutAttributes.UID ? 'UID' : 'UID'
     const checkoutItemAttributes = (CheckoutItem as any).rawAttributes || {}
     const checkoutItemCheckoutField = checkoutItemAttributes.CheckoutID
       ? 'CheckoutID'
       : 'checkoutId'
-    const checkouts = await Checkout.findAll({ where: { [checkoutUserField]: userId } as any })
+    const checkouts = await Checkout.findAll({ where: { [checkoutUserField]: UID } as any })
 
     let totalScore = 0
     for (const checkout of checkouts as any[]) {
@@ -341,16 +341,16 @@ export const scoreCheckoutByMonth = async (req: Request, res: Response): Promise
 }
 
 /// total score by user id
-export const scoreCheckoutByUserId = async (req: Request, res: Response): Promise<void> => {
+export const scoreCheckoutByUID = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userId = Number(req.params.userId)
+    const UID = Number(req.params.UID)
     const checkoutAttributes = (Checkout as any).rawAttributes || {}
-    const checkoutUserField = checkoutAttributes.UID ? 'UID' : 'UserID'
+    const checkoutUserField = checkoutAttributes.UID ? 'UID' : 'UID'
     const checkoutItemAttributes = (CheckoutItem as any).rawAttributes || {}
     const checkoutItemCheckoutField = checkoutItemAttributes.CheckoutID
       ? 'CheckoutID'
       : 'checkoutId'
-    const checkouts = await Checkout.findAll({ where: { [checkoutUserField]: userId } as any })
+    const checkouts = await Checkout.findAll({ where: { [checkoutUserField]: UID } as any })
 
     let totalScore = 0
     for (const checkout of checkouts as any[]) {

@@ -3,9 +3,9 @@ class CheckoutController {
     this.apiBaseUrl = 'http://localhost:3001/api'
   }
 
-  async getOrCreateOpenCheckout(userId) {
+  async getOrCreateOpenCheckout(UID) {
     try {
-      const response = await fetch(`${this.apiBaseUrl}/checkout/open/${userId}`)
+      const response = await fetch(`${this.apiBaseUrl}/checkout/open/${UID}`)
       const data = await response.json()
 
       return {
@@ -22,9 +22,9 @@ class CheckoutController {
     }
   }
 
-  async addTrashToCheckout(userId, trashId, amount = 1) {
+  async addTrashToCheckout(UID, trashId, amount = 1) {
     try {
-      const response = await fetch(`${this.apiBaseUrl}/checkout/open/${userId}/items`, {
+      const response = await fetch(`${this.apiBaseUrl}/checkout/open/${UID}/items`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,9 +47,9 @@ class CheckoutController {
     }
   }
 
-  async updateTrashAmount(userId, trashId, amount) {
+  async updateTrashAmount(UID, trashId, amount) {
     try {
-      const response = await fetch(`${this.apiBaseUrl}/checkout/open/${userId}/items/${trashId}`, {
+      const response = await fetch(`${this.apiBaseUrl}/checkout/open/${UID}/items/${trashId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -72,9 +72,9 @@ class CheckoutController {
     }
   }
 
-  async removeTrashFromCheckout(userId, trashId) {
+  async removeTrashFromCheckout(UID, trashId) {
     try {
-      const response = await fetch(`${this.apiBaseUrl}/checkout/open/${userId}/items/${trashId}`, {
+      const response = await fetch(`${this.apiBaseUrl}/checkout/open/${UID}/items/${trashId}`, {
         method: 'DELETE',
       })
       const data = await response.json()
@@ -93,9 +93,9 @@ class CheckoutController {
     }
   }
 
-  async lockOpenCheckout(userId) {
+  async lockOpenCheckout(UID) {
     try {
-      const response = await fetch(`${this.apiBaseUrl}/checkout/open/${userId}/lock`, {
+      const response = await fetch(`${this.apiBaseUrl}/checkout/open/${UID}/lock`, {
         method: 'POST',
       })
       const data = await response.json()

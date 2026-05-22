@@ -7,7 +7,7 @@ export default {
   data() {
     return {
       scoreToCo2Rates: 5, // 1 point = 5 g CO2e
-      userId: null,
+      UID: null,
       currentMonthScore: null,
       previousMonthScore: null,
       allTimeScore: null,
@@ -95,12 +95,12 @@ export default {
       return
     }
     const session = UserController.getUserSession()
-    if (!session || !session.userId) {
+    if (!session || !session.UID) {
       this.errorMessage = 'Brugersession blev ikke fundet. Log ind igen.'
       this.isLoading = false
       return
     }
-    this.userId = session.userId
+    this.UID = session.UID
     await this.fetchScores()
   },
   methods: {
@@ -115,7 +115,7 @@ export default {
         const prevYear = currentMonth === 1 ? currentYear - 1 : currentYear
 
         const currentResult = await PointController.getTotalScoreByMonth(
-          this.userId,
+          this.UID,
           currentMonth,
           currentYear,
         )
@@ -126,7 +126,7 @@ export default {
         this.currentMonthScore = currentResult.data.totalScore
 
         const prevResult = await PointController.getTotalScoreByMonth(
-          this.userId,
+          this.UID,
           prevMonth,
           prevYear,
         )
@@ -136,7 +136,7 @@ export default {
         }
         this.previousMonthScore = prevResult.data.totalScore
 
-        const allTimeResult = await PointController.getTotalScoreByUserId(this.userId)
+        const allTimeResult = await PointController.getTotalScoreByUID(this.UID)
         if (!allTimeResult.success) {
           this.errorMessage = allTimeResult.error || 'Kunne ikke hente samlet score.'
           return
@@ -156,7 +156,7 @@ export default {
 
       try {
         const historyResult = await PointController.getTotalScoreByMonth(
-          this.userId,
+          this.UID,
           Number(this.selectedMonth),
           Number(this.selectedYear),
         )

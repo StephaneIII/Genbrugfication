@@ -50,10 +50,10 @@ class CarpoolingController {
 
   /**
    * Get all routes enriched with seats left, driver and station details.
-   * @param {number} currentUserId
+   * @param {number} currentUID
    * @returns {Promise<Array>}
    */
-  async getRouteOverview(currentUserId) {
+  async getRouteOverview(currentUID) {
     try {
       const [routes, stops, users, recyclingStations] = await Promise.all([
         this.fetchJson('/routes'),
@@ -62,7 +62,7 @@ class CarpoolingController {
         this.fetchJson('/recyclingstations'),
       ])
 
-      const safeUserId = Number(currentUserId)
+      const safeUID = Number(currentUID)
       const userById = new Map(users.map((user) => [Number(user.UID), user]))
       const stationById = new Map(
         recyclingStations.map((station) => [Number(station.RecyclingStationID), station]),
@@ -96,8 +96,8 @@ class CarpoolingController {
         const driver = userById.get(driverId)
         const station = stationById.get(Number(route.RecyclingStationID))
 
-        const isDriver = safeUserId === driverId
-        const isBookedByUser = activeStops.some((stop) => Number(stop.userId) === safeUserId)
+        const isDriver = safeUID === driverId
+        const isBookedByUser = activeStops.some((stop) => Number(stop.UID) === safeUID)
 
         return {
           ...route,
@@ -118,7 +118,7 @@ class CarpoolingController {
 
   /**
    * Create a stop (book a seat) on a route.
-   * @param {Object} stopData - { routeId, StopOrder, Address, userId, PassengerAmount, Weight }
+   * @param {Object} stopData - { routeId, StopOrder, Address, UID, PassengerAmount, Weight }
    * @returns {Promise<Object>} Created stop from API
    */
   async createStop(stopData) {
@@ -139,10 +139,10 @@ class CarpoolingController {
   /**
    * Get a single route by ID enriched with driver, station, stops and seats left.
    * @param {number} routeId
-   * @param {number} currentUserId
+   * @param {number} currentUID
    * @returns {Promise<Object>}
    */
-  async getRouteDetail(routeId, currentUserId) {
+  async getRouteDetail(routeId, currentUID) {
     try {
       const [routes, stops, users, recyclingStations] = await Promise.all([
         this.fetchJson('/routes'),
@@ -154,7 +154,7 @@ class CarpoolingController {
       const route = routes.find((r) => Number(r.RouteID) === Number(routeId))
       if (!route) throw new Error('Route not found')
 
-      const safeUserId = Number(currentUserId)
+      const safeUID = Number(currentUID)
       const userById = new Map(users.map((u) => [Number(u.UID), u]))
       const stationById = new Map(recyclingStations.map((s) => [Number(s.RecyclingStationID), s]))
 
@@ -172,8 +172,8 @@ class CarpoolingController {
 
       const stopsEnriched = routeStops.map((s) => ({
         ...s,
-        Username: userById.get(Number(s.userId))?.Username || 'Unknown',
-        Tlf: userById.get(Number(s.userId))?.Tlf || null,
+        Username: userById.get(Number(s.UID))?.Username || 'Unknown',
+        Tlf: userById.get(Number(s.UID))?.Tlf || null,
       }))
 
       return {
@@ -185,8 +185,8 @@ class CarpoolingController {
         StationPostNo: station?.PostNo ?? '-',
         BookedSeats: bookedSeats,
         SeatsLeft: seatsLeft,
-        IsDriver: safeUserId === Number(route.UID),
-        IsBookedByUser: activeStops.some((s) => Number(s.userId) === safeUserId),
+        IsDriver: safeUID === Number(route.UID),
+        IsBookedByUser: activeStops.some((s) => Number(s.UID) === safeUID),
         Stops: stopsEnriched,
         NextStopOrder: routeStops.length + 1,
       }
