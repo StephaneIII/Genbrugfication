@@ -72,7 +72,7 @@ export default {
           <v-col v-for="trash in filteredTrash" :key="trash.TrashID" cols="12">
             <v-card class="item-card pa-3">
               <div class="trash-card-layout">
-                <v-img v-if="trash.Url" :src="trash.Url" class="category-icon" cover />
+                <v-img v-if="trash.imgurl" :src="trash.imgurl" class="category-icon" cover />
 
                 <div v-else class="category-icon placeholder-icon">
                   {{ trash.Name.charAt(0) }}

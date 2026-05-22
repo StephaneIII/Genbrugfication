@@ -18,9 +18,9 @@ export default {
     return {
       trashList: [],
       //  trashList: [ //mock-data for testing
-      //   { TrashID: 1, TrashCategoryID: 1, Name: 'Carton', Url: plasticIcon, IsRecyclingStation: false, Score: 10 },
-      //   { TrashID: 2, TrashCategoryID: 2, Name: 'Bottle', Url: metalIcon, IsRecyclingStation: false, Score: 20 },
-      //   { TrashID: 3, TrashCategoryID: 3, Name: 'Electronic', Url: metalIcon, IsRecyclingStation: true, Score: 50 },
+      //   { TrashID: 1, TrashCategoryID: 1, Name: 'Carton', imgurl: plasticIcon, IsRecyclingStation: false, Score: 10 },
+      //   { TrashID: 2, TrashCategoryID: 2, Name: 'Bottle', imgurl: metalIcon, IsRecyclingStation: false, Score: 20 },
+      //   { TrashID: 3, TrashCategoryID: 3, Name: 'Electronic', imgurl: metalIcon, IsRecyclingStation: true, Score: 50 },
       // ],
       iconOptions: [
         { name: 'Plastic', value: plasticIcon },
@@ -38,13 +38,13 @@ export default {
       dataForm: {
         TrashCategoryID: 0,
         Name: '',
-        Url: '',
+        imgurl: '',
         IsRecyclingStation: false,
         Score: 0,
       },
-        errors: {},
-        errorMessage: '',
-        successMessage: '',
+      errors: {},
+      errorMessage: '',
+      successMessage: '',
     }
   },
   async mounted() {
@@ -54,12 +54,12 @@ export default {
       this.trashList = result.data
     } else {
       this.errorMessage = result.error
-  }
+    }
   },
   computed: {
-   isAdmin() {
-     return UserController.isAdmin()
-   }
+    isAdmin() {
+      return UserController.isAdmin()
+    },
   },
   methods: {
     async newTrashType() {
@@ -82,7 +82,7 @@ export default {
         this.dataForm = {
           TrashCategoryID: 0,
           Name: '',
-          Url: '',
+          imgurl: '',
           IsRecyclingStation: false,
           Score: 0,
         }
@@ -93,7 +93,7 @@ export default {
       this.dataForm = {
         TrashCategoryID: 0,
         Name: '',
-        Url: '', // Url is image
+        imgurl: '', // imgurl is image
         IsRecyclingStation: false,
         Score: 0,
       }
@@ -106,7 +106,7 @@ export default {
         this.errors.TrashCategoryID = 'Category påkrævet'
         isValid = false
       }
-      
+
       // Name validation
       if (!this.dataForm.Name) {
         this.errors.Name = 'Navn påkrævet'
@@ -116,9 +116,9 @@ export default {
         isValid = false
       }
 
-      // Url/Image validation
-      if (!this.dataForm.Url) {
-        this.errors.URL = 'Billede påkrævet'
+      // imgurl/Image validation
+      if (!this.dataForm.imgurl) {
+        this.errors.imgurl = 'Billede påkrævet'
         isValid = false
       }
 
@@ -149,13 +149,15 @@ export default {
       <v-row>
         <v-col v-for="trash in trashList" :key="trash.TrashID" cols="12">
           <v-card class="pa-4 d-flex align-start item-card" theme="light">
-            <img :src="trash.Url" :alt="trash.Name" class="category-icon" />
+            <img :src="trash.imgurl" :alt="trash.Name" class="category-icon" />
 
             <div class="card-content">
               <v-card-title>TrashID: {{ trash.TrashID }}</v-card-title>
               <v-card-title>Navn: {{ trash.Name }}</v-card-title>
               <v-card-text>Sorteres som: {{ trash.TrashCategoryID }}</v-card-text>
-              <v-card-text>Smides i en Recycling station: {{ trash.IsRecyclingStation }}</v-card-text>
+              <v-card-text
+                >Smides i en Recycling station: {{ trash.IsRecyclingStation }}</v-card-text
+              >
               <v-card-text>Point værdi: {{ trash.Score }}</v-card-text>
               <!--<v-card-text>Description: </v-card-text>-->
             </div>
@@ -164,17 +166,13 @@ export default {
       </v-row>
     </div>
 
-    <div v-if="isAdmin">
-      Bruger er admin
-    </div>
-    <div v-else>
-      Bruger er ikke admin
-    </div>
+    <div v-if="isAdmin">Bruger er admin</div>
+    <div v-else>Bruger er ikke admin</div>
 
     <!-- Creating new trash -->
     <div v-if="isAdmin" class="card-footer-area">
       <!-- Trash form: category ID -->
-       <div>
+      <div>
         <label for="category">Category ID: </label>
 
         <input
@@ -205,59 +203,44 @@ export default {
         <span v-if="errors.Name" class="error-text">{{ errors.Name }}</span>
       </div>
 
-      <!-- Trash form: Url/image -->
+      <!-- Trash form: imgurl/image -->
       <div>
         <label for="image">Vælgde Billede</label>
-        <select
-          id="Url"
-          v-model="dataForm.Url"
-          :class="{ error: errors.Url }"
-        >
-        <option disabled value="">
-          Vælg et Ikon
-        </option>
+        <select id="imgurl" v-model="dataForm.imgurl" :class="{ error: errors.imgurl }">
+          <option disabled value="">Vælg et Ikon</option>
 
-        <option
-          v-for="icon in iconOptions"
-          :key="icon.name"
-          :value="icon.value"
-        >
-          {{ icon.name }}
-        </option>
-      </select>
-      <span v-if="errors.Url" class="error-text">{{ errors.Url }}</span>
+          <option v-for="icon in iconOptions" :key="icon.name" :value="icon.value">
+            {{ icon.name }}
+          </option>
+        </select>
+        <span v-if="errors.imgurl" class="error-text">{{ errors.imgurl }}</span>
       </div>
 
       <!-- Trash form: recycling station -->
       <div>
         <label>
-          Skal bruge Recycling station: 
-          <input
-            v-model="dataForm.IsRecyclingStation"
-            type="checkbox"
-          />
+          Skal bruge Recycling station:
+          <input v-model="dataForm.IsRecyclingStation" type="checkbox" />
         </label>
       </div>
 
       <!-- Trash form: score -->
       <div>
         <label for="score">Score: </label>
-          <input
-            id="score"
-            v-model="dataForm.Score"
-            type="number"
-            placeholder="Indsæt score værdi"
-            :class="{ error: errors.Score }"
-          />
+        <input
+          id="score"
+          v-model="dataForm.Score"
+          type="number"
+          placeholder="Indsæt score værdi"
+          :class="{ error: errors.Score }"
+        />
         <span v-if="errors.Score" class="error-text">
           {{ errors.Score }}
         </span>
       </div>
 
       <!-- Button + succes/fail message -->
-      <button @click="newTrashType" class="submit-button">
-        Opret nyt skrald
-      </button>
+      <button @click="newTrashType" class="submit-button">Opret nyt skrald</button>
 
       <div v-if="errorMessage" class="error-text">
         {{ errorMessage }}
@@ -266,7 +249,6 @@ export default {
       <div v-if="successMessage" class="success-text">
         {{ successMessage }}
       </div>
-
     </div>
   </div>
 </template>

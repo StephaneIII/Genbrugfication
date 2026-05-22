@@ -17,7 +17,7 @@ const Trash = sequelize.define(
       type: DataTypes.STRING(30),
       allowNull: false,
     },
-    Url: {
+    imgurl: {
       type: DataTypes.STRING(200),
       allowNull: true,
     },

@@ -7,7 +7,11 @@ export default {
       searchParameter: '',
       categories: [
         { name: 'Metal', image: '/images/icons/metal.jpg', route: '/category/metal' },
-        { name: 'Restaffald', image: '/images/icons/restaffald.jpg', route: '/category/restaffald' },
+        {
+          name: 'Restaffald',
+          image: '/images/icons/restaffald.jpg',
+          route: '/category/restaffald',
+        },
         { name: 'Plast', image: '/images/icons/plast.jpg', route: '/category/plast' },
         { name: 'Madaffald', image: '/images/icons/madaffald.jpg', route: '/category/madaffald' },
         { name: 'Pap', image: '/images/icons/pap.jpg', route: '/category/pap' },
@@ -338,10 +342,8 @@ export default {
 }
 </style>
 
-
-
 <!-- gammelkode -->
- <!-- <script>
+<!-- <script>
 import { purple } from 'vuetify/util/colors'
 import ItemComponent from '../Components/SearchComponents/ItemComponent.vue'
 import BaseButton from '@/Components/BaseButton.vue';
@@ -360,14 +362,14 @@ export default {
           TrashID: 1,
           TrashCategoryID: 1,
           Name: 'Æblejuice',
-          Url: 'https://media.discordapp.net/attachments/1485746402696106017/1485746422501605457/image.png?ex=69c2fcae&is=69c1ab2e&hm=2dc305dd13000f4df93308a1f25726005e7e229ebba64fe2b41da1e02c30e54e&=&format=webp&quality=lossless&width=323&height=426',
+          imgurl: 'https://media.discordapp.net/attachments/1485746402696106017/1485746422501605457/image.png?ex=69c2fcae&is=69c1ab2e&hm=2dc305dd13000f4df93308a1f25726005e7e229ebba64fe2b41da1e02c30e54e&=&format=webp&quality=lossless&width=323&height=426',
           IsRecyclingStation: false,
         },
         {
           TrashID: 2,
           TrashCategoryID: 1,
           Name: 'Plastflaske',
-          Url: 'https://media.discordapp.net/attachments/1485746402696106017/1485746992595472484/image.png?ex=69c2fd36&is=69c1abb6&hm=f86f36783b300143e2aab56ac41b09295e8fded39e553f657745eb03d9504a65&=&format=webp&quality=lossless&width=189&height=512',
+          imgurl: 'https://media.discordapp.net/attachments/1485746402696106017/1485746992595472484/image.png?ex=69c2fd36&is=69c1abb6&hm=f86f36783b300143e2aab56ac41b09295e8fded39e553f657745eb03d9504a65&=&format=webp&quality=lossless&width=189&height=512',
           IsRecyclingStation: false,
         },
 
@@ -375,14 +377,14 @@ export default {
           TrashID: 3,
           TrashCategoryID: 2,
           Name: 'Batteri (AA)',
-          Url: 'https://media.discordapp.net/attachments/1485746402696106017/1485747310104281178/image.png?ex=69c2fd82&is=69c1ac02&hm=96cd3d74fa621a7340b728a28c6134fe722fa9206eca20ed06a0af01af8735e6&=&format=webp&quality=lossless&width=363&height=327',
+          imgurl: 'https://media.discordapp.net/attachments/1485746402696106017/1485747310104281178/image.png?ex=69c2fd82&is=69c1ac02&hm=96cd3d74fa621a7340b728a28c6134fe722fa9206eca20ed06a0af01af8735e6&=&format=webp&quality=lossless&width=363&height=327',
           IsRecyclingStation: true,
         },
         {
           TrashID: 4,
           TrashCategoryID: 2,
           Name: 'Sparepære',
-          Url: 'https://media.discordapp.net/attachments/1485746402696106017/1485747653542154241/image.png?ex=69c2fdd4&is=69c1ac54&hm=ce3fb90354e513da9b769a943e8dc0c2a709e8cccdca27db0ff9fa3ee05635dc&=&format=webp&quality=lossless&width=320&height=410',
+          imgurl: 'https://media.discordapp.net/attachments/1485746402696106017/1485747653542154241/image.png?ex=69c2fdd4&is=69c1ac54&hm=ce3fb90354e513da9b769a943e8dc0c2a709e8cccdca27db0ff9fa3ee05635dc&=&format=webp&quality=lossless&width=320&height=410',
           IsRecyclingStation: true,
         },
 
@@ -390,14 +392,14 @@ export default {
           TrashID: 5,
           TrashCategoryID: 3,
           Name: 'Pizzakarton',
-          Url: 'https://media.discordapp.net/attachments/1485746402696106017/1485747875983130694/image.png?ex=69c2fe09&is=69c1ac89&hm=e08b3662d05f2bd8ed8261852dc30941379d1d50465123b72014993c57b49f35&=&format=webp&quality=lossless&width=401&height=297',
+          imgurl: 'https://media.discordapp.net/attachments/1485746402696106017/1485747875983130694/image.png?ex=69c2fe09&is=69c1ac89&hm=e08b3662d05f2bd8ed8261852dc30941379d1d50465123b72014993c57b49f35&=&format=webp&quality=lossless&width=401&height=297',
           IsRecyclingStation: false,
         },
         {
           TrashID: 6,
           TrashCategoryID: 3,
           Name: 'Avis',
-          Url: 'https://cdn.discordapp.com/attachments/1485746402696106017/1485748098687828099/image.png?ex=69c2fe3e&is=69c1acbe&hm=dce985b7bb160d7b90c091b33b8633d2c1f5c0c48143b56800b87185ebb84880&',
+          imgurl: 'https://cdn.discordapp.com/attachments/1485746402696106017/1485748098687828099/image.png?ex=69c2fe3e&is=69c1acbe&hm=dce985b7bb160d7b90c091b33b8633d2c1f5c0c48143b56800b87185ebb84880&',
           IsRecyclingStation: false,
         },
 
@@ -405,14 +407,14 @@ export default {
           TrashID: 7,
           TrashCategoryID: 4,
           Name: 'Ost',
-          Url: 'https://media.discordapp.net/attachments/1485746402696106017/1485748307991986346/image.png?ex=69c2fe70&is=69c1acf0&hm=2864c9ec66931a445a1fb6cc0afb2454bad471edd35d37ba879feba2b4194611&=&format=webp&quality=lossless&width=534&height=369',
+          imgurl: 'https://media.discordapp.net/attachments/1485746402696106017/1485748307991986346/image.png?ex=69c2fe70&is=69c1acf0&hm=2864c9ec66931a445a1fb6cc0afb2454bad471edd35d37ba879feba2b4194611&=&format=webp&quality=lossless&width=534&height=369',
           IsRecyclingStation: false,
         },
         {
           TrashID: 8,
           TrashCategoryID: 4,
           Name: 'Bananskræl',
-          Url: 'https://media.discordapp.net/attachments/1485746402696106017/1485748533176041632/image.png?ex=69c2fea6&is=69c1ad26&hm=62549690eb04fe5257c175877acb4da37f0ea44b94556cbb31501bee903bf5dc&=&format=webp&quality=lossless&width=534&height=368',
+          imgurl: 'https://media.discordapp.net/attachments/1485746402696106017/1485748533176041632/image.png?ex=69c2fea6&is=69c1ad26&hm=62549690eb04fe5257c175877acb4da37f0ea44b94556cbb31501bee903bf5dc&=&format=webp&quality=lossless&width=534&height=368',
           IsRecyclingStation: false,
         },
       ],

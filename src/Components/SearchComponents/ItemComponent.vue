@@ -26,7 +26,7 @@ export default {
     },
     goToCheckout() {
       this.$router.push('/cart')
-    }
+    },
   },
   watch: {},
   emits: ['item-clicked', 'nav-to-checkout'],
@@ -36,7 +36,7 @@ export default {
 <template>
   <div class="item-card" @click="handleItemClick">
     <div class="item-image-container">
-      <img v-if="item.Url" :src="item.Url" :alt="item.Name" class="item-image" />
+      <img v-if="item.imgurl" :src="item.imgurl" :alt="item.Name" class="item-image" />
       <div v-else class="item-placeholder"></div>
 
       <button class="recycling-icon" @click.stop="goToCheckout">
