@@ -23,7 +23,7 @@ export default {
       if (!this.trashCategory) return []
 
       return this.trashList.filter(
-        (trash) => Number(trash.TrashCanID) === Number(this.trashCategory.TrashCategoryID),
+        (trash) => Number(trash.TrashCategoryID) === Number(this.trashCategory.TrashCategoryID),
       )
     },
   },

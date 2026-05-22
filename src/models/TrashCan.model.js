@@ -1,6 +1,6 @@
 modules.exports = (sequelize, DataTypes) => {
   const TrashCan = sequelize.define('TrashCan', {
-    TrashcanID: {
+    TrashCategoryID: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,

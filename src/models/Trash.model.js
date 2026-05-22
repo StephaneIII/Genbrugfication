@@ -5,7 +5,7 @@ modules.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    TrashCanID: {
+    TrashCategoryID: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

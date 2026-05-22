@@ -42,7 +42,7 @@ export default {
     items() {
       return this.checkoutItems.map((item) => {
         const trash = item.Trash || {}
-        const category = this.trashCategoryById[Number(trash.TrashCanID)]
+        const category = this.trashCategoryById[Number(trash.TrashCategoryID)]
         const categoryName = category?.Category || 'Ukendt'
 
         return {
@@ -103,7 +103,7 @@ export default {
       return plasticIcon
     },
     getTrashCategoryName(trash) {
-      const category = this.trashCategoryById[Number(trash.TrashCanID)]
+      const category = this.trashCategoryById[Number(trash.TrashCategoryID)]
       return category?.Category || 'Ukendt'
     },
     async loadCartData() {
