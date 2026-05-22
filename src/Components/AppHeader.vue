@@ -6,7 +6,8 @@
       </button>
 
       <RouterLink to="/" class="logo-wrapper" aria-label="Gå til landing page">
-        <v-icon class="logo-icon">mdi-recycle</v-icon>
+        <img src="/images/logo/logo.png" alt="Zealand logo" class="logo-img" />
+        <span class="logo-text">Zealand</span>
       </RouterLink>
 
       <button class="header-button" aria-label="Åbn menu" @click="isMenuOpen = !isMenuOpen">
@@ -15,26 +16,30 @@
     </header>
 
     <nav v-if="isMenuOpen" class="burger-menu">
-      <a href="/" class="menu-link">Hjem</a>
-      <a href="/PostcodePage" class="menu-link">Rutevejledning</a>
-      <a href="/Cart" class="menu-link">Checkout</a>
+      <RouterLink to="/" class="menu-link" @click="isMenuOpen = false">Hjem</RouterLink>
+      <RouterLink to="/PostcodePage" class="menu-link" @click="isMenuOpen = false">
+        Rutevejledning
+      </RouterLink>
+      <RouterLink to="/Cart" class="menu-link" @click="isMenuOpen = false">
+        Checkout
+      </RouterLink>
 
-      <!-- Show profile and logout buttons when user is logged in -->
       <template v-if="isUserLoggedIn">
         <button @click="goToProfile" class="menu-link auth-button">Profil</button>
         <button @click="handleLogout" class="menu-link logout-button">Log ud</button>
+
+        <RouterLink to="/carpoolings" class="menu-link" @click="isMenuOpen = false">
+          Samkørsel
+        </RouterLink>
+
+        <RouterLink to="/MyPoints" class="menu-link" @click="isMenuOpen = false">
+          Mine Point
+        </RouterLink>
       </template>
 
-      <!-- Show login/signup buttons when user is not logged in -->
       <template v-else>
         <button @click="goToLogin" class="menu-link auth-button">Log ind</button>
         <button @click="goToSignup" class="menu-link auth-button">Tilmeld dig</button>
-      </template>
-      <template v-if="isUserLoggedIn">
-        <a href="/carpoolings" class="menu-link">Samkørsel</a>
-      </template>
-      <template v-if="isUserLoggedIn">
-        <a href="/MyPoints" class="menu-link">Mine Point</a>
       </template>
     </nav>
   </div>
@@ -47,7 +52,7 @@ export default {
   data() {
     return {
       isMenuOpen: false,
-      userLoggedIn: false, // Reactive state for authentication
+      userLoggedIn: false,
     }
   },
 
@@ -58,18 +63,12 @@ export default {
   },
 
   mounted() {
-    // Check login state when component mounts
     this.updateLoginState()
-
-    // Listen for custom auth state change events
     window.addEventListener('authStateChange', this.handleAuthStateChange)
-
-    // Also listen for storage events to detect login/logout from other tabs
     window.addEventListener('storage', this.handleStorageChange)
   },
 
   beforeUnmount() {
-    // Clean up event listeners
     window.removeEventListener('authStateChange', this.handleAuthStateChange)
     window.removeEventListener('storage', this.handleStorageChange)
   },
@@ -80,8 +79,10 @@ export default {
     },
 
     handleAuthStateChange(event) {
-      // Update login state when auth state changes
       this.userLoggedIn = event.detail.loggedIn
+    },
+
+    handleStorageChange(event) {
       if (event.key === 'userId' || event.key === 'username') {
         this.updateLoginState()
       }
@@ -92,40 +93,24 @@ export default {
     },
 
     handleLogout() {
-      // Clear user session from localStorage
       UserController.clearUserSession()
-
-      // Update the reactive login state
       this.updateLoginState()
-
-      // Close the menu
       this.isMenuOpen = false
-
-      // Redirect to login page
       this.$router.push('/login')
     },
 
     goToLogin() {
-      // Close the menu
       this.isMenuOpen = false
-
-      // Navigate to login page
       this.$router.push('/login')
     },
 
     goToSignup() {
-      // Close the menu
       this.isMenuOpen = false
-
-      // Navigate to signup page
       this.$router.push('/signup')
     },
 
     goToProfile() {
-      // Close the menu
       this.isMenuOpen = false
-
-      // Navigate to profile page
       this.$router.push('/profile')
     },
   },
@@ -142,11 +127,11 @@ export default {
 .app-header {
   width: 100%;
   height: 64px;
-  background-color: var(--secondary-color);
-  display: flex;
+  background-color: var(--color-primary);
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 var(--gap-med);
+  padding: 0 var(--gap-small);
   box-shadow: var(--shadow);
   position: relative;
   z-index: 2;
@@ -155,7 +140,7 @@ export default {
 .header-button {
   background: transparent;
   border: none;
-  color: var(--white-text);
+  color: var(--color-text-light);
   width: 40px;
   height: 40px;
   border-radius: var(--border-radius-med);
@@ -163,25 +148,45 @@ export default {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.header-button:hover {
+  background-color: rgba(255, 255, 255, 0.12);
 }
 
 .arrow-icon,
 .menu-icon {
-  font-size: 1.8rem;
-  line-height: 1;
   font-family: var(--font-body);
-  color: var(--white-text);
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--color-text-light);
 }
 
 .logo-wrapper {
+  justify-self: center;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: var(--gap-small);
+  color: var(--color-text-light);
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
 }
 
-.logo-icon {
-  color: var(--accent-color);
-  font-size: 1.8rem;
+.logo-img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  display: block;
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-round);
+}
+
+.logo-text {
+  display: none;
+  font-size: var(--font-size-small);
+  color: var(--color-text-light);
 }
 
 .burger-menu {
@@ -189,50 +194,80 @@ export default {
   top: 64px;
   left: 0;
   width: 100%;
-  background-color: var(--secondary-color);
+  background-color: var(--color-primary);
   border-radius: 0 0 var(--border-radius-large) var(--border-radius-large);
   padding: var(--gap-large);
   display: flex;
   flex-direction: column;
   gap: var(--gap-med);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-card);
   z-index: 1;
-  animation: slideDown 0.25s ease;
+  animation: slideDown var(--transition-med);
 }
 
 .menu-link {
-  color: var(--white-text);
+  color: var(--color-text-light);
   text-decoration: none;
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
   line-height: 1.15;
   font-family: var(--font-heading);
 }
 
+.auth-button,
 .logout-button {
   background: none;
   border: none;
   padding: 0;
   text-align: left;
   cursor: pointer;
-  transition: opacity 0.2s ease;
 }
 
-.logout-button:hover {
-  opacity: 0.8;
+.menu-link:hover {
+  opacity: 0.85;
 }
 
-.auth-button {
-  background: none;
-  border: none;
-  padding: 0;
-  text-align: left;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
+@media (min-width: 768px) {
+  .app-header {
+    height: 72px;
+    padding: 0 var(--gap-med);
+    grid-template-columns: 1fr 40px;
+  }
+
+  .header-button:first-child {
+    display: none;
+  }
+
+  .logo-wrapper {
+    justify-self: start;
+  }
+
+  .logo-text {
+    display: inline;
+  }
+
+  .burger-menu {
+    top: 72px;
+  }
 }
 
-.auth-button:hover {
-  opacity: 0.8;
+@media (min-width: 1024px) {
+  .app-header {
+    height: 80px;
+    padding: 0 var(--gap-large);
+  }
+
+  .logo-text {
+    font-size: var(--font-size-body);
+  }
+
+  .menu-icon {
+    font-size: 2rem;
+  }
+
+  .burger-menu {
+    top: 80px;
+  }
 }
 
 @keyframes slideDown {
@@ -240,6 +275,7 @@ export default {
     opacity: 0;
     transform: translateY(-0.75rem);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

@@ -174,102 +174,179 @@ export default {
 
 <style scoped>
 .route-page {
-  min-height: 100vh;
-  background-color: var(--secondary-color);
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  background: var(--color-primary);
 }
 
 .route-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  background: var(--color-primary);
 }
 
 .map-wrapper {
-  width: 100%;
-  height: 250px;
   position: relative;
   z-index: 1;
+  width: 100%;
+  height: 320px;
+  background: var(--color-surface-muted);
 }
 
 .route-panel {
   position: relative;
-  z-index: 2;
-  margin-top: -28px;
-  background-color: var(--secondary-color);
-  border-top-left-radius: 28px;
-  border-top-right-radius: 28px;
-  padding: 16px 20px 32px;
-  flex: 1;
+  z-index: 20;
+  margin-top: -24px;
+  background: var(--color-primary);
+  border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
+  padding: var(--gap-large) var(--gap-med);
+  color: var(--color-text-light);
 }
 
 .drag-handle {
   width: 72px;
   height: 6px;
-  border-radius: 999px;
-  background-color: rgba(255, 255, 255, 0.85);
-  margin: 0 auto 24px;
+  border-radius: var(--border-radius-round);
+  background: rgba(255, 255, 255, 0.75);
+  margin: 0 auto var(--gap-large);
 }
 
 .route-form {
-  max-width: 360px;
+  width: 100%;
+  max-width: 420px;
   margin: 0 auto;
+  /* background: var(--color-surface-muted); */
+  border-radius: var(--border-radius-large);
+  padding: var(--gap-large);
+  /* box-shadow: var(--shadow-card); */
 }
 
 .route-input-group {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--gap-med);
 }
 
 .route-dot {
   width: 14px;
   height: 14px;
-  border-radius: 50%;
+  border-radius: var(--border-radius-round);
   flex-shrink: 0;
 }
 
 .start-dot {
-  border: 4px solid rgba(255, 255, 255, 0.35);
+  border: 4px solid var(--color-secondary);
   background: transparent;
 }
 
 .end-dot {
-  background-color: #4d8dff;
+  background: var(--color-accent);
 }
 
 .route-line {
   width: 2px;
-  height: 26px;
-  background-color: rgba(255, 255, 255, 0.6);
-  margin: 6px 0 6px 6px;
+  height: 28px;
+  background: var(--color-secondary);
+  margin: var(--gap-small) 0 var(--gap-small) 6px;
 }
 
 .route-input {
   width: 100%;
-  background-color: #d9d9d9;
-  border: none;
-  border-radius: 999px;
-  padding: 14px 18px;
-  font-size: 1rem;
-  color: #4a4a4a;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-round);
+  padding: 0.85rem var(--gap-med);
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+  color: var(--color-text);
   outline: none;
 }
 
+.route-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow);
+}
+
 .route-input::placeholder {
-  color: #6a6a6a;
+  color: var(--color-text-muted);
 }
 
 .route-button-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 22px;
+  margin-top: var(--gap-large);
+}
+
+.route-button-wrapper :deep(button) {
+  width: 100%;
+  border-radius: var(--border-radius-round);
 }
 
 .error-message {
-  color: white;
-  padding: 24px 16px;
-  font-weight: 600;
+  color: var(--color-text-light);
+  padding: var(--gap-large);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Tablet - 768px */
+@media (min-width: 768px) {
+  .map-wrapper {
+    height: 360px;
+  }
+
+  .route-panel {
+    margin-top: -28px;
+    padding: var(--gap-xl) var(--gap-large);
+  }
+
+  .route-form {
+    max-width: 520px;
+    padding: var(--gap-xl);
+  }
+
+  .route-input {
+    font-size: var(--font-size-body);
+  }
+}
+
+/* Desktop - 1024px */
+@media (min-width: 1024px) {
+  .route-content {
+    display: grid;
+    grid-template-columns: 68% 32%;
+    min-height: calc(100dvh - var(--header-height) - var(--footer-height));
+  }
+
+  .map-wrapper {
+    height: 100%;
+    min-height: 560px;
+  }
+
+  .route-panel {
+    margin-top: 0;
+    border-radius: 0;
+    padding: var(--gap-large);
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .drag-handle {
+    display: none;
+  }
+
+  .route-form {
+    max-width: 100%;
+    margin: 0;
+    padding: var(--gap-large);
+  }
+}
+
+/* Large desktop - 1200px */
+@media (min-width: 1200px) {
+  .route-panel {
+    padding: var(--gap-xl);
+  }
 }
 </style>

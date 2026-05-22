@@ -123,79 +123,169 @@ export default {
 
 <style scoped>
 .map-page {
-  min-height: 100vh;
-  background-color: #2f6b5f;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  background: var(--color-primary);
 }
 
 .map-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  background: var(--color-primary);
 }
 
 .map-wrapper {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  height: 460px;
+  height: 320px;
+  background: var(--color-surface-muted);
 }
 
 .station-panel {
-  margin-top: -24px;
-  background-color: #2f6b5f;
-  border-top-left-radius: 28px;
-  border-top-right-radius: 28px;
-  padding: 20px 16px 32px;
   position: relative;
-  z-index: 1000;
+  z-index: 20;
+  margin-top: -20px;
+  background: var(--color-primary);
+  border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
+  padding: var(--gap-med);
+  color: var(--color-text-light);
 }
 
 .station-title {
-  color: white;
-  font-size: 2rem;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
   line-height: 1.15;
-  margin-bottom: 16px;
+  margin-bottom: var(--gap-med);
+  color: var(--color-text-light);
 }
 
 .station-card {
-  color: white;
+  width: 100%;
+  color: var(--color-text-light);
 }
 
 .station-image-wrapper {
   width: 100%;
-  border-radius: 24px;
+  height: 180px;
+  border-radius: var(--border-radius-large);
   overflow: hidden;
-  margin-bottom: 16px;
+  margin-bottom: var(--gap-med);
+  box-shadow: var(--shadow);
 }
 
 .station-image {
   width: 100%;
-  height: 240px;
+  height: 100%;
   object-fit: cover;
-  display: block;
 }
 
 .station-info h3 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 8px;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-light);
+  margin-bottom: var(--gap-xs);
 }
 
 .station-info p {
-  font-size: 1.2rem;
-  line-height: 1.5;
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+  line-height: 1.4;
+  color: var(--color-text-light);
 }
 
 .route-button-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  margin-top: var(--gap-med);
+}
+
+.route-button-wrapper :deep(button) {
+  min-width: 120px;
+  border-radius: var(--border-radius-med);
+  font-size: var(--font-size-small);
 }
 
 .error-message {
-  color: white;
-  padding: 24px 16px;
-  font-weight: 600;
+  color: var(--color-text-light);
+  padding: var(--gap-large);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Tablet */
+@media (min-width: 562px) {
+  .map-wrapper {
+    height: 360px;
+  }
+
+  .station-panel {
+    margin-top: -28px;
+    padding: var(--gap-large);
+  }
+
+  .station-title {
+    font-size: var(--font-size-h2);
+    margin-bottom: var(--gap-med);
+  }
+
+  .station-image-wrapper {
+    height: 220px;
+    border-radius: var(--border-radius-large);
+  }
+
+  .station-info h3 {
+    font-size: var(--font-size-h3);
+  }
+
+  .station-info p {
+    font-size: var(--font-size-small);
+  }
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  .map-content {
+    display: grid;
+    grid-template-columns: 68% 32%;
+    min-height: calc(100dvh - var(--header-height) - var(--footer-height));
+  }
+
+  .map-wrapper {
+    height: 100%;
+    min-height: 560px;
+  }
+
+  .station-panel {
+    margin-top: 0;
+    border-radius: 0;
+    padding: var(--gap-med);
+    overflow-y: auto;
+  }
+
+  .station-title {
+    font-size: var(--font-size-h3);
+    margin-bottom: var(--gap-med);
+  }
+
+  .station-image-wrapper {
+    height: 170px;
+  }
+
+  .station-info h3 {
+    font-size: var(--font-size-body);
+  }
+
+  .station-info p {
+    font-size: var(--font-size-small);
+  }
+}
+
+/* Large desktop */
+@media (min-width: 1200px) {
+  .station-panel {
+    padding: var(--gap-large);
+  }
 }
 </style>
