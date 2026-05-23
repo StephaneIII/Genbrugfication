@@ -1,15 +1,15 @@
-<template>
-  <v-btn class="base-button" @click="$emit('click')">
-    <slot />
-  </v-btn>
-</template>
-
 <script>
 export default {
   name: 'BaseButton',
   emits: ['click']
 }
 </script>
+
+<template>
+  <v-btn class="base-button" @click="$emit('click')">
+    <slot />
+  </v-btn>
+</template>
 
 <style scoped>
 .base-button {

@@ -1,11 +1,11 @@
+<script setup>
+</script>
+
 <template>
   <footer class="app-footer">
     <p class="footer-text">© Zealand 2026</p>
   </footer>
 </template>
-
-<script setup>
-</script>
 
 <style scoped>
 .app-footer {

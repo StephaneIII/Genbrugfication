@@ -1,9 +1,3 @@
-<template>
-  <div class="station-map">
-    <div :id="mapId" class="map-element"></div>
-  </div>
-</template>
-
 <script>
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -127,6 +121,12 @@ export default {
   }
 }
 </script>
+
+<template>
+  <div class="station-map">
+    <div :id="mapId" class="map-element"></div>
+  </div>
+</template>
 
 <style scoped>
 .station-map {
