@@ -1,50 +1,3 @@
-<template>
-  <div class="header-wrapper">
-    <header class="app-header">
-      <button class="header-button" aria-label="Gå tilbage" @click="goBack">
-        <span class="arrow-icon">←</span>
-      </button>
-
-      <RouterLink to="/" class="logo-wrapper" aria-label="Gå til landing page">
-        <img src="/images/logo/logo.png" alt="Zealand logo" class="logo-img" />
-        <span class="logo-text">Zealand</span>
-      </RouterLink>
-
-      <button class="header-button" aria-label="Åbn menu" @click="isMenuOpen = !isMenuOpen">
-        <span class="menu-icon">☰</span>
-      </button>
-    </header>
-
-    <nav v-if="isMenuOpen" class="burger-menu">
-      <RouterLink to="/" class="menu-link" @click="isMenuOpen = false">Hjem</RouterLink>
-      <RouterLink to="/PostcodePage" class="menu-link" @click="isMenuOpen = false">
-        Rutevejledning
-      </RouterLink>
-      <RouterLink to="/Cart" class="menu-link" @click="isMenuOpen = false">
-        Checkout
-      </RouterLink>
-
-      <template v-if="isUserLoggedIn">
-        <button @click="goToProfile" class="menu-link auth-button">Profil</button>
-        <button @click="handleLogout" class="menu-link logout-button">Log ud</button>
-
-        <RouterLink to="/carpoolings" class="menu-link" @click="isMenuOpen = false">
-          Samkørsel
-        </RouterLink>
-
-        <RouterLink to="/MyPoints" class="menu-link" @click="isMenuOpen = false">
-          Mine Point
-        </RouterLink>
-      </template>
-
-      <template v-else>
-        <button @click="goToLogin" class="menu-link auth-button">Log ind</button>
-        <button @click="goToSignup" class="menu-link auth-button">Tilmeld dig</button>
-      </template>
-    </nav>
-  </div>
-</template>
-
 <script>
 import UserController from '@/Controller/User.controller.js'
 
@@ -60,6 +13,9 @@ export default {
     isUserLoggedIn() {
       return this.userLoggedIn
     },
+    isAdmin() {
+      return UserController.isAdmin()
+    }
   },
 
   mounted() {
@@ -116,6 +72,57 @@ export default {
   },
 }
 </script>
+
+<template>
+  <div class="header-wrapper">
+    <header class="app-header">
+      <button class="header-button" aria-label="Gå tilbage" @click="goBack">
+        <span class="arrow-icon">←</span>
+      </button>
+
+      <RouterLink to="/" class="logo-wrapper" aria-label="Gå til landing page">
+        <img src="/images/logo/logo.png" alt="Zealand logo" class="logo-img" />
+        <span class="logo-text">Zealand</span>
+      </RouterLink>
+
+      <button class="header-button" aria-label="Åbn menu" @click="isMenuOpen = !isMenuOpen">
+        <span class="menu-icon">☰</span>
+      </button>
+    </header>
+
+    <nav v-if="isMenuOpen" class="burger-menu">
+      <RouterLink to="/" class="menu-link" @click="isMenuOpen = false">Hjem</RouterLink>
+      <RouterLink to="/PostcodePage" class="menu-link" @click="isMenuOpen = false">
+        Rutevejledning
+      </RouterLink>
+      <RouterLink to="/Cart" class="menu-link" @click="isMenuOpen = false">
+        Checkout
+      </RouterLink>
+
+      <template v-if="isUserLoggedIn">
+        <button @click="goToProfile" class="menu-link auth-button">Profil</button>
+        <button @click="handleLogout" class="menu-link logout-button">Log ud</button>
+
+        <RouterLink to="/carpoolings" class="menu-link" @click="isMenuOpen = false">
+          Samkørsel
+        </RouterLink>
+
+        <RouterLink to="/MyPoints" class="menu-link" @click="isMenuOpen = false">
+          Mine Point
+        </RouterLink>
+
+        <RouterLink v-if="isAdmin" to="/TrashList" @click="isMenuOpen = false">
+          Admin funktion: opret skrald
+        </RouterLink>
+      </template>
+
+      <template v-else>
+        <button @click="goToLogin" class="menu-link auth-button">Log ind</button>
+        <button @click="goToSignup" class="menu-link auth-button">Tilmeld dig</button>
+      </template>
+    </nav>
+  </div>
+</template>
 
 <style scoped>
 .header-wrapper {
