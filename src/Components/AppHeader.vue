@@ -111,7 +111,7 @@ export default {
           Mine Point
         </RouterLink>
 
-        <RouterLink v-if="isAdmin" to="/TrashList" @click="isMenuOpen = false">
+        <RouterLink v-if="isAdmin" to="/TrashList" class="menu-link" @click="isMenuOpen = false">
           Admin funktion: opret skrald
         </RouterLink>
       </template>
