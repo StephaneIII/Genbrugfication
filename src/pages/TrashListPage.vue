@@ -155,9 +155,7 @@ export default {
               <v-card-title>TrashID: {{ trash.TrashID }}</v-card-title>
               <v-card-title>Navn: {{ trash.Name }}</v-card-title>
               <v-card-text>Sorteres som: {{ trash.TrashCategoryID }}</v-card-text>
-              <v-card-text
-                >Smides i en Recycling station: {{ trash.IsRecyclingStation }}</v-card-text
-              >
+              <v-card-text>Smides i en Recycling station: {{ trash.IsRecyclingStation }}</v-card-text>
               <v-card-text>Point værdi: {{ trash.Score }}</v-card-text>
               <!--<v-card-text>Description: </v-card-text>-->
             </div>
