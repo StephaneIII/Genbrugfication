@@ -499,7 +499,7 @@ h1 {
   padding: var(--gap-small) var(--gap-med);
   font-family: var(--font-body);
   font-size: var(--font-size-small);
-  color: var(--color-text);
+  color: white;
   outline: none;
 }
 
