@@ -1,4 +1,6 @@
 <script>
+import BaseButton from '@/Components/BaseButton.vue';
+
 export default {
   name: 'ListOfTrash',
 
@@ -17,7 +19,11 @@ export default {
       error: null,
     }
   },
-
+methods:{
+  goToDetails(trashID) {
+    this.$router.push(`/Detailspage/${trashID}`)
+  }
+},
   computed: {
     filteredTrash() {
       if (!this.trashCategory) return []
@@ -33,7 +39,7 @@ export default {
       const categoryResponse = await fetch(`http://localhost:3001/api/trashcategories/${this.id}`)
 
       if (!categoryResponse.ok) {
-        throw new Error('Trash category not found')
+        throw new Error('Denne kategori af affald eksisterer ikke')
       }
 
       this.trashCategory = await categoryResponse.json()
@@ -79,7 +85,7 @@ export default {
                     <v-card-title>{{ trash.Name }}</v-card-title>
 
                     <v-card-subtitle>
-                      {{ trash.IsRecyclingStation ? 'Recycling station' : 'Regular trash' }}
+                      {{ trash.IsRecyclingStation ? 'Skal på genbrugsstation' : 'Kan smides i affald ved boliger' }}
                     </v-card-subtitle>
                   </div>
 
@@ -87,6 +93,9 @@ export default {
                     <span class="category-box">
                       {{ trashCategory.Category }}
                     </span>
+                    <button class="temp-btn" @click="goToDetails(trash.TrashID)">
+                      Flere detaljer om {{ trash.Name }}
+                    </button>
 
                     <p class="score-text">+{{ trash.Score }} points</p>
                   </div>
@@ -97,7 +106,7 @@ export default {
         </v-row>
 
         <p v-if="filteredTrash.length === 0" class="status-text">
-          No trash found in this category.
+          Ingen affald i denne kategori.
         </p>
       </div>
     </div>
@@ -111,6 +120,17 @@ export default {
   padding: 10px 16px 24px;
   font-family: var(--font-body);
   background: var(--primary-bg-color);
+}
+.temp-btn {
+  background: var(--accent-color);
+  color: var(--dark-text);
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-left: 16px;
+}
+.temp-btn:hover {
+  background: rgb(220, 145, 6);
 }
 
 .trash-types {
@@ -195,17 +215,6 @@ h1 {
   border-radius: 50px;
   padding: 2px 10px;
   font-size: 12px;
-  font-weight: bold;
-}
-
-.submit-button {
-  margin-top: 20px;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: #3a5c42;
-  color: black;
   font-weight: bold;
 }
 
