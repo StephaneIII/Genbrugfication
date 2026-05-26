@@ -2,6 +2,8 @@ import { Request, Response } from 'express'
 import Checkout from '../models/checkout.model.js'
 import CheckoutItem from '../models/checkout-item.model.js'
 import Trash from '../models/trash.model.js'
+import db from '../models/index.js'
+import { QueryTypes } from 'sequelize'
 
 const resolveCheckoutId = (checkout: any) => checkout.CheckoutID ?? checkout.ID ?? checkout.id
 
@@ -309,30 +311,25 @@ export const scoreCheckoutByMonth = async (req: Request, res: Response): Promise
     const UID = Number(req.params.UID)
     const month = Number(req.query.month)
     const year = Number(req.query.year)
-    const checkoutAttributes = (Checkout as any).rawAttributes || {}
-    const checkoutUserField = checkoutAttributes.UID ? 'UID' : 'UID'
-    const checkoutItemAttributes = (CheckoutItem as any).rawAttributes || {}
-    const checkoutItemCheckoutField = checkoutItemAttributes.CheckoutID
-      ? 'CheckoutID'
-      : 'checkoutId'
-    const checkouts = await Checkout.findAll({ where: { [checkoutUserField]: UID } as any })
 
-    let totalScore = 0
-    for (const checkout of checkouts as any[]) {
-      const checkoutDate = new Date(checkout.Date ?? checkout.CreatedAt)
-      const checkoutId = checkout.CheckoutID ?? checkout.ID
-      if (checkoutDate.getMonth() + 1 === month && checkoutDate.getFullYear() === year) {
-        const checkoutItems = await CheckoutItem.findAll({
-          where: { [checkoutItemCheckoutField]: checkoutId } as any,
-        })
-        for (const item of checkoutItems as any[]) {
-          const trash = await Trash.findByPk(item.TrashID)
-          if (trash) {
-            totalScore += (trash as any).Score * item.Amount
-          }
-        }
-      }
+    if (Number.isNaN(UID) || Number.isNaN(month) || Number.isNaN(year) || month < 1 || month > 12) {
+      res.status(400).json({ error: 'UID, month og year er påkrævet' })
+      return
     }
+
+    const result = await db.sequelize.query(
+      'CALL getTotalScoreByMonth(:month, :year, :UID)',
+      {
+        replacements: {
+          month,
+          year,
+          UID,
+        },
+      },
+    )
+
+    const firstRow = Array.isArray(result) ? (result as any)[0] : null
+    const totalScore = firstRow?.totalScore ?? 0
 
     res.status(200).json({ totalScore })
   } catch (error) {
