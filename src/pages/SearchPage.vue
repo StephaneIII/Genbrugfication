@@ -21,7 +21,7 @@ export default {
           route: '/ListOfTrash/6/',
         },
       ],
-      popularSearches: ['Pizzæske', 'Blød plast', 'Kaffeposer', 'Batteri'],
+      popularSearches: ['Pizzaæske', 'Blød plast', 'Kaffeposer', 'Batteri'],
     }
   },
 
