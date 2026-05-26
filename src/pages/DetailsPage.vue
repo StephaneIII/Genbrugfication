@@ -10,13 +10,26 @@ export default {
   data() {
     return {
       trashCount: 0,
-      trash: {
-        name: 'Æblejuice',
-        id: 1,
-        image: appleJuice,
-        home: 'Æblejuice flasker skal smides i plastik',
-        station: 'Æblejuice flasker skal smides i plastik',
-      },
+      trash: null,
+      error: null,
+      loading: true,
+      // ↓ Kunne ændres til at være en del af trash objektet, så det ikke er nødvendigt at matche på TrashCategoryID
+      trashCategories: [
+        { name: 'Metal', value: 1 },
+        { name: 'Restaffald', value: 2 },
+        { name: 'Blød Plast', value: 3 },
+        { name: 'Madaffald', value: 4 },
+        { name: 'Pap', value: 5 },
+        { name: 'Farligt Affald', value: 6 },
+      ],
+      stationCategories: [
+        { name: 'Metal', value: 1 },
+        { name: 'Sorter restaffald hjemme', value: 2 },
+        { name: 'Blød Plast', value: 3 },
+        { name: 'Sorter madaffald hjemme', value: 4 },
+        { name: 'Pap', value: 5 },
+        { name: 'Batterier', value: 6 },
+      ],
     }
   },
 
@@ -33,12 +46,45 @@ export default {
       this.$router.push('/Cart')
     },
   },
+  computed: {
+  selectedHomeCategory() {
+    return this.trashCategories.find(
+      (category) => category.value === this.trash.TrashCategoryID
+    )
+  },
+  selectedStationCategory() {
+    return this.stationCategories.find(
+      (category) => category.value === this.trash.TrashCategoryID
+    )
+  },
+},
+
+async mounted() {
+  try {
+    const id = this.$route.params.id
+
+    const trashResponse = await fetch(`http://localhost:3001/api/trash/${id}`)
+
+    if (!trashResponse.ok) {
+      throw new Error('Dette affald eksisterer ikke')
+    }
+
+    this.trash = await trashResponse.json()
+  } catch (error) {
+    this.error = error.message
+  } finally {
+    console.log(this.trash)
+    this.loading = false
+  }
+},
 }
 </script>
 
 <template>
   <main class="page">
-    <section class="detail-layout">
+    <p v-if="loading" class="status-text">Loading...</p>
+      <p v-else-if="error" class="status-text">{{ error }}</p>
+    <section v-else-if="trash" class="detail-layout" :key="trash.id">
       <div class="product-card">
         <button class="floating-btn" @click="goToCheckout">
           <span class="trashcount">{{ trashCount }}</span>
@@ -47,10 +93,9 @@ export default {
             alt="Checkout"
           />
         </button>
+        <img :src="trash.imgurl" class="trash-img" :alt="trash.Name" />
 
-        <img :src="trash.image" class="trash-img" :alt="trash.name" />
-
-        <h1>{{ trash.name }}</h1>
+        <h1>{{ trash.Name }}</h1>
       </div>
 
       <div class="divider"></div>
@@ -59,12 +104,11 @@ export default {
         <article class="info-row">
           <div class="icon-box">
             <img src="@/Components/Images/TrashCanIcon.png" alt="" />
-            <span>PLAST</span>
           </div>
 
           <div class="info-text">
             <h3>Hjemme</h3>
-            <p>{{ trash.home }}</p>
+            <p>{{ selectedHomeCategory.name }}</p>
           </div>
 
           <span class="arrow">›</span>
@@ -73,12 +117,11 @@ export default {
         <article class="info-row">
           <div class="icon-box">
             <img src="@/Components/Images/TrashCanIcon.png" alt="" />
-            <span>PLAST</span>
           </div>
 
           <div class="info-text">
-            <h3>Genbrugsstation</h3>
-            <p>{{ trash.station }}</p>
+            <h3>Genbrugsplads</h3>
+            <p>{{ selectedStationCategory.name }}</p>
           </div>
 
           <span class="arrow">›</span>
