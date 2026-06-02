@@ -22,11 +22,13 @@ export default {
     this.updateLoginState()
     window.addEventListener('authStateChange', this.handleAuthStateChange)
     window.addEventListener('storage', this.handleStorageChange)
+    document.addEventListener('click', this.handleClickOutside)
   },
 
   beforeUnmount() {
     window.removeEventListener('authStateChange', this.handleAuthStateChange)
     window.removeEventListener('storage', this.handleStorageChange)
+    document.removeEventListener('click', this.handleClickOutside)
   },
 
   methods: {
@@ -69,6 +71,14 @@ export default {
       this.isMenuOpen = false
       this.$router.push('/profile')
     },
+
+    handleClickOutside(event) {
+      const headerWrapper = this.$el
+
+      if (this.isMenuOpen && !headerWrapper.contains(event.target)) {
+        this.isMenuOpen = false
+      }
+    }
   },
 }
 </script>
