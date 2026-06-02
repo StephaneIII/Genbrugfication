@@ -195,7 +195,7 @@ export default {
   font-family: var(--font-heading);
   font-size: var(--font-size-h3);
   font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
+  color: var(--color-text);
   margin-bottom: var(--gap-med);
 }
 

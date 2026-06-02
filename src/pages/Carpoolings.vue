@@ -120,25 +120,36 @@ export default {
 </script>
 
 <template>
-  <div class="generate-booking-page">
-    <div class="carpoolings-container">
-      <div class="generate-booking-card">
-        <div class="header-row">
-          <h1 class="generate-booking-title">Tilgængelige Samkørsler</h1>
-          <div class="header-actions">
-            <button class="btn-secondary" type="button" @click="$router.push('/GenerateBooking')">
-              Generer Booking
-            </button>
-            <button class="btn-secondary" type="button" :disabled="loading" @click="fetchRoutes">
-              {{ loading ? 'Indlæser...' : 'Opdater' }}
-            </button>
-            <button class="btn-secondary" type="button" @click="resetFilters">
-              Nulstil filtre
-            </button>
-          </div>
+  <div class="carpooling-page">
+    <main class="carpooling-container">
+      <section class="page-header">
+        <div>
+          <p class="eyebrow">Samkørsel</p>
+          <h1 class="page-title">Tilgængelige samkørsler</h1>
+          <p class="page-text">
+            Find en ledig rute til nærmeste genbrugsstation.
+          </p>
         </div>
 
-        <section class="filter-panel">
+        <div class="header-actions">
+          <button class="button button-primary" type="button" @click="$router.push('/GenerateBooking')">
+            Generer booking
+          </button>
+
+          <button class="button button-secondary" type="button" :disabled="loading" @click="fetchRoutes">
+            {{ loading ? 'Indlæser...' : 'Opdater' }}
+          </button>
+
+          <button class="button button-secondary" type="button" @click="resetFilters">
+            Nulstil filtre
+          </button>
+        </div>
+      </section>
+
+      <div class="content-grid">
+        <section class="filter-panel" aria-label="Filtrér samkørsler">
+          <h2 class="section-title">Filtre</h2>
+
           <div class="filter-grid">
             <div class="filter-group">
               <label for="fromTime">Fra afgang</label>
@@ -160,7 +171,7 @@ export default {
               />
             </div>
 
-            <div class="filter-group filter-group-wide">
+            <div class="filter-group">
               <label for="stationQuery">Destination eller postnr</label>
               <input
                 id="stationQuery"
@@ -177,291 +188,459 @@ export default {
           </label>
         </section>
 
-        <div v-if="error" class="error-alert">
-          <i class="error-icon">!</i>
-          {{ error }}
-        </div>
+        <section class="routes-section">
+          <div class="routes-header">
+            <h2 class="section-title">Ruter</h2>
+            <p class="route-count">{{ sortedRoutes.length }} fundet</p>
+          </div>
 
-        <div v-if="loading" class="loading-spinner">Indlæser ruter...</div>
+          <div v-if="error" class="error-alert">
+            <span class="error-icon">!</span>
+            {{ error }}
+          </div>
 
-        <div v-else-if="sortedRoutes.length === 0" class="empty-state">Ingen ruter fundet.</div>
+          <div v-if="loading" class="status-message">
+            Indlæser ruter...
+          </div>
 
-        <div v-else class="routes-grid">
-          <article
-            v-for="route in sortedRoutes"
-            :key="route.RouteID"
-            class="route-card"
-            :class="{ highlight: route.IsDriver || route.IsBookedByUser }"
-            @click="$router.push('/carpooling/' + route.RouteID)"
-          >
-            <div class="route-card-top">
-              <h2 class="route-title">Rute #{{ route.RouteID }}</h2>
+          <div v-else-if="sortedRoutes.length === 0" class="empty-state">
+            Ingen ruter fundet.
+          </div>
 
-              <div class="tag-row">
-                <span v-if="route.IsDriver" class="route-tag is-driver">Du er chauffør</span>
-                <span v-if="route.IsBookedByUser" class="route-tag is-booked">Booket af dig</span>
+          <div v-else class="routes-grid">
+            <article
+              v-for="route in sortedRoutes"
+              :key="route.RouteID"
+              class="route-card"
+              :class="{ highlight: route.IsDriver || route.IsBookedByUser }"
+              @click="$router.push('/carpooling/' + route.RouteID)"
+            >
+              <div class="route-card-top">
+                <h3 class="route-title">Rute #{{ route.RouteID }}</h3>
+
+                <div class="tag-row">
+                  <span v-if="route.IsDriver" class="route-tag">Du er chauffør</span>
+                  <span v-if="route.IsBookedByUser" class="route-tag">Booket af dig</span>
+                </div>
               </div>
-            </div>
 
-            <div class="route-info-grid">
-              <p><strong>Chauffør:</strong> {{ route.DriverUsername }}</p>
-              <p><strong>Afgang:</strong> {{ formatDeparture(route.DepartureTime) }}</p>
-              <p>
-                <strong>Pladser tilbage:</strong>
-                {{ route.SeatsLeft }} / {{ route.AvailableSeats }}
-              </p>
-              <p><strong>Stationsadresse:</strong> {{ route.StationAddress }}</p>
-              <p><strong>Postnr:</strong> {{ route.StationPostNo }}</p>
-            </div>
-          </article>
-        </div>
+              <div class="route-info-grid">
+                <p><strong>Chauffør:</strong> {{ route.DriverUsername }}</p>
+                <p><strong>Afgang:</strong> {{ formatDeparture(route.DepartureTime) }}</p>
+                <p>
+                  <strong>Pladser tilbage:</strong>
+                  {{ route.SeatsLeft }} / {{ route.AvailableSeats }}
+                </p>
+                <p><strong>Stationsadresse:</strong> {{ route.StationAddress }}</p>
+                <p><strong>Postnr:</strong> {{ route.StationPostNo }}</p>
+              </div>
+            </article>
+          </div>
+        </section>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 
 <style scoped>
-.generate-booking-page {
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--secondary-color) 0%, #1e4a42 100%);
-  padding: 20px;
+.carpooling-page {
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
+  background: var(--color-bg);
+  padding: var(--gap-large) var(--gap-med);
   font-family: var(--font-body);
+  color: var(--color-text);
 }
 
-.carpoolings-container {
+.carpooling-container {
   width: 100%;
-  max-width: 980px;
+  max-width: var(--max-width);
+  margin: 0 auto;
 }
 
-.generate-booking-card {
-  background: #f8f9fab9;
-  border-radius: var(--border-radius-large);
-  padding: 28px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
-
-.header-row {
+.page-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 20px;
+  align-items: flex-end;
+  gap: var(--gap-large);
+  margin-bottom: var(--gap-large);
+  padding: var(--gap-large);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--shadow);
+}
+
+.eyebrow {
+  margin: 0 0 var(--gap-xs);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.page-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.15;
+  color: var(--color-text);
+}
+
+.page-text {
+  max-width: 34rem;
+  margin: var(--gap-small) 0 0;
+  color: var(--color-text-muted);
+  line-height: 1.5;
 }
 
 .header-actions {
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--gap-small);
 }
 
-.generate-booking-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--dark-text);
-  font-family: var(--font-heading);
-  margin: 0;
-}
-
-.error-alert {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
+.button {
+  min-height: 44px;
   border-radius: var(--border-radius-med);
-  margin-bottom: 16px;
-  font-weight: 500;
-  background-color: #fed7d7;
-  color: #c53030;
-  border: 1px solid #feb2b2;
+  padding: 0.75rem 1rem;
+  border: 1px solid transparent;
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
-.error-icon {
-  margin-right: 8px;
-  font-weight: bold;
+.button:hover {
+  transform: translateY(-1px);
 }
 
-.loading-spinner,
-.empty-state {
-  padding: 8px 0;
-  font-weight: 600;
-  color: var(--dark-text);
+.button:focus-visible,
+.route-card:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.button-primary {
+  background: var(--color-accent);
+  color: var(--color-text);
+  box-shadow: var(--shadow);
+}
+
+.button-primary:hover {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+}
+
+.button-secondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.button-secondary:hover {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  border-color: var(--color-primary);
+}
+
+.button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  gap: var(--gap-large);
+  align-items: start;
+}
+
+.filter-panel,
+.routes-section {
+  background: var(--color-surface-muted);
+  border-radius: var(--border-radius-large);
+  padding: var(--gap-large);
+  box-shadow: var(--shadow-card);
 }
 
 .filter-panel {
-  margin-bottom: 16px;
-  padding: 14px;
-  border: 1px solid #d5e7e2;
-  border-radius: var(--border-radius-med);
-  background: #f6faf9;
+  position: sticky;
+  top: calc(var(--header-height) + var(--gap-med));
+}
+
+.section-title {
+  margin: 0 0 var(--gap-med);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
 }
 
 .filter-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 10px;
+  gap: var(--gap-med);
 }
 
 .filter-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--gap-small);
 }
 
-.filter-group-wide {
-  grid-column: span 2;
-}
-
-.filter-group label {
-  font-weight: 600;
-  color: #1a202c;
-  font-size: 0.9rem;
+.filter-group label,
+.checkbox-filter {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
 }
 
 .filter-group input {
-  padding: 10px 12px;
-  border: 2px solid #e2e8f0;
+  width: 100%;
+  min-height: 46px;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-med);
-  font-size: 0.95rem;
-  background: #fff;
-  color: #1a202c;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+}
+
+.filter-group input::placeholder {
+  color: var(--color-text-muted);
 }
 
 .filter-group input:focus {
+  border-color: var(--color-primary);
   outline: none;
-  border-color: var(--secondary-color);
-  box-shadow: 0 0 0 3px rgba(47, 107, 95, 0.1);
+  box-shadow: 0 0 0 3px rgba(47, 107, 95, 0.16);
 }
 
 .checkbox-filter {
-  margin-top: 12px;
+  margin-top: var(--gap-med);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  color: #1a202c;
-  font-weight: 600;
+  gap: var(--gap-small);
+  cursor: pointer;
+}
+
+.checkbox-filter input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--color-primary);
+}
+
+.routes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--gap-med);
+  margin-bottom: var(--gap-med);
+}
+
+.routes-header .section-title {
+  margin-bottom: 0;
+}
+
+.route-count {
+  margin: 0;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--border-radius-round);
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  white-space: nowrap;
+}
+
+.error-alert {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-small);
+  margin-bottom: var(--gap-med);
+  padding: var(--gap-med);
+  border-radius: var(--border-radius-med);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 2px solid var(--color-accent);
+  font-weight: var(--font-weight-bold);
+}
+
+.error-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: var(--border-radius-round);
+  background: var(--color-accent);
+  color: var(--color-text);
+  font-weight: var(--font-weight-bold);
+}
+
+.status-message,
+.empty-state {
+  padding: var(--gap-med);
+  background: var(--color-surface);
+  border-radius: var(--border-radius-med);
+  color: var(--color-text);
+  font-weight: var(--font-weight-bold);
 }
 
 .routes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 14px;
+  gap: var(--gap-med);
 }
 
 .route-card {
-  background: #ffffff;
-  border: 1px solid #d5e7e2;
-  border-radius: var(--border-radius-med);
-  padding: 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-large);
+  padding: var(--gap-med);
   cursor: pointer;
+  box-shadow: var(--shadow);
   transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .route-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(47, 107, 95, 0.15);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-card);
 }
 
 .route-card.highlight {
-  border-color: #2f6b5f;
-  box-shadow: 0 10px 20px rgba(47, 107, 95, 0.18);
+  border: 2px solid var(--color-primary);
 }
 
 .route-card-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: var(--gap-med);
+  margin-bottom: var(--gap-med);
 }
 
 .route-title {
   margin: 0;
-  color: var(--dark-text);
-  font-size: 1.08rem;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
 }
 
 .tag-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  justify-content: flex-end;
+  gap: var(--gap-small);
 }
 
 .route-tag {
-  border-radius: 999px;
-  padding: 4px 10px;
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-
-.route-tag.is-driver {
-  background: #d8ede7;
-  color: #1f4f45;
-}
-
-.route-tag.is-booked {
-  background: #dbeafe;
-  color: #1e3a8a;
+  border-radius: var(--border-radius-round);
+  padding: 0.35rem 0.75rem;
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  white-space: nowrap;
 }
 
 .route-info-grid {
   display: grid;
-  gap: 6px;
+  gap: var(--gap-small);
 }
 
 .route-info-grid p {
   margin: 0;
-  color: #1a202c;
+  color: var(--color-text);
+  line-height: 1.5;
 }
 
-.btn-secondary {
-  background: #e2e8f0;
-  color: #1a202c;
-  border: none;
-  padding: 10px 14px;
-  border-radius: var(--border-radius-med);
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.route-info-grid strong {
+  font-weight: var(--font-weight-bold);
 }
 
-.btn-secondary:hover {
-  background: #cfd8e3;
-}
-
-.btn-secondary:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-
-@media (max-width: 768px) {
-  .generate-booking-page {
-    padding: 10px;
-  }
-
-  .generate-booking-card {
-    padding: 20px;
-  }
-
-  .header-row {
+@media (max-width: 950px) {
+  .page-header {
+    align-items: flex-start;
     flex-direction: column;
-    align-items: stretch;
   }
 
   .header-actions {
     width: 100%;
+    justify-content: flex-start;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-panel {
+    position: static;
+  }
+
+  .filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .carpooling-page {
+    padding: var(--gap-med);
+  }
+
+  .page-header,
+  .filter-panel,
+  .routes-section {
+    padding: var(--gap-med);
+  }
+
+  .page-title {
+    font-size: var(--font-size-h2);
+  }
+
+  .page-text {
+    font-size: var(--font-size-small);
+  }
+
+  .header-actions {
     flex-direction: column;
   }
 
-  .filter-group-wide {
-    grid-column: span 1;
+  .button {
+    width: 100%;
   }
 
-  .generate-booking-title {
-    font-size: 1.5rem;
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .routes-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .route-card-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tag-row {
+    justify-content: flex-start;
   }
 }
 </style>
