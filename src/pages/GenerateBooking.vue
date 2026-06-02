@@ -167,31 +167,41 @@ export default {
 </script>
 
 <template>
-  <div class="generate-booking-page">
-    <div class="generate-booking-container">
-      <div class="generate-booking-card">
-        <div class="header">
-          <h1 class="generate-booking-title">Generer ny samkørselsrute</h1>
-        </div>
+  <div class="generate-route-page">
+    <main class="generate-route-container">
+      <button class="back-btn" type="button" @click="$router.back()">← Tilbage</button>
 
+      <section class="page-header">
+        <div>
+          <p class="eyebrow">Samkørsel</p>
+          <h1 class="page-title">Generer ny samkørselsrute</h1>
+          <p class="page-text">
+            Opret en rute, så andre brugere kan booke en plads til genbrugsstationen.
+          </p>
+        </div>
+      </section>
+
+      <section class="form-card">
         <div v-if="error" class="error-alert">
-          <i class="error-icon">!</i>
+          <span class="alert-icon">!</span>
           {{ error }}
         </div>
 
         <div v-if="success" class="success-alert">
-          <i class="success-icon">✓</i>
+          <span class="alert-icon">✓</span>
           {{ successMessage || 'Rute oprettet med succes!' }}
         </div>
 
-        <div v-if="loading && !success" class="loading-spinner">Behandler...</div>
+        <div v-if="loading && !success" class="status-message">
+          Behandler...
+        </div>
 
         <form
           v-if="!loading || success"
-          class="generate-booking-form"
+          class="generate-route-form"
           @submit.prevent="handleSubmit"
         >
-          <div class="form-group">
+          <div class="form-group form-group-wide">
             <label for="startAddress">Startadresse *</label>
             <input
               id="startAddress"
@@ -202,8 +212,9 @@ export default {
             />
           </div>
 
-          <div class="form-group">
+          <div class="form-group form-group-wide">
             <label>Genbrugningsstation *</label>
+
             <div class="dropdown-wrapper">
               <button type="button" class="dropdown-toggle" @click="toggleDropdown">
                 <span class="selected-station">{{ selectedStationDisplay }}</span>
@@ -233,11 +244,12 @@ export default {
                     :class="{ active: formData.recyclingStationId === station.RecyclingStationID }"
                     @click="selectStation(station.RecyclingStationID)"
                   >
-                    <div class="station-name">{{ station.Name }}</div>
-                    <div class="station-info">
+                    <span class="station-name">{{ station.Name }}</span>
+
+                    <span class="station-info">
                       <span class="postal">{{ station.PostNo }}</span>
                       <span class="address">{{ station.Address }}</span>
-                    </div>
+                    </span>
                   </button>
                 </div>
               </div>
@@ -279,150 +291,176 @@ export default {
 
           <div class="form-group">
             <label for="delay">Mulig forsinkelse (minutter)</label>
-            <input id="delay" v-model.number="formData.delay" type="number" min="0" step="0.1" />
+            <input
+              id="delay"
+              v-model.number="formData.delay"
+              type="number"
+              min="0"
+              step="0.1"
+            />
           </div>
 
-          <div class="form-buttons">
-            <button type="submit" class="generate-booking-button" :disabled="loading">
+          <div class="form-buttons form-group-wide">
+            <button type="submit" class="button button-primary" :disabled="loading">
               {{ loading ? 'Opretter rute...' : 'Opret rute' }}
             </button>
-            <button type="button" class="btn-secondary" @click="handleReset">Nulstil</button>
+
+            <button type="button" class="button button-secondary" @click="handleReset">
+              Nulstil
+            </button>
           </div>
         </form>
-      </div>
-    </div>
+      </section>
+    </main>
 
     <div v-if="showDropdown" class="dropdown-backdrop" @click="closeDropdown"></div>
   </div>
 </template>
 
-<style scoped>
-.generate-booking-page {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--secondary-color) 0%, #1e4a42 100%);
-  padding: 20px;
+<<style scoped>
+.generate-route-page {
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
+  background: var(--color-bg);
+  padding: var(--gap-large) var(--gap-med);
   font-family: var(--font-body);
+  color: var(--color-text);
 }
 
-.generate-booking-container {
+.generate-route-container {
   width: 100%;
-  max-width: 560px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.generate-booking-card {
-  background: #f8f9fab9;
-  border-radius: var(--border-radius-large);
-  padding: 40px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-.generate-booking-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--dark-text);
-  font-family: var(--font-heading);
-  margin: 0;
-}
-
-.error-alert,
-.success-alert {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
+.back-btn {
+  min-height: 40px;
+  margin-bottom: var(--gap-med);
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-med);
-  margin-bottom: 16px;
-  font-weight: 500;
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
-.error-alert {
-  background-color: #fed7d7;
-  color: #c53030;
-  border: 1px solid #feb2b2;
+.back-btn:hover {
+  background: var(--color-accent);
+  color: var(--color-text);
+  transform: translateY(-1px);
 }
 
-.success-alert {
-  background-color: #c6f6d5;
-  color: #22543d;
-  border: 1px solid #9ae6b4;
+.back-btn:focus-visible,
+.button:focus-visible,
+input:focus-visible,
+.dropdown-toggle:focus-visible,
+.dropdown-option:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
 }
 
-.error-icon,
-.success-icon {
-  margin-right: 8px;
-  font-weight: bold;
+.page-header {
+  margin-bottom: var(--gap-large);
+  padding: var(--gap-large);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--shadow);
 }
 
-.loading-spinner {
-  margin-bottom: 16px;
-  font-weight: 600;
-  color: var(--dark-text);
+.eyebrow {
+  margin: 0 0 var(--gap-xs);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
-.generate-booking-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.page-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  line-height: 1.15;
+}
+
+.page-text {
+  max-width: 40rem;
+  margin: var(--gap-small) 0 0;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.form-card {
+  background: var(--color-surface-muted);
+  border-radius: var(--border-radius-large);
+  padding: var(--gap-large);
+  box-shadow: var(--shadow-card);
+}
+
+.generate-route-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap-med);
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
+  gap: var(--gap-small);
+}
+
+.form-group-wide {
+  grid-column: 1 / -1;
 }
 
 .form-group label {
-  font-weight: 600;
-  color: var(--dark-text);
-  margin-bottom: 6px;
-  font-size: 0.9rem;
+  color: var(--color-text);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
 }
 
 .form-group input,
 .dropdown-toggle,
 .search-input {
-  padding: 12px 16px;
-  border: 2px solid #e2e8f0;
-  border-radius: var(--border-radius-med);
-  font-size: 1rem;
-  transition: all 0.2s ease;
-  background-color: var(--white-text);
-  color: var(--dark-text);
   width: 100%;
+  min-height: 48px;
   box-sizing: border-box;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-med);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.form-group input::placeholder,
+.search-input::placeholder {
+  color: var(--color-text-muted);
 }
 
 .form-group input:focus,
 .dropdown-toggle:focus,
 .search-input:focus {
+  border-color: var(--color-primary);
   outline: none;
-  border-color: var(--secondary-color);
-  box-shadow: 0 0 0 3px rgba(47, 107, 95, 0.1);
+  box-shadow: 0 0 0 3px rgba(47, 107, 95, 0.16);
 }
 
-.form-group input[type='number'] {
-  color-scheme: light;
-}
-
-.form-group input[type='number']::-webkit-outer-spin-button,
-.form-group input[type='number']::-webkit-inner-spin-button {
-  opacity: 1;
-  filter: invert(36%) sepia(29%) saturate(885%) hue-rotate(118deg) brightness(88%) contrast(92%);
-}
-
-.form-group input[type='number']:focus::-webkit-outer-spin-button,
-.form-group input[type='number']:focus::-webkit-inner-spin-button {
-  filter: invert(32%) sepia(37%) saturate(980%) hue-rotate(125deg) brightness(84%) contrast(96%);
-}
-
+.form-group input[type='number'],
 .form-group input[type='datetime-local'] {
-  background-color: #ffffff;
   color-scheme: light;
 }
 
@@ -432,130 +470,205 @@ export default {
   filter: invert(36%) sepia(29%) saturate(885%) hue-rotate(118deg) brightness(88%) contrast(92%);
 }
 
-.form-group input[type='datetime-local']::-webkit-datetime-edit,
-.form-group input[type='datetime-local']::-webkit-datetime-edit-fields-wrapper {
-  background-color: #ffffff;
-  color: var(--dark-text);
-}
-
 .dropdown-wrapper {
   position: relative;
 }
 
 .dropdown-toggle {
-  text-align: left;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: var(--gap-med);
+  text-align: left;
   cursor: pointer;
 }
 
+.selected-station {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .dropdown-arrow {
-  color: var(--secondary-color);
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  flex-shrink: 0;
 }
 
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + var(--gap-small));
   left: 0;
   right: 0;
-  background: #f6faf9;
-  border: 1px solid #d5e7e2;
-  border-radius: var(--border-radius-med);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
   z-index: 1001;
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-med);
+  box-shadow: var(--shadow-card);
 }
 
 .search-box {
-  padding: 10px;
-  border-bottom: 1px solid #e2e8f0;
+  padding: var(--gap-small);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
 }
 
 .dropdown-options {
-  max-height: 240px;
+  max-height: 260px;
   overflow-y: auto;
 }
 
 .dropdown-option {
   width: 100%;
-  text-align: left;
-  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xs);
+  padding: var(--gap-med);
   border: 0;
-  border-bottom: 1px solid #e8eeec;
-  background: transparent;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-align: left;
   cursor: pointer;
-  color: var(--dark-text);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
 }
 
-.dropdown-option:hover {
-  background: #e8f3ef;
+.dropdown-option:last-child {
+  border-bottom: 0;
 }
 
+.dropdown-option:hover,
 .dropdown-option.active {
-  background: #d8ede7;
+  background: var(--color-primary);
+  color: var(--color-text-light);
 }
 
 .station-name {
-  font-weight: 600;
-  margin-bottom: 2px;
+  font-weight: var(--font-weight-bold);
 }
 
 .station-info {
   display: flex;
-  gap: 8px;
-  color: #4a5568;
-  font-size: 0.9rem;
+  flex-wrap: wrap;
+  gap: var(--gap-small);
+  color: inherit;
+  font-size: var(--font-size-small);
+  line-height: 1.4;
 }
 
 .postal {
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
 }
 
 .no-results {
-  padding: 14px;
+  padding: var(--gap-med);
+  color: var(--color-text-muted);
   text-align: center;
-  color: #718096;
+  font-weight: var(--font-weight-bold);
 }
 
 .form-buttons {
   display: flex;
-  gap: 10px;
+  gap: var(--gap-small);
+  margin-top: var(--gap-small);
 }
 
-.generate-booking-button,
-.btn-secondary {
-  border: none;
-  padding: 12px 16px;
+.button {
+  min-height: 46px;
   border-radius: var(--border-radius-med);
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border: 1px solid transparent;
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
-.generate-booking-button {
-  flex: 1;
-  background: linear-gradient(135deg, var(--secondary-color) 0%, #1e4a42 100%);
-  color: var(--white-text);
-}
-
-.generate-booking-button:hover:not(:disabled) {
+.button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 16px rgba(47, 107, 95, 0.25);
 }
 
-.generate-booking-button:disabled {
-  opacity: 0.7;
+.button-primary {
+  flex: 1;
+  background: var(--color-accent);
+  color: var(--color-text);
+  box-shadow: var(--shadow);
+}
+
+.button-primary:hover {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+}
+
+.button-secondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.button-secondary:hover {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  border-color: var(--color-primary);
+}
+
+.button:disabled {
+  opacity: 0.65;
   cursor: not-allowed;
+  transform: none;
 }
 
-.btn-secondary {
-  background: #e2e8f0;
-  color: #1a202c;
+.error-alert,
+.success-alert,
+.status-message {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-small);
+  margin-bottom: var(--gap-med);
+  padding: var(--gap-med);
+  border-radius: var(--border-radius-med);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-weight: var(--font-weight-bold);
 }
 
-.btn-secondary:hover {
-  background: #cfd8e3;
+.error-alert {
+  border: 2px solid var(--color-accent);
+}
+
+.success-alert {
+  border: 2px solid var(--color-primary);
+}
+
+.status-message {
+  border: 1px solid var(--color-border);
+}
+
+.alert-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: var(--border-radius-round);
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  font-weight: var(--font-weight-bold);
+  flex-shrink: 0;
+}
+
+.error-alert .alert-icon {
+  background: var(--color-accent);
+  color: var(--color-text);
 }
 
 .dropdown-backdrop {
@@ -564,21 +677,39 @@ export default {
   z-index: 1000;
 }
 
-@media (max-width: 768px) {
-  .generate-booking-page {
-    padding: 10px;
+@media (max-width: 700px) {
+  .generate-route-page {
+    padding: var(--gap-med);
   }
 
-  .generate-booking-card {
-    padding: 24px;
+  .page-header,
+  .form-card {
+    padding: var(--gap-med);
   }
 
-  .generate-booking-title {
-    font-size: 1.5rem;
+  .page-title {
+    font-size: var(--font-size-h2);
+  }
+
+  .page-text {
+    font-size: var(--font-size-small);
+  }
+
+  .generate-route-form {
+    grid-template-columns: 1fr;
   }
 
   .form-buttons {
     flex-direction: column;
+  }
+
+  .button,
+  .back-btn {
+    width: 100%;
+  }
+
+  .selected-station {
+    white-space: normal;
   }
 }
 </style>
