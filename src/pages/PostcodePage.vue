@@ -75,7 +75,7 @@ export default {
 
 .postcode-title {
   font-family: var(--font-heading);
-  color: var(--color-primary);
+  color: var(--color-text);
   font-size: var(--font-size-h2);
   font-weight: var(--font-weight-bold);
   margin-bottom: var(--gap-small);
