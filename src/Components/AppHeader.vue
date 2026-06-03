@@ -111,19 +111,20 @@ export default {
 
       <template v-if="isUserLoggedIn">
         <button @click="goToProfile" class="menu-link auth-button">Profil</button>
-        <button @click="handleLogout" class="menu-link logout-button">Log ud</button>
-
+        
         <RouterLink to="/carpoolings" class="menu-link" @click="isMenuOpen = false">
           Samkørsel
         </RouterLink>
-
+        
         <RouterLink to="/MyPoints" class="menu-link" @click="isMenuOpen = false">
           Mine Point
         </RouterLink>
-
+        
         <RouterLink v-if="isAdmin" to="/TrashList" class="menu-link" @click="isMenuOpen = false">
           Admin funktion: opret skrald
         </RouterLink>
+        
+        <button @click="handleLogout" class="menu-link logout-button">Log ud</button>
       </template>
 
       <template v-else>
