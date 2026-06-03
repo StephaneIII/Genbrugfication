@@ -3,7 +3,6 @@ import PostcodePage from '../pages/PostcodePage.vue'
 import Map from '../pages/MapPage.vue'
 import RoutePage from '../pages/RoutePage.vue'
 import SearchPage from '@/pages/SearchPage.vue'
-import DetailPage from '@/pages/DetailPage.vue'
 import DetailsPage from '@/pages/DetailsPage.vue'
 import { components } from 'vuetify/dist/vuetify.js'
 import Cart from '@/pages/Cart.vue'
@@ -109,7 +108,7 @@ const routes = [
     name: 'ListOfTrash',
     component: ListOfTrash,
     props: true,
-  }
+  },
 ]
 
 const router = createRouter({
