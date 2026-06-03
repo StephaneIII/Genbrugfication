@@ -102,6 +102,7 @@ export default {
   width: 100%;
   max-width: 420px;
   background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-large);
   box-shadow: var(--shadow-card);
   padding: var(--gap-large);
@@ -113,8 +114,9 @@ export default {
 }
 
 .takBesked {
+  margin: 0;
   font-family: var(--font-heading);
-  color: var(--color-primary);
+  color: var(--color-text);
   font-size: var(--font-size-h2);
   font-weight: var(--font-weight-bold);
   line-height: 1.2;
@@ -122,22 +124,27 @@ export default {
 
 .optjentBesked,
 .content p:not(.takBesked) {
+  margin: 0;
   font-family: var(--font-body);
-  color: var(--color-text-muted);
+  color: var(--color-text);
   font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
   line-height: 1.5;
 }
 
 .points-number {
+  display: inline-block;
   font-family: var(--font-heading);
+  font-size: 1.25em;
   font-weight: var(--font-weight-bold);
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 hr {
   width: 100%;
   border: none;
   border-top: 1px solid var(--color-border);
+  margin: 0;
 }
 
 .baseButton {
