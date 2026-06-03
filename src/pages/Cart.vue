@@ -391,6 +391,7 @@ h1 {
   border-radius: var(--border-radius-large) !important;
   box-shadow: var(--shadow-card);
   color: var(--color-text);
+  padding: var(--gap-med) !important;
 }
 
 .category-icon {
@@ -399,6 +400,8 @@ h1 {
   margin-right: var(--gap-med);
   border-radius: var(--border-radius-med);
   object-fit: cover;
+  align-self: center;
+  flex-shrink: 0;
 }
 
 .card-content {
@@ -429,12 +432,12 @@ h1 {
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  border: 1px solid var(--color-primary);
+  border: 1px solid var(--color-text);
   border-radius: var(--border-radius-round);
   padding: var(--gap-xs) var(--gap-med);
   font-size: var(--font-size-small);
   font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
+  color: var(--color-text);
 }
 
 .cart-footer-area {
@@ -608,7 +611,7 @@ h1 {
   .category-icon {
     width: 120px;
     height: 120px;
-  }
+    }
 
   .card-content {
     min-height: 120px;
