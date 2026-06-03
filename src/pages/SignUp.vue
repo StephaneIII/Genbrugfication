@@ -21,42 +21,39 @@ export default {
       isLoading: false,
     }
   },
+
   mounted() {
-    // Check if user is already logged in
     if (UserController.isLoggedIn()) {
       this.$router.push('/')
       return
     }
   },
+
   methods: {
     async handleSignup() {
       this.clearMessages()
       this.errors = {}
 
-      // Validate form
       if (!this.validateForm()) {
-        this.errorMessage = 'Ret venligst valideringsfejlene nedenfor'
+        this.errorMessage = 'Ret venligst fejlene nedenfor'
         return
       }
 
-      // Check if passwords match
       if (this.formData.password !== this.formData.confirmPassword) {
-        this.errors.confirmPassword = 'Passwords er ikke ens'
-        this.errorMessage = 'Ret venligst valideringsfejlene nedenfor'
+        this.errors.confirmPassword = 'De to passwords er ikke ens'
+        this.errorMessage = 'Ret venligst fejlene nedenfor'
         return
       }
 
       this.isLoading = true
 
       try {
-        // Call UserController to create user (will generate friend code automatically)
         const result = await UserController.createUser(this.formData)
 
         if (result.success) {
-          this.successMessage = 'Profile oprettet! Du kan nu logge ind.'
+          this.successMessage = 'Profil oprettet! Du kan nu logge ind.'
           this.resetForm()
 
-          // Redirect to login page after successful signup
           setTimeout(() => {
             this.$router.push('/login')
           }, 2000)
@@ -65,7 +62,7 @@ export default {
         }
       } catch (error) {
         console.error('Signup error:', error)
-        this.errorMessage = 'Kunne ikke oprette forbindelse til server. Prøve venligst igen.'
+        this.errorMessage = 'Kunne ikke oprette forbindelse til serveren. Prøv venligst igen.'
       } finally {
         this.isLoading = false
       }
@@ -74,53 +71,46 @@ export default {
     validateForm() {
       let isValid = true
 
-      // Username validation
       if (!this.formData.Username) {
         this.errors.Username = 'Brugernavn mangler'
         isValid = false
       } else if (this.formData.Username.length < 3) {
-        this.errors.Username = 'Brugernavn skal være mindst 3 tegn langt.'
+        this.errors.Username = 'Brugernavn skal være mindst 3 tegn langt'
         isValid = false
       }
 
-      // First name validation
       if (!this.formData.Firstname) {
         this.errors.Firstname = 'Fornavn mangler'
         isValid = false
       }
 
-      // Last name validation
       if (!this.formData.Lastname) {
         this.errors.Lastname = 'Efternavn mangler'
         isValid = false
       }
 
-      // Email validation
       if (!this.formData.Email) {
-        this.errors.Email = 'Email mangler'
+        this.errors.Email = 'Emailadresse mangler'
         isValid = false
       } else if (!this.validateEmail(this.formData.Email)) {
-        this.errors.Email = 'Vær venlig at indskrive en gyldig email addresse.'
+        this.errors.Email = 'Indtast venligst en gyldig emailadresse'
         isValid = false
       }
 
-      // Password validation
       if (!this.formData.password) {
         this.errors.password = 'Password mangler'
         isValid = false
       } else if (!this.validatePassword(this.formData.password)) {
         this.errors.password =
-          'Password skal være mindst 8 tgen langt. Det skal inkludere tal, store og små bogstaver'
+          'Password skal være mindst 8 tegn langt og inkludere tal samt store og små bogstaver'
         isValid = false
       }
 
-      // Confirm password validation
       if (!this.formData.confirmPassword) {
         this.errors.confirmPassword = 'Bekræft dit password'
         isValid = false
       }
 
-      // Phone validation
       if (!this.formData.Tlf) {
         this.errors.Tlf = 'Telefonnummer mangler'
         isValid = false
@@ -152,6 +142,7 @@ export default {
         password: '',
         confirmPassword: '',
         Tlf: '',
+        isAdmin: false,
       }
     },
 
@@ -168,23 +159,22 @@ export default {
     <div class="signup-container">
       <div class="signup-card">
         <header class="header">
-          <h1 class="signup-title">Oprette din profile</h1>
-          <p class="signup-subtitle">Tilmeld dig og start din rejse til bedre genbrugs bevidsthed</p>
+          <h1 class="signup-title">Opret din profil</h1>
+          <p class="signup-subtitle">
+            Tilmeld dig og kom i gang med at sortere affald og optjene point
+          </p>
         </header>
 
-        <!-- Error Display -->
         <section v-if="errorMessage" class="error-alert" role="alert" aria-live="polite">
           <i class="error-icon">⚠</i>
           {{ errorMessage }}
         </section>
 
-        <!-- Success Display -->
         <section v-if="successMessage" class="success-alert" role="status" aria-live="polite">
           <i class="success-icon">✓</i>
           {{ successMessage }}
         </section>
 
-        <!-- Signup Form -->
         <form @submit.prevent="handleSignup" class="signup-form">
           <div class="form-row">
             <div class="form-group">
@@ -194,7 +184,7 @@ export default {
                 v-model="formData.Username"
                 type="text"
                 name="Username"
-                placeholder="Choose a username"
+                placeholder="Vælg et brugernavn"
                 :class="{ error: errors.Username }"
                 :disabled="isLoading"
                 required
@@ -211,7 +201,7 @@ export default {
                 v-model="formData.Firstname"
                 type="text"
                 name="Firstname"
-                placeholder="Enter your first name"
+                placeholder="Indtast dit fornavn"
                 :class="{ error: errors.Firstname }"
                 :disabled="isLoading"
                 required
@@ -226,7 +216,7 @@ export default {
                 v-model="formData.Lastname"
                 type="text"
                 name="Lastname"
-                placeholder="Enter your last name"
+                placeholder="Indtast dit efternavn"
                 :class="{ error: errors.Lastname }"
                 :disabled="isLoading"
                 required
@@ -236,13 +226,13 @@ export default {
           </div>
 
           <div class="form-group">
-            <label for="email">Email Addresse</label>
+            <label for="email">Emailadresse</label>
             <input
               id="email"
               v-model="formData.Email"
               type="email"
               name="Email"
-              placeholder="Indskrik din email"
+              placeholder="Indtast din emailadresse"
               :class="{ error: errors.Email }"
               :disabled="isLoading"
               required
@@ -263,26 +253,27 @@ export default {
               required
             />
             <span v-if="errors.password" class="error-text">{{ errors.password }}</span>
+
             <div class="password-requirements">
-              Skal være mindst 8 tegn langt og inkludere tal, store og små bogstaver
+              Password skal være mindst 8 tegn langt og inkludere tal samt store og små bogstaver
             </div>
           </div>
 
           <div class="form-group">
-            <label for="confirm-password">Bekræft Password</label>
+            <label for="confirm-password">Bekræft password</label>
             <input
               id="confirm-password"
               v-model="formData.confirmPassword"
               type="password"
               name="confirmPassword"
-              placeholder="Bekræft password"
+              placeholder="Gentag dit password"
               :class="{ error: errors.confirmPassword }"
               :disabled="isLoading"
               required
             />
-            <span v-if="errors.confirmPassword" class="error-text">{{
-              errors.confirmPassword
-            }}</span>
+            <span v-if="errors.confirmPassword" class="error-text">
+              {{ errors.confirmPassword }}
+            </span>
           </div>
 
           <div class="form-group">
@@ -292,7 +283,7 @@ export default {
               v-model="formData.Tlf"
               type="tel"
               name="Tlf"
-              placeholder="Indskriv dit telefonnummer"
+              placeholder="Indtast dit telefonnummer"
               :class="{ error: errors.Tlf }"
               :disabled="isLoading"
               required
@@ -302,14 +293,13 @@ export default {
 
           <button type="submit" class="signup-button" :disabled="isLoading">
             <span v-if="isLoading" class="loading-spinner">⟳</span>
-            {{ isLoading ? 'Creating Account...' : 'Create Account' }}
+            {{ isLoading ? 'Opretter profil...' : 'Opret profil' }}
           </button>
         </form>
 
-        <!-- Login Link -->
         <footer class="login-link">
           <p>
-            Har du allerede en profile?
+            Har du allerede en profil?
             <router-link to="/login" class="link">Log ind</router-link>
           </p>
         </footer>
@@ -320,166 +310,195 @@ export default {
 
 <style scoped>
 .signup-page {
-  min-height: 100vh;
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--secondary-color) 0%, #1e4a42 100%);
-  padding: 20px;
+  background: var(--color-bg);
+  padding: var(--gap-large) var(--gap-med);
   font-family: var(--font-body);
+  color: var(--color-text);
+  box-sizing: border-box;
 }
 
 .signup-container {
   width: 100%;
-  max-width: 450px;
+  max-width: 520px;
 }
 
 .signup-card {
-  background: #f8f9fab9;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-large);
-  padding: 40px;
-  box-shadow: var(--shadow);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  padding: var(--gap-large);
+  box-shadow: var(--shadow-card);
 }
 
 .header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: var(--gap-large);
 }
 
 .signup-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--dark-text);
+  margin: 0 0 var(--gap-small);
+  color: var(--color-text);
   font-family: var(--font-heading);
-  margin-bottom: 8px;
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.15;
 }
 
 .signup-subtitle {
-  color: #718096;
-  font-size: 1rem;
+  max-width: 38ch;
+  margin: 0 auto;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-body);
+  line-height: 1.5;
 }
 
 .error-alert,
 .success-alert {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
+  gap: var(--gap-small);
+  padding: var(--gap-med);
   border-radius: var(--border-radius-med);
-  margin-bottom: 20px;
-  font-weight: 500;
+  margin-bottom: var(--gap-med);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.4;
 }
 
 .error-alert {
-  background-color: #fed7d7;
-  color: #c53030;
-  border: 1px solid #feb2b2;
+  background: #fff5f5;
+  color: #9f1c2e;
+  border: 1px solid #f5c2c7;
 }
 
 .success-alert {
-  background-color: #c6f6d5;
-  color: #22543d;
-  border: 1px solid #9ae6b4;
+  background: #edf7f1;
+  color: var(--color-primary);
+  border: 1px solid var(--color-secondary);
 }
 
 .error-icon,
 .success-icon {
-  margin-right: 8px;
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
 }
 
 .signup-form {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-large);
-}
-
-.form-row {
-  display: flex;
   gap: var(--gap-med);
 }
 
-.form-row .form-group {
-  flex: 1;
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-med);
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
+  gap: var(--gap-small);
 }
 
 .form-group label {
-  font-weight: 600;
-  color: var(--dark-text);
-  margin-bottom: 6px;
-  font-size: 0.9rem;
+  color: var(--color-text);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
 }
 
 .form-group input {
-  padding: 12px 16px;
-  border: 2px solid #e2e8f0;
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius-med);
-  font-size: 1rem;
-  transition: all 0.2s ease;
-  background-color: var(--white-text);
-  color: var(--dark-text);
+  background: var(--color-surface);
+  color: var(--color-text);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  outline: none;
+  box-sizing: border-box;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast);
+}
+
+.form-group input::placeholder {
+  color: var(--color-text-muted);
 }
 
 .form-group input:focus {
-  outline: none;
-  border-color: var(--secondary-color);
-  box-shadow: 0 0 0 3px rgba(47, 107, 95, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(47, 107, 95, 0.18);
 }
 
 .form-group input:disabled {
-  background-color: #f7fafc;
+  background: #edf1ee;
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .form-group input.error {
-  border-color: #e53e3e;
-  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+  border-color: #9f1c2e;
+  box-shadow: 0 0 0 3px rgba(159, 28, 46, 0.14);
 }
 
 .error-text {
-  color: #e53e3e;
-  font-size: 0.85rem;
-  margin-top: 4px;
-  font-weight: 500;
+  color: #9f1c2e;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.4;
 }
 
 .password-requirements {
-  font-size: 0.8rem;
-  color: #718096;
-  margin-top: 4px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-small);
+  line-height: 1.4;
 }
 
 .signup-button {
-  background: linear-gradient(135deg, var(--secondary-color) 0%, #1e4a42 100%);
-  color: var(--white-text);
-  border: none;
-  padding: 14px 24px;
+  min-height: 44px;
+  border: 1px solid transparent;
   border-radius: var(--border-radius-med);
-  font-size: 1rem;
-  font-weight: 600;
+  background: var(--color-accent);
+  color: var(--color-text);
+  padding: 0.75rem 1rem;
+  margin-top: var(--gap-small);
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
   cursor: pointer;
-  transition: all 0.2s ease;
+  box-shadow: var(--shadow);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--gap-small);
-  margin-top: var(--gap-med);
-  font-family: var(--font-heading);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .signup-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(47, 107, 95, 0.3);
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-card);
+}
+
+.signup-button:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
 }
 
 .signup-button:disabled {
-  opacity: 0.7;
+  opacity: 0.65;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -494,6 +513,7 @@ export default {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -503,40 +523,80 @@ export default {
   text-align: center;
   margin-top: var(--gap-large);
   padding-top: var(--gap-large);
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--color-border);
 }
 
 .login-link p {
-  color: #718096;
   margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-small);
+  line-height: 1.5;
 }
 
 .link {
-  color: var(--secondary-color);
+  color: var(--color-primary);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
 }
 
 .link:hover {
+  color: var(--color-accent);
   text-decoration: underline;
 }
 
-@media (max-width: 768px) {
+.link:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--border-radius-small);
+}
+
+/* Tablet */
+@media (min-width: 768px) {
   .signup-page {
-    padding: 10px;
+    padding: var(--gap-xl) var(--gap-large);
+  }
+
+  .signup-container {
+    max-width: 680px;
   }
 
   .signup-card {
-    padding: 24px;
+    padding: var(--gap-xl);
   }
 
   .form-row {
-    flex-direction: column;
-    gap: var(--gap-large);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .form-row:first-of-type {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .signup-container {
+    max-width: 720px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 430px) {
+  .signup-page {
+    padding: var(--gap-med);
+  }
+
+  .signup-card {
+    padding: var(--gap-large);
   }
 
   .signup-title {
-    font-size: 1.5rem;
+    font-size: var(--font-size-h2);
+  }
+
+  .signup-subtitle,
+  .form-group input {
+    font-size: var(--font-size-small);
   }
 }
 </style>
