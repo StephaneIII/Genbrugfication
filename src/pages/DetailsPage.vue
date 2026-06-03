@@ -191,7 +191,7 @@ async mounted() {
 
 h1 {
   margin-top: var(--gap-med);
-  color: var(--color-primary);
+  color: var(--color-text);
   font-family: var(--font-heading);
   font-size: var(--font-size-h2);
   text-align: center;
