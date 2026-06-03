@@ -16,7 +16,7 @@ export default {
     }
   },
   mounted() {
-    // Check if user is already logged in
+    // Tjekker om brugeren allerede er logget ind
     if (UserController.isLoggedIn()) {
       this.$router.push('/')
       return
@@ -27,25 +27,25 @@ export default {
       this.clearMessages()
       this.errors = {}
 
-      // Validate form
+      // Valider formular
       if (!this.validateForm()) {
-        this.errorMessage = 'Please fix the validation errors below'
+        this.errorMessage = 'Ret venligst fejlene i formularen'
         return
       }
 
       this.isLoading = true
 
       try {
-        // Call UserController to login user
+        // Kalder UserController for at logge brugeren ind
         const result = await UserController.loginUser(this.formData)
 
         if (result.success) {
-          // Store user session in localStorage
+          // Gemmer brugersession i localStorage
           UserController.storeUserSession(result.data.user)
 
-          this.successMessage = 'Login successful! Redirecting...'
+          this.successMessage = 'Login lykkedes! Du videresendes...'
 
-          // Redirect to home page after successful login
+          // Videresender til forsiden efter succesfuldt login
           setTimeout(() => {
             this.$router.push('/')
           }, 1500)
@@ -53,8 +53,8 @@ export default {
           this.errorMessage = result.error
         }
       } catch (error) {
-        console.error('Login error:', error)
-        this.errorMessage = 'Unable to connect to server. Please try again.'
+        console.error('Loginfejl:', error)
+        this.errorMessage = 'Kunne ikke forbinde til serveren. Prøv igen.'
       } finally {
         this.isLoading = false
       }
@@ -63,18 +63,18 @@ export default {
     validateForm() {
       let isValid = true
 
-      // Email validation
+      // Email-validering
       if (!this.formData.Email) {
-        this.errors.Email = 'Email is required'
+        this.errors.Email = 'Email er påkrævet'
         isValid = false
       } else if (!this.validateEmail(this.formData.Email)) {
-        this.errors.Email = 'Please enter a valid email address'
+        this.errors.Email = 'Indtast venligst en gyldig emailadresse'
         isValid = false
       }
 
-      // Password validation
+      // Password-validering
       if (!this.formData.password) {
-        this.errors.password = 'Password is required'
+        this.errors.password = 'Adgangskode er påkrævet'
         isValid = false
       }
 
@@ -106,32 +106,32 @@ export default {
     <div class="login-container">
       <div class="login-card">
         <div class="header">
-          <h1 class="login-title">Welcome Back</h1>
-          <p class="login-subtitle">log in to your account</p>
+          <h1 class="login-title">Velkommen tilbage</h1>
+          <p class="login-subtitle">Log ind på din konto</p>
         </div>
 
-        <!-- Error Display -->
+        <!-- Fejlbesked -->
         <div v-if="errorMessage" class="error-alert">
           <i class="error-icon">⚠</i>
           {{ errorMessage }}
         </div>
 
-        <!-- Success Display -->
+        <!-- Succesbesked -->
         <div v-if="successMessage" class="success-alert">
           <i class="success-icon">✓</i>
           {{ successMessage }}
         </div>
 
-        <!-- Login Form -->
+        <!-- Loginformular -->
         <form @submit.prevent="handleLogin" class="login-form">
           <div class="form-group">
-            <label for="email">Email Address</label>
+            <label for="email">Emailadresse</label>
             <input
               id="email"
               v-model="formData.Email"
               type="email"
               name="Email"
-              placeholder="Enter your email address"
+              placeholder="Indtast din emailadresse"
               :class="{ error: errors.Email }"
               :disabled="isLoading"
               required
@@ -140,13 +140,13 @@ export default {
           </div>
 
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">Adgangskode</label>
             <input
               id="password"
               v-model="formData.password"
               type="password"
               name="password"
-              placeholder="Enter your password"
+              placeholder="Indtast din adgangskode"
               :class="{ error: errors.password }"
               :disabled="isLoading"
               required
@@ -156,15 +156,15 @@ export default {
 
           <button type="submit" class="login-button" :disabled="isLoading">
             <span v-if="isLoading" class="loading-spinner">⟳</span>
-            {{ isLoading ? ' Logging In...' : ' Log In' }}
+            {{ isLoading ? ' Logger ind...' : ' Log ind' }}
           </button>
         </form>
 
-        <!-- Signup Link -->
+        <!-- Link til oprettelse -->
         <div class="signup-link">
           <p>
-            Don't have an account?
-            <router-link to="/signup" class="link">Sign up here</router-link>
+            Har du ikke en konto?
+            <router-link to="/signup" class="link">Opret dig her</router-link>
           </p>
         </div>
       </div>
@@ -410,7 +410,7 @@ export default {
   }
 }
 
-/* Small mobile */
+/* Lille mobil */
 @media (max-width: 430px) {
   .login-card {
     padding: var(--gap-large);
