@@ -88,15 +88,23 @@ export default {
     },
 
     async deleteTrash(trash) {
-      const confirmed = confirm(
-        'Er du sikker på at du vil slette "${trash.Name}"?'
-      )
+      const confirmed = confirm('Er du sikker på at du vil slette "${trash.Name}"?')
 
       if (!confirmed) {
         return
       }
 
-      const result = await TrashController.deleteTrash
+      const result = await TrashController.deleteTrash(trash.TrashID)
+
+      if (result.success) {
+        this.trashList = this.trashList.filter(
+          (t) => t.TrashID !== trash.TrashID
+        )
+
+        this.successMessage = '"${trash.Name}" blev slettet'
+      } else {
+        this.errorMessage = result.error
+      }
     },
 
     validateTrash() {
@@ -190,6 +198,12 @@ export default {
                         <dd>{{ trash.Score }}</dd>
                       </div>
                     </dl>
+
+                    <div v-if="isAdmin" class="card-actions">
+                      <button class="delete-button" @click="deleteTrash(trash)">
+                        Slet
+                      </button>
+                    </div>
                   </div>
                 </div>
               </v-card>
@@ -585,6 +599,20 @@ h3 {
 .submit-button:focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 3px;
+}
+
+.delete-button {
+  background: #c6c6c6;
+  color: white;
+  border: none;
+  /* padding: 8px 14px; */
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.delete-button:hover {
+  background: #b71c1c;
 }
 
 .error-text {
