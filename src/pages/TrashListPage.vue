@@ -87,6 +87,18 @@ export default {
       }
     },
 
+    async deleteTrash(trash) {
+      const confirmed = confirm(
+        'Er du sikker på at du vil slette "${trash.Name}"?'
+      )
+
+      if (!confirmed) {
+        return
+      }
+
+      const result = await TrashController.deleteTrash
+    },
+
     validateTrash() {
       let isValid = true
 
