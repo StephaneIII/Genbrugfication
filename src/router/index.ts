@@ -108,7 +108,7 @@ const routes = [
     name: 'ListOfTrash',
     component: ListOfTrash,
     props: true,
-  }
+  },
 ]
 
 const router = createRouter({
