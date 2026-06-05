@@ -5,6 +5,7 @@ export default {
   data() {
     return {
       searchParameter: '',
+      trashItems: [],
       categories: [
         { name: 'Metal', image: '/images/icons/metal.jpg', route: '/ListOfTrash/1/' },
         {
@@ -26,11 +27,19 @@ export default {
   },
 
   computed: {
-    filteredCategories() {
-      return this.categories.filter((category) =>
-        category.name.toLowerCase().includes(this.searchParameter.toLowerCase()),
-      )
+    filteredTrash() {
+      const search = this.searchParameter.toLowerCase().trim()
+
+      return this.trashItems.filter((trash) => trash.Name.toLowerCase().includes(search))
     },
+    hasSearch() {
+      return this.searchParameter.trim().length > 0
+    },
+  },
+
+  async mounted() {
+    const response = await fetch('http://localhost:3001/api/trash')
+    this.trashItems = await response.json()
   },
 
   methods: {
@@ -66,15 +75,28 @@ export default {
       <section class="category-section">
         <h2>Vælg kategori</h2>
 
-        <div class="category-grid">
+        <div class="category-grid" v-if="!hasSearch">
           <button
-            v-for="category in filteredCategories"
+            v-for="category in categories"
             :key="category.name"
             class="category-card"
             type="button"
             @click="goToCategory(category.route)"
           >
             <img :src="category.image" :alt="category.name" class="category-icon" />
+          </button>
+        </div>
+
+        <div class="category-grid" v-else>
+          <button
+            v-for="trash in filteredTrash"
+            :key="trash.TrashID"
+            class="category-card"
+            type="button"
+            @click="$router.push(`/Detailspage/${trash.TrashID}`)"
+          >
+            <img :src="trash.imgurl" :alt="trash.Name" class="category-icon" />
+            <p>{{ trash.Name }}</p>
           </button>
         </div>
       </section>

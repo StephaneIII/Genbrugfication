@@ -76,6 +76,23 @@ class TrashController {
       }
     }
   }
+  async deleteTrash(trashId) {
+    try {
+      const response = await fetch(`${this.apiBaseUrl}/${trashId}`, {
+        method: 'DELETE',
+      })
+
+      return {
+        success: response.ok,
+        error: response.ok ? null : 'Could not delete trash',
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: 'Could not connect to server',
+      }
+    }
+  }
 }
 
 export default new TrashController()
