@@ -180,25 +180,27 @@ export default {
                       <span class="id-badge">ID: {{ trash.TrashID }}</span>
                     </div>
 
-                    <dl class="meta-list">
-                      <div>
-                        <dt>Kategori-ID</dt>
-                        <dd>{{ trash.TrashCategoryID }}</dd>
-                      </div>
+                    <div class="card-bottom-row">
+                      <dl class="meta-list">
+                        <div>
+                          <dt>Kategori-ID</dt>
+                          <dd>{{ trash.TrashCategoryID }}</dd>
+                        </div>
 
-                      <div>
-                        <dt>Genbrugsstation</dt>
-                        <dd>{{ trash.IsRecyclingStation ? 'Ja' : 'Nej' }}</dd>
-                      </div>
+                        <div>
+                          <dt>Genbrugsstation</dt>
+                          <dd>{{ trash.IsRecyclingStation ? 'Ja' : 'Nej' }}</dd>
+                        </div>
 
-                      <div>
-                        <dt>Point</dt>
-                        <dd>{{ trash.Score }}</dd>
-                      </div>
-                    </dl>
+                        <div>
+                          <dt>Point</dt>
+                          <dd>{{ trash.Score }}</dd>
+                        </div>
+                      </dl>
 
-                    <div v-if="isAdmin" class="card-actions">
-                      <button class="delete-button" @click="deleteTrash(trash)">Slet</button>
+                      <div v-if="isAdmin" class="card-actions">
+                        <button class="delete-button" @click="deleteTrash(trash)">Slet</button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -467,6 +469,12 @@ h3 {
   font-weight: var(--font-weight-bold);
 }
 
+.card-bottom-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-med);
+}
+
 .meta-list {
   display: grid;
   grid-template-columns: 1fr;
@@ -493,6 +501,11 @@ h3 {
   font-size: var(--font-size-small);
   font-weight: var(--font-weight-bold);
   text-align: right;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .trash-form {
@@ -598,17 +611,24 @@ h3 {
 }
 
 .delete-button {
+  min-height: 40px;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-med);
   background: #c6c6c6;
-  color: white;
-  border: none;
-  /* padding: 8px 14px; */
-  border-radius: 8px;
+  color: var(--color-text-light);
+  padding: 0.65rem 1rem;
+  font-family: var(--font-body);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
   cursor: pointer;
-  font-weight: 600;
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .delete-button:hover {
   background: #b71c1c;
+  transform: translateY(-1px);
 }
 
 .error-text {
@@ -688,7 +708,14 @@ h3 {
     align-items: flex-start;
   }
 
+  .card-bottom-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
   .meta-list {
+    flex: 1;
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
@@ -700,6 +727,11 @@ h3 {
   .meta-list dd {
     margin-top: var(--gap-xs);
     text-align: left;
+  }
+
+  .card-actions {
+    flex-shrink: 0;
+    margin-left: var(--gap-med);
   }
 }
 
