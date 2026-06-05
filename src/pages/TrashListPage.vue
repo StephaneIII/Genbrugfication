@@ -88,7 +88,7 @@ export default {
     },
 
     async deleteTrash(trash) {
-      const confirmed = confirm('Er du sikker på at du vil slette "${trash.Name}"?')
+      const confirmed = confirm(`Er du sikker på at du vil slette "${trash.Name}"?`)
 
       if (!confirmed) {
         return
@@ -97,11 +97,9 @@ export default {
       const result = await TrashController.deleteTrash(trash.TrashID)
 
       if (result.success) {
-        this.trashList = this.trashList.filter(
-          (t) => t.TrashID !== trash.TrashID
-        )
+        this.trashList = this.trashList.filter((t) => t.TrashID !== trash.TrashID)
 
-        this.successMessage = '"${trash.Name}" blev slettet'
+        this.successMessage = `"${trash.Name}" blev slettet`
       } else {
         this.errorMessage = result.error
       }
@@ -200,9 +198,7 @@ export default {
                     </dl>
 
                     <div v-if="isAdmin" class="card-actions">
-                      <button class="delete-button" @click="deleteTrash(trash)">
-                        Slet
-                      </button>
+                      <button class="delete-button" @click="deleteTrash(trash)">Slet</button>
                     </div>
                   </div>
                 </div>
