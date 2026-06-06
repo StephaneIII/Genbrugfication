@@ -6,14 +6,21 @@ export default {
     BaseButton,
   },
   data() {
-    return {
-      earnedPoints: 0,
-      totalPoints: 0,
-    }
-  },
+  return {
+    earnedPoints: 0,
+    totalPoints: 0,
+    scoreToCo2Rates: 5,
+  }
+},
 
   mounted() {
     this.applyScoresFromRouteOrStorage()
+  },
+
+computed: {
+  earnedCo2Saved() {
+    return this.earnedPoints * this.scoreToCo2Rates
+  },
   },
 
   watch: {
@@ -72,7 +79,10 @@ export default {
         <span class="points-number">{{ earnedPoints }}</span>
         point ved denne sortering!
       </p>
-
+<p>
+  Og du har sparet
+  <span class="points-number">{{ earnedCo2Saved }}</span>g CO2e ved denne sortering!
+</p>
       <hr />
 
       <p>
