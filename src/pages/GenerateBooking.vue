@@ -140,7 +140,8 @@ export default {
           setTimeout(() => {
             this.success = false
             this.successMessage = ''
-          }, 2500)
+            this.$router.push('/Carpoolings')
+          }, 500)
         } else {
           this.success = false
           this.error =
@@ -192,15 +193,9 @@ export default {
           {{ successMessage || 'Rute oprettet med succes!' }}
         </div>
 
-        <div v-if="loading && !success" class="status-message">
-          Behandler...
-        </div>
+        <div v-if="loading && !success" class="status-message">Behandler...</div>
 
-        <form
-          v-if="!loading || success"
-          class="generate-route-form"
-          @submit.prevent="handleSubmit"
-        >
+        <form v-if="!loading || success" class="generate-route-form" @submit.prevent="handleSubmit">
           <div class="form-group form-group-wide">
             <label for="startAddress">Startadresse *</label>
             <input
@@ -291,13 +286,7 @@ export default {
 
           <div class="form-group">
             <label for="delay">Mulig forsinkelse (minutter)</label>
-            <input
-              id="delay"
-              v-model.number="formData.delay"
-              type="number"
-              min="0"
-              step="0.1"
-            />
+            <input id="delay" v-model.number="formData.delay" type="number" min="0" step="0.1" />
           </div>
 
           <div class="form-buttons form-group-wide">
@@ -317,7 +306,8 @@ export default {
   </div>
 </template>
 
-<<style scoped>
+<
+<style scoped>
 .generate-route-page {
   min-height: calc(100vh - var(--header-height) - var(--footer-height));
   background: var(--color-bg);
