@@ -1,6 +1,8 @@
 <script>
 import appleJuice from '@/Components/Images/applejuice.png'
 import BaseButton from '@/Components/BaseButton.vue'
+import CheckoutController from '@/Controller/Checkout.controller.js'
+import UserController from '@/Controller/User.controller.js'
 
 export default {
   components: {
@@ -9,10 +11,13 @@ export default {
 
   data() {
     return {
+      checkoutController: CheckoutController,
       trashCount: 0,
       trash: null,
       error: null,
       loading: true,
+      uid: null,
+      toast: null,
       // ↓ Kunne ændres til at være en del af trash objektet, så det ikke er nødvendigt at matche på TrashCategoryID
       trashCategories: [
         { name: 'Metal', value: 1 },
@@ -34,7 +39,39 @@ export default {
   },
 
   methods: {
-    addtrash() {
+    showToast(message) {
+      this.toast = message
+      setTimeout(() => {
+        this.toast = null
+      }, 3000)
+    },
+
+    async addtrash() {
+      const user = UserController.getUserSession()
+
+      if (!user) {
+        this.showToast('Knappen kræver at du er logget ind')
+        return
+      }
+
+      const checkoutResult = await this.checkoutController.getOrCreateOpenCheckout(user.UID)
+
+      if (!checkoutResult.success) {
+        this.showToast('Kunne ikke hente kurv. Prøv igen.')
+        return
+      }
+
+      const addResult = await this.checkoutController.addTrashToCheckout(
+        user.UID,
+        this.trash.TrashID,
+        1,
+      )
+
+      if (!addResult.success) {
+        this.showToast('Kunne ikke tilføje affald. Prøv igen.')
+        return
+      }
+
       this.trashCount++
     },
 
@@ -47,51 +84,59 @@ export default {
     },
   },
   computed: {
-  selectedHomeCategory() {
-    return this.trashCategories.find(
-      (category) => category.value === this.trash.TrashCategoryID
-    )
+    selectedHomeCategory() {
+      return this.trashCategories.find((category) => category.value === this.trash.TrashCategoryID)
+    },
+    selectedStationCategory() {
+      return this.stationCategories.find(
+        (category) => category.value === this.trash.TrashCategoryID,
+      )
+    },
   },
-  selectedStationCategory() {
-    return this.stationCategories.find(
-      (category) => category.value === this.trash.TrashCategoryID
-    )
-  },
-},
 
-async mounted() {
-  try {
-    const id = this.$route.params.id
+  async mounted() {
+    try {
+      const id = this.$route.params.id
 
-    const trashResponse = await fetch(`http://localhost:3001/api/trash/${id}`)
+      const trashResponse = await fetch(`http://localhost:3001/api/trash/${id}`)
 
-    if (!trashResponse.ok) {
-      throw new Error('Dette affald eksisterer ikke')
+      if (!trashResponse.ok) {
+        throw new Error('Dette affald eksisterer ikke')
+      }
+
+      this.trash = await trashResponse.json()
+    } catch (error) {
+      this.error = error.message
+    } finally {
+      console.log(this.trash)
+      this.loading = false
     }
 
-    this.trash = await trashResponse.json()
-  } catch (error) {
-    this.error = error.message
-  } finally {
-    console.log(this.trash)
-    this.loading = false
-  }
-},
+    const user = UserController.getUserSession()
+    if (user) {
+      const checkoutResult = await this.checkoutController.getOrCreateOpenCheckout(user.UID)
+      if (checkoutResult.success) {
+        const items = checkoutResult.data?.items || []
+        const match = items.find((item) => Number(item.TrashID) === Number(this.trash?.TrashID))
+        this.trashCount = match ? Number(match.Amount || 0) : 0
+      }
+    }
+  },
 }
 </script>
 
 <template>
   <main class="page">
+    <transition name="toast-fade">
+      <div v-if="toast" class="toast">{{ toast }}</div>
+    </transition>
     <p v-if="loading" class="status-text">Loading...</p>
-      <p v-else-if="error" class="status-text">{{ error }}</p>
+    <p v-else-if="error" class="status-text">{{ error }}</p>
     <section v-else-if="trash" class="detail-layout" :key="trash.id">
       <div class="product-card">
         <button class="floating-btn" @click="goToCheckout">
           <span class="trashcount">{{ trashCount }}</span>
-          <img
-            src="@/Components/Images/TrashCanIcon.png"
-            alt="Checkout"
-          />
+          <img src="@/Components/Images/TrashCanIcon.png" alt="Checkout" />
         </button>
         <img :src="trash.imgurl" class="trash-img" :alt="trash.Name" />
 
@@ -130,13 +175,9 @@ async mounted() {
     </section>
 
     <section class="buttons">
-      <BaseButton @click="addtrash">
-        Tilføj affald
-      </BaseButton>
+      <BaseButton @click="addtrash"> Tilføj affald </BaseButton>
 
-      <BaseButton class="secondary-btn" @click="goToMap">
-        Kort
-      </BaseButton>
+      <BaseButton class="secondary-btn" @click="goToMap"> Kort </BaseButton>
     </section>
   </main>
 </template>
@@ -389,5 +430,30 @@ h1 {
   .page {
     padding: var(--gap-xl) 4rem;
   }
+}
+
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-text);
+  color: var(--color-bg);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--border-radius-med);
+  font-size: var(--font-size-small);
+  z-index: 999;
+  white-space: nowrap;
+  box-shadow: var(--shadow-card);
+}
+
+.toast-fade-enter-active,
+.toast-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.toast-fade-enter-from,
+.toast-fade-leave-to {
+  opacity: 0;
 }
 </style>
